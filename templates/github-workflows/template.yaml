@@ -35,5 +35,5 @@ spec:
 
   output:
     text:
-      - title:
+      - title: "GitHub Workflow Triggered"
         content:  "✅ GitHub workflow 'deploy.yml' has been triggered in 'my-org/my-repo' on 'main'."
