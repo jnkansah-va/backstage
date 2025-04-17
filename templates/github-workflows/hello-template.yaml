@@ -26,7 +26,7 @@ spec:
       name: Trigger GitHub Actions Workflow
       action: fetch:call
       input:
-        url: https://github.com/jnkansah-va/backstage/blob/main/.github/workflows/hello.yml/dispatches
+        url: https://github.com/jnkansah-va/backstage/actions/workflows/hello.yml/dispatches
         method: POST
         headers:
           Authorization: 'Bearer ${{ secrets.githubToken }}'
