@@ -1,0 +1,16 @@
+# .github/workflows/deploy.yml
+name: Deploy to Environment
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Deploying to ${{ github.event.inputs.environment }}"

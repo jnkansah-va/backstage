@@ -1,0 +1,38 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: trigger-github-workflow
+  title: Trigger GitHub Deploy Workflow
+  description: Calls an existing GitHub Actions workflow
+spec:
+  owner: jnkansah-va
+  type: automation
+
+  parameters:
+    - title: Trigger Options
+      required: 
+        - environment
+      properties:
+        environment:
+          type: string
+          enum: [staging, production]
+          description: Which environment to deploy to?
+
+  steps:
+    - id: trigger
+      name: Call GitHub Workflow
+      action: fetch:call
+      input:
+        url: https://api.github.com/repos/my-org/my-repo/actions/workflows/deploy.yml/dispatches
+        method: POST
+        headers:
+          Authorization: 'Bearer ${{ secrets.githubToken }}'
+          Accept: 'application/vnd.github.v3+json'
+        body:
+          ref: main
+          inputs:
+            environment: ${{ parameters.environment }}
+
+  output:
+    text:
+      - "✅ GitHub workflow 'deploy.yml' has been triggered in 'my-org/my-repo' on 'main'."
