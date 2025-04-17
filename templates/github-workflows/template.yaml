@@ -23,7 +23,7 @@ spec:
       name: Call GitHub Workflow
       action: fetch:call
       input:
-        url: https://api.github.com/repos/my-org/my-repo/actions/workflows/deploy.yml/dispatches
+        url: https://github.com/jnkansah-va/backstage/blob/main/.github/workflows/deploy.yml
         method: POST
         headers:
           Authorization: 'Bearer ${{ secrets.githubToken }}'
