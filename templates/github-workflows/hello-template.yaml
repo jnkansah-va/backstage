@@ -26,4 +26,18 @@ spec:
       name: Trigger GitHub Actions Workflow
       action: fetch:call
       input:
-        url: 
+        url: https://github.com/jnkansah-va/backstage/blob/main/.github/workflows/hello.yml/dispatches
+        method: POST
+        headers:
+          Authorization: 'Bearer ${{ secrets.githubToken }}'
+          Accept: 'application/vnd.github.v3+json'
+        body:
+          ref: main
+          inputs:
+            name: ${{ parameters.name }}
+            city: ${{ parameters.city }}
+  
+  output:
+    text:
+      - title: "Workflow Triggered"
+        content: "Workflow to greet ${{ parameters.name }} from ${{ parameters.city }} has been triggered!"
