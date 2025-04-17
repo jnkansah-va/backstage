@@ -24,9 +24,14 @@ spec:
   steps: 
     - id: trigger-hello
       name: Trigger GitHub Actions Workflow
-      action: fetch:call
+      action: github:actions:dispatch
       input:
-        url: https://github.com/jnkansah-va/backstage/actions/workflows/hello.yml/dispatches
+        repoUrl: https://api.github.com/repos/jnkansah-va/backstage/actions/workflows/hello.yml/dispatches
+        workflowId: 156804120
+        branchOrTagName: main
+        workflowInputs:
+          input1: name
+          input2: city
         method: POST
         headers:
           Authorization: 'Bearer ${{ secrets.githubToken }}'
