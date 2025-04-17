@@ -1,0 +1,29 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: greetings
+  title: Greetings via GitHub Workflow
+  description: Triggers a GitHub Actions workflow that greets someone from a city
+spec:
+  owner: jnkansah-va
+  type: automation
+
+  parameters:
+    - title: Who are we greeting?
+      required:
+        - name
+        - city
+      properties:
+        name: 
+          type: string
+          description: The person's name
+        city:
+          type: string
+          description: Where the person lives
+
+  steps: 
+    - id: trigger-hello
+      name: Trigger GitHub Actions Workflow
+      action: fetch:call
+      input:
+        url: 

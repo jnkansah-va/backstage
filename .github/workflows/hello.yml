@@ -1,0 +1,18 @@
+name: Say Hello
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Person's name"
+        required: true
+      city:
+        description: "City"
+        required: true
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "hello ${{ github.event.inputs.name }} from ${{ github.event.inputs.city }}!"
