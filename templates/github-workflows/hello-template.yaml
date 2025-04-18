@@ -29,7 +29,7 @@ spec:
         repoUrl: github.com?repo=backstage&owner=jnkansah-va
         workflowId: hello.yml
         branchOrTagName: main
-        workfkowInputs:
+        inputs:
           name: ${{ parameters.name }}
           city: ${{ parameters.city }}
 
