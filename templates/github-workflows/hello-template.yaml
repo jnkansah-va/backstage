@@ -29,9 +29,9 @@ spec:
         repoUrl: github.com?repo=backstage&owner=jnkansah-va
         workflowId: hello.yml
         branchOrTagName: main
-        inputs:
-          input1: ${{ parameters.name }}
-          input2: ${{ parameters.city }}
+        workfkowInputs:
+          name: ${{ parameters.name }}
+          city: ${{ parameters.city }}
 
   output:
     text:
