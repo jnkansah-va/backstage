@@ -6,9 +6,11 @@ on:
       name:
         description: "Person's name"
         required: true
+        type: string
       city:
         description: "City"
         required: true
+        type: string
 
 jobs:
   greet:
