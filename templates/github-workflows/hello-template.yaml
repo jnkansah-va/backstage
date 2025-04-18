@@ -32,7 +32,6 @@ spec:
         workflowInputs:
           input1: ${{ parameters.name }}
           input2: ${{ parameters.city }}
-        token:  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
 
   output:
     text:
