@@ -22,6 +22,12 @@ spec:
           description: Where the person lives
 
   steps: 
+    - id: log
+      name: Log inputs
+      action: debug:log 
+      input: 
+        message: "Dispatching workflow with name=${{ parameters.name }}, city=${{ parameters.city }}"
+        
     - id: trigger-hello
       name: Trigger GitHub Actions Workflow
       action: github:actions:dispatch
