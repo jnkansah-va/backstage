@@ -26,23 +26,15 @@ spec:
       name: Trigger GitHub Actions Workflow
       action: github:actions:dispatch
       input:
-        repoUrl: https://api.github.com/repos/jnkansah-va/backstage/actions/workflows/hello.yml/dispatches
-        workflowId: 156804120
+        repoUrl: github.com?repo=backstage&owner=jnkansah-va
+        workflowId: hello.yml
         branchOrTagName: main
         workflowInputs:
-          input1: name
-          input2: city
-        method: POST
-        headers:
-          Authorization: 'Bearer ${{ secrets.githubToken }}'
-          Accept: 'application/vnd.github.v3+json'
-        body:
-          ref: main
-          inputs:
-            name: ${{ parameters.name }}
-            city: ${{ parameters.city }}
-  
+          input1: ${{ parameters.name }}
+          input2: ${{ parameters.city }}
+        token:  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
+
   output:
     text:
-      - title: "Workflow Triggered"
+      - title: Workflow Triggered
         content: "Workflow to greet ${{ parameters.name }} from ${{ parameters.city }} has been triggered!"
