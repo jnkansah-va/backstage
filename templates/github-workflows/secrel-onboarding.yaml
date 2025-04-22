@@ -1,0 +1,91 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: onboarding-pipeline
+  title: Secure Release Onboarding GitHub Issue
+  description: Triggers the SecRel onboarding workflow
+spec:
+  owner: jnkansah-va
+  type: automation
+
+  parameters:
+    - title: Workflow Inputs
+      required:
+        - systemName
+        - systemDescription
+        - teamSlackChannel
+        - emailAddress
+        - teamName
+        - repoName
+        - defaultBranch
+      properties:
+        systemName: 
+          title: System Name
+          type: string
+          description: This name should match what is in eMASS for your registered system name.
+          maxLength: 100
+          pattern: "^[a-zA-Z0-9\\-() ]+$"
+          ui:help: 'Hint: Limited to alphanumeric, -, (), and space characters.'
+        systemDescription:
+          title: System Description
+          type: string
+          description: Describe what your System does or will do
+          ui:widget: textarea
+          ui:options:
+            rows: 10
+          ui:help: 'Hint: This is used to provide Application Assessors and Privacy Officers with context that will help them better support your team.'
+          ui:placeHolder: |
+            MedPic Visualizer is a framework for rapid integration and evaluation of novel sources and use cases for patient-generated data (PGD). The DHP
+            manages the import and storage of third-party PGD from vendors, such as Fitbit, manufacturers of other wearables, and other connected medical
+            devices, and surfaces that data for use in clinical dashboards, population-scale research, etc.
+        teamSlackChannel:
+          title: Your Team Slack Channel
+          type: string
+          description: Provide a public Slack channel name 
+          ui:help: 'Omit # characters'
+          ui:placeHolder: 'Ex: team-lasershark-alerts or team-lasershark'
+        emailAddress:
+          title: Your VA Email Address
+          type: string
+          description: This user will be granted permissions to manage teammate access to your project's data within security tools, and is required for SSO authentication.
+          ui:placeHolder: 'firstname.lastname@va.gov'
+        teamName:
+          title: GitHub Team Name
+          type: string
+          description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
+          ui:placeHolder: 'lighthouse-lasershark'
+        repoName:
+          title: GitHub Repository(s) Name
+          type: array
+          description: The GitHub repository(s) to onboard. You only need to provide the actual project name, not the organization.
+          ui:placeHolder: 'lighthouse-medication-visualizer'
+          items:
+            type: string
+            pattern: "^[a-zA-Z0-9_.]+/[a-zA-Z0-9_.-]+$"
+        defaultBranch:
+          title: GitHub Repository Default Branch
+          type: string
+          description: Provide the trunk name that the SecRel pipeline will branch off of
+          ui:placeHolder: 'main'
+
+  steps: 
+    - id: trigger-onboarding-workflow
+      name: Trigger Onboarding Workflow
+      action: github:actions:dispatch
+      input: 
+        repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=jnkansah-va
+        workflowId: onboarding.yml
+        branchOrTagName: jnkansah-backstage-testing
+        workflowInputs:
+          systemName: ${{ paramters.systemName }}
+          systemDescription: ${{ parameters.systemDescription }}
+          teamSlackChannel: ${{ parameters.teamSlackChannel }}
+          emailAddress: ${{ parameters.emailAddress }}
+          teamName: ${{ parameters.teamName }}
+          repoName: ${{ parameters.repoName }}
+          defaultBranch: ${{ parameters.defaultBranch }}
+
+  output:
+    text:
+      - title: Workflow Triggered
+        content: "The SecRel Onboarding workflow has been triggered!"
