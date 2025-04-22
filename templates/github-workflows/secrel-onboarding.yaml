@@ -64,9 +64,12 @@ spec:
             pattern: "^[a-zA-Z0-9_.]+/[a-zA-Z0-9_.-]+$"
         defaultBranch:
           title: GitHub Repository Default Branch
-          type: string
+          type: array
           description: Provide the trunk name that the SecRel pipeline will branch off of
           ui:placeHolder: 'main'
+          items:
+            type: string
+            pattern: "^[a-zA-Z0-9_.]+/[a-zA-Z0-9_.-]+$"
 
   steps: 
     - id: trigger-onboarding-workflow
