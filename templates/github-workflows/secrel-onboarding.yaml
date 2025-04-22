@@ -55,7 +55,7 @@ spec:
           description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
           ui:placeHolder: 'lighthouse-lasershark'
         repoName:
-          title: GitHub Repository(s) Name
+          title: GitHub Repository Name
           type: array
           description: The GitHub repository(s) to onboard. You only need to provide the actual project name, not the organization.
           ui:placeHolder: 'lighthouse-medication-visualizer'
@@ -75,7 +75,7 @@ spec:
       name: Trigger Onboarding Workflow
       action: github:actions:dispatch
       input: 
-        repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=jnkansah-va
+        repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=department-of-veterans-affairs
         workflowId: onboarding.yml
         branchOrTagName: jnkansah-backstage-testing
         workflowInputs:
