@@ -61,7 +61,6 @@ spec:
           ui:placeHolder: 'lighthouse-medication-visualizer'
           items:
             type: string
-            pattern: "^[a-zA-Z0-9_.]+/[a-zA-Z0-9_.-]+$"
         defaultBranch:
           title: GitHub Repository Default Branch
           type: array
@@ -69,7 +68,7 @@ spec:
           ui:placeHolder: 'main'
           items:
             type: string
-            pattern: "^[a-zA-Z0-9_.]+/[a-zA-Z0-9_.-]+$"
+    
 
   steps: 
     - id: trigger-onboarding-workflow
