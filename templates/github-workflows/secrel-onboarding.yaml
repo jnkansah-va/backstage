@@ -81,10 +81,10 @@ spec:
         workflowInputs:
           systemName: ${{ paramters.systemName }}
           systemDescription: ${{ parameters.systemDescription }}
-          teamSlackChannel: ${{ parameters.slackChannel }}
-          emailAddress: ${{ parameters.email }}
+          slackChannel: ${{ parameters.slackChannel }}
+          email: ${{ parameters.email }}
           teamName: ${{ parameters.teamName }}
-          repoName: ${{ parameters.repo }}
+          repo: ${{ parameters.repo }}
           defaultBranch: ${{ parameters.defaultBranch }}
 
   output:
