@@ -73,7 +73,7 @@ spec:
   steps: 
     - id: trigger-onboarding-workflow
       name: Trigger Onboarding Workflow
-      action: github:issues:open
+      action: http:request
       input: 
         repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=department-of-veterans-affairs
         workflowId: onboarding.yml
