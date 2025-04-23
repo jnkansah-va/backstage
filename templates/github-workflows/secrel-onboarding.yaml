@@ -13,10 +13,10 @@ spec:
       required:
         - systemName
         - systemDescription
-        - teamSlackChannel
-        - emailAddress
+        - slackChannel
+        - email
         - teamName
-        - repoName
+        - repo
         - defaultBranch
       properties:
         systemName: 
@@ -38,13 +38,13 @@ spec:
             MedPic Visualizer is a framework for rapid integration and evaluation of novel sources and use cases for patient-generated data (PGD). The DHP
             manages the import and storage of third-party PGD from vendors, such as Fitbit, manufacturers of other wearables, and other connected medical
             devices, and surfaces that data for use in clinical dashboards, population-scale research, etc.
-        teamSlackChannel:
+        slackChannel:
           title: Your Team Slack Channel
           type: string
           description: Provide a public Slack channel name 
           ui:help: 'Omit # characters'
           ui:placeHolder: 'Ex: team-lasershark-alerts or team-lasershark'
-        emailAddress:
+        email:
           title: Your VA Email Address
           type: string
           description: This user will be granted permissions to manage teammate access to your project's data within security tools, and is required for SSO authentication.
@@ -54,7 +54,7 @@ spec:
           type: string
           description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
           ui:placeHolder: 'lighthouse-lasershark'
-        repoName:
+        repo:
           title: GitHub Repository Name
           type: array
           description: The GitHub repository(s) to onboard. You only need to provide the actual project name, not the organization.
@@ -81,10 +81,10 @@ spec:
         workflowInputs:
           systemName: ${{ paramters.systemName }}
           systemDescription: ${{ parameters.systemDescription }}
-          teamSlackChannel: ${{ parameters.teamSlackChannel }}
-          emailAddress: ${{ parameters.emailAddress }}
+          teamSlackChannel: ${{ parameters.slackChannel }}
+          emailAddress: ${{ parameters.email }}
           teamName: ${{ parameters.teamName }}
-          repoName: ${{ parameters.repoName }}
+          repoName: ${{ parameters.repo }}
           defaultBranch: ${{ parameters.defaultBranch }}
 
   output:
