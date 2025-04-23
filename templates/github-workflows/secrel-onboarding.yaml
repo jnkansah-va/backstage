@@ -79,7 +79,7 @@ spec:
         workflowId: onboarding.yml
         branchOrTagName: jnkansah-backstage-testing
         workflowInputs:
-          systemName: ${{ paramters.systemName }}
+          systemName: ${{ parameters.systemName }}
           systemDescription: ${{ parameters.systemDescription }}
           slackChannel: ${{ parameters.slackChannel }}
           email: ${{ parameters.email }}
