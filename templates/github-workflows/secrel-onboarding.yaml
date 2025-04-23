@@ -84,8 +84,8 @@ spec:
           slackChannel: ${{ parameters.slackChannel }}
           email: ${{ parameters.email }}
           teamName: ${{ parameters.teamName }}
-          repo: ${{ parameters.repo }}
-          defaultBranch: ${{ parameters.defaultBranch }}
+          repo: ${{ parameters.repo | dump }} 
+          defaultBranch: ${{ parameters.defaultBranch | dump }}
 
   output:
     text:
