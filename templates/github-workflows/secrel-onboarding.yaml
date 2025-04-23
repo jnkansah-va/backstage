@@ -22,7 +22,7 @@ spec:
         systemName: 
           title: System Name
           type: string
-          description: This name should match what is in eMASS for your registered system name.
+          description: This name should match what is in eMASS for your registered System Name. 
           maxLength: 100
           pattern: "^[a-zA-Z0-9\\-() ]+$"
           ui:help: 'Hint: Limited to alphanumeric, -, (), and space characters.'
