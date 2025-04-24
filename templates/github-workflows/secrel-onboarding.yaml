@@ -76,7 +76,7 @@ spec:
       action: github:actions:dispatch
       input: 
         repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=department-of-veterans-affairs
-        workflowId: onboarding.yml
+        workflowId: template-dispatch.yml
         branchOrTagName: jnkansah-backstage-testing
         workflowInputs:
           systemName: ${{ parameters.systemName }}
@@ -90,4 +90,4 @@ spec:
   output:
     text:
       - title: Workflow Triggered
-        content: "The SecRel Onboarding workflow has been triggered!"
+        content: "The SecRel Onboarding workflow has been triggered via Code VA!"
