@@ -76,7 +76,7 @@ spec:
       action: github:actions:dispatch
       input: 
         repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=department-of-veterans-affairs
-        workflowId: template-dispatch.yml
+        workflowId: onboarding.yml
         branchOrTagName: jnkansah-backstage-testing
         workflowInputs:
           systemName: ${{ parameters.systemName }}
