@@ -68,6 +68,14 @@ spec:
           ui:placeHolder: 'main'
           items:
             type: string
+        environment:
+          type: string
+          description: Pick the environment
+          enum:
+            - dev
+            - qa
+            - sandbox
+            - prod
     
 
   steps: 
