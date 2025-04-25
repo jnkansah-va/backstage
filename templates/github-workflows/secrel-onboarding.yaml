@@ -72,12 +72,9 @@ spec:
           type: string
           description: Pick the environment
           enum:
-            - dev
-            - qa
-            - sandbox
-            - prod
-    
-
+            - preview
+            - development
+            - production
   steps: 
     - id: trigger-onboarding-workflow
       name: Trigger Onboarding Workflow
