@@ -17,7 +17,6 @@ spec:
         - email
         - teamName
         - repo
-        - defaultBranch
       properties:
         systemName: 
           title: System Name
