@@ -21,7 +21,6 @@ spec:
         systemName: 
           title: System Name
           type: string
-          # description: This name should match what is in eMASS for your registered System Name. 
           maxLength: 100
           pattern: "^[a-zA-Z0-9\\-() ]+$"
           ui:help: 'Limited to alphanumeric, -, (), and space characters.'
@@ -32,17 +31,11 @@ spec:
           ui:widget: textarea
           ui:options:
             rows: 10
-          #ui:help: 'Hint: This is used to provide Application Assessors and Privacy Officers with context that will help them better support your team.'
-          # ui:placeHolder: |
-          #   MedPic Visualizer is a framework for rapid integration and evaluation of novel sources and use cases for patient-generated data (PGD). The DHP
-          #   manages the import and storage of third-party PGD from vendors, such as Fitbit, manufacturers of other wearables, and other connected medical
-          #   devices, and surfaces that data for use in clinical dashboards, population-scale research, etc.
         slackChannel:
           title: Your Team Slack Channel
           type: string
           description: Provide a public Slack channel name 
           ui:help: 'Omit # characters'
-          # ui:placeHolder: 'Ex: team-lasershark-alerts or team-lasershark'
         email:
           title: Your VA Email Address
           type: string
@@ -51,8 +44,6 @@ spec:
           title: GitHub Team Name
           type: string
           description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
-          # ui:placeHolder: 'lighthouse-lasershark'
-
         repo:
           title: GitHub Repository
           type: array
