@@ -57,10 +57,14 @@ spec:
         repo:
           title: GitHub Repository Name
           type: array
-          description: The GitHub repository(s) to onboard. You only need to provide the actual project name, not the organization.
+          description: The GitHub repository to onboard. You only need to provide the actual project name, not the organization.
           ui:placeHolder: 'lighthouse-medication-visualizer'
           items:
             type: string
+        repoURL:
+          title: GitHub Repository URL
+          type: string
+          description: URL to GitHub repository to onboard.
         defaultBranch:
           title: GitHub Repository Default Branch
           type: array
@@ -90,6 +94,7 @@ spec:
           email: ${{ parameters.email }}
           teamName: ${{ parameters.teamName }}
           repo: ${{ parameters.repo | dump }} 
+          repoURL: ${{ paramaters.repoURL }}
           defaultBranch: ${{ parameters.defaultBranch | dump }}
 
   output:
