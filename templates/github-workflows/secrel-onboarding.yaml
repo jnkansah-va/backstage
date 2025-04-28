@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: onboarding-pipeline
-  title: Secure Release Onboarding GitHub Issue
+  title: Secure Release Onboarding Request
   description: Triggers the SecRel onboarding workflow
 spec:
   owner: jnkansah-va
@@ -21,38 +21,37 @@ spec:
         systemName: 
           title: System Name
           type: string
-          description: This name should match what is in eMASS for your registered System Name. 
+          # description: This name should match what is in eMASS for your registered System Name. 
           maxLength: 100
           pattern: "^[a-zA-Z0-9\\-() ]+$"
-          ui:help: 'Hint: Limited to alphanumeric, -, (), and space characters.'
+          ui:help: 'Limited to alphanumeric, -, (), and space characters.'
         systemDescription:
           title: System Description
           type: string
-          description: Describe what your System does or will do
+          description: Describe what your System does or will do.
           ui:widget: textarea
           ui:options:
             rows: 10
-          ui:help: 'Hint: This is used to provide Application Assessors and Privacy Officers with context that will help them better support your team.'
-          ui:placeHolder: |
-            MedPic Visualizer is a framework for rapid integration and evaluation of novel sources and use cases for patient-generated data (PGD). The DHP
-            manages the import and storage of third-party PGD from vendors, such as Fitbit, manufacturers of other wearables, and other connected medical
-            devices, and surfaces that data for use in clinical dashboards, population-scale research, etc.
+          #ui:help: 'Hint: This is used to provide Application Assessors and Privacy Officers with context that will help them better support your team.'
+          # ui:placeHolder: |
+          #   MedPic Visualizer is a framework for rapid integration and evaluation of novel sources and use cases for patient-generated data (PGD). The DHP
+          #   manages the import and storage of third-party PGD from vendors, such as Fitbit, manufacturers of other wearables, and other connected medical
+          #   devices, and surfaces that data for use in clinical dashboards, population-scale research, etc.
         slackChannel:
           title: Your Team Slack Channel
           type: string
           description: Provide a public Slack channel name 
           ui:help: 'Omit # characters'
-          ui:placeHolder: 'Ex: team-lasershark-alerts or team-lasershark'
+          # ui:placeHolder: 'Ex: team-lasershark-alerts or team-lasershark'
         email:
           title: Your VA Email Address
           type: string
-          description: This user will be granted permissions to manage teammate access to your project's data within security tools, and is required for SSO authentication.
-          ui:placeHolder: 'firstname.lastname@va.gov'
+          description: firstname.lastname@va.gov
         teamName:
           title: GitHub Team Name
           type: string
           description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
-          ui:placeHolder: 'lighthouse-lasershark'
+          # ui:placeHolder: 'lighthouse-lasershark'
 
         repo:
           title: GitHub Repository
@@ -64,7 +63,7 @@ spec:
             required:
               - name
               - defaultBranch
-              - url
+              - URL
             properties:
               name:
                 type: string
@@ -74,17 +73,10 @@ spec:
                 type: string
                 title: Default Branch
                 description: e.g., main
-              url:
+              URL:
                 type: string
                 title: Repository URL
                 description: Full GitHub URL to the repo
-        # environment:
-        #   type: string
-        #   description: Pick the environment
-        #   enum:
-        #     - preview
-        #     - development
-        #     - production
   steps: 
     - id: trigger-onboarding-workflow
       name: Trigger Onboarding Workflow
@@ -100,9 +92,6 @@ spec:
           email: ${{ parameters.email }}
           teamName: ${{ parameters.teamName }}
           repo: ${{ parameters.repo | dump }} 
-          # repoURL: ${{ paramaters.repoURL }}
-          # defaultBranch: ${{ parameters.defaultBranch | dump }}
-
   output:
     text:
       - title: Workflow Triggered
