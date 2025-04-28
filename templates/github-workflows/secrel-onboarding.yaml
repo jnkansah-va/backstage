@@ -54,34 +54,38 @@ spec:
           type: string
           description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
           ui:placeHolder: 'lighthouse-lasershark'
+
         repo:
           title: GitHub Repository Name
           type: array
-          description: The GitHub repository to onboard. You only need to provide the actual project name, not the organization.
+          description: The GitHub repository or repositories to onboard. Provide the repo name, default branch, and repo URL for each repo.
           ui:placeHolder: 'lighthouse-medication-visualizer'
           items:
             type: object
+            required:
+              - name
+              - defaultBranch
+              - url
             properties:
               name:
                 type: string
-        repoURL:
-          title: GitHub Repository URL
-          type: string
-          description: URL to GitHub repository to onboard.
-        defaultBranch:
-          title: GitHub Repository Default Branch
-          type: array
-          description: Provide the trunk name that the SecRel pipeline will branch off of
-          ui:placeHolder: 'main'
-          items:
-            type: string
-        environment:
-          type: string
-          description: Pick the environment
-          enum:
-            - preview
-            - development
-            - production
+                title: Repository Name
+                description: e.g., lighthouse-my-service
+              defaultBranch:
+                type: string
+                title: Default Branch
+                description: e.g., main
+              url:
+                type: string
+                title: Repository URL
+                description: Full GitHub URL to the repo
+        # environment:
+        #   type: string
+        #   description: Pick the environment
+        #   enum:
+        #     - preview
+        #     - development
+        #     - production
   steps: 
     - id: trigger-onboarding-workflow
       name: Trigger Onboarding Workflow
@@ -97,8 +101,8 @@ spec:
           email: ${{ parameters.email }}
           teamName: ${{ parameters.teamName }}
           repo: ${{ parameters.repo | dump }} 
-          repoURL: ${{ paramaters.repoURL }}
-          defaultBranch: ${{ parameters.defaultBranch | dump }}
+          # repoURL: ${{ paramaters.repoURL }}
+          # defaultBranch: ${{ parameters.defaultBranch | dump }}
 
   output:
     text:
