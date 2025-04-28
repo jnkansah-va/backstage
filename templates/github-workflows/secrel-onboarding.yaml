@@ -56,11 +56,11 @@ spec:
           ui:placeHolder: 'lighthouse-lasershark'
         repo:
           title: GitHub Repository Name
-          type: array
+          type: string
           description: The GitHub repository to onboard. You only need to provide the actual project name, not the organization.
           ui:placeHolder: 'lighthouse-medication-visualizer'
-          items:
-            type: string
+          # items:
+          #   type: string
         repoURL:
           title: GitHub Repository URL
           type: string
