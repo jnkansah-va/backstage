@@ -60,7 +60,10 @@ spec:
           description: The GitHub repository to onboard. You only need to provide the actual project name, not the organization.
           ui:placeHolder: 'lighthouse-medication-visualizer'
           items:
-            type: string
+            type: object
+            properties:
+              name:
+                type: string
         repoURL:
           title: GitHub Repository URL
           type: string
