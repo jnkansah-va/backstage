@@ -1,0 +1,53 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: generate-secrel-config-template
+  title: SecRel config.yml Setup
+  description: Generate config.yml 
+spec: jnkansah-va
+type: service
+
+parameters:
+  - title: Choose the language of your app
+    required: 
+      - language
+    properties:
+      language:
+        title: Select language
+        type: array
+        minItems: 1
+        items:
+          type: string
+          enum:
+            - Python
+            - Java
+            - Ruby
+            - Javascript
+        uniqueItems: true
+        ui:widget: checkboxes
+    dependencies:
+      language:
+        allOf:
+          - if:
+              properties:
+                language:
+                  contains:
+                    const: Python
+            then:
+              properties:
+                pythonData:
+                  title: Configure SecRel for Python Application
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    properties:
+                      requirements:
+                        title: Path to one or more requirements.txt
+                        type: string
+                      version:
+                        title: Version
+                        type: string
+
+
+          
