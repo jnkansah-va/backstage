@@ -1,0 +1,145 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: datadog-observability-template
+  title: Datadog Observability Setup
+  description: Scaffold observability configuration using Datadog.
+spec:
+  owner: team-observability
+  type: service
+
+  parameters:
+    # - title: Service Info
+    #   required:
+    #     - repoUrl
+    #   properties:
+    #     repoUrl:
+    #       title: ArgoCD repository
+    #       type: string
+    #       ui:field: RepoUrlPicker
+    #       ui:placeholder: team-argocd-applications
+    #       # pattern: '^.*-argocd-applications(-vault)?$'
+    #       ui:options:
+    #         allowedHosts:
+    #           - github.com
+    #         allowedOwners:
+    #         - stanenbaum-va
+
+    - title: Choose your environments
+      required:
+        - environments
+      properties:
+        environments:
+          title: Select environments
+          type: array
+          minItems: 1
+          items:
+            type: string
+            enum:
+              - dev
+              - qa
+              - sandbox
+              - prod
+          uniqueItems: true
+          ui:widget: checkboxes
+    - title: Choose your Datadog resources
+      required:
+      - datadogResources
+      properties:
+        datadogResources:
+          title: Select Datadog Resources
+          type: array
+          minItems: 1
+          items:
+            type: string
+            enum:
+              - synthetic
+              - deployment
+              - logs
+              - rds
+          uniqueItems: true
+          ui:widget: checkboxes
+      dependencies:
+        datadogResources:
+          allOf:
+          - if:
+              properties:
+                datadogResources:
+                  contains:
+                    const: synthetic
+                environments:
+                  contains:
+                    const: dev
+            then:
+              properties:
+                devSyntheticData:
+                  title: Configure Dev Synthetic Monitors
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    properties:
+                      assertion:
+                        title: assertion
+                        type: string
+                        ui:widget: select
+                        enum:
+                        - status_code
+                        - Response Time
+                    dependencies:
+                      assertion:
+                        allOf:
+                        - if:
+                            properties:
+                              assertion:
+                                
+                  uniqueItems: true
+          # - if:
+          #     properties:
+          #       datadogResources:
+          #         contains:
+          #           const: synthetic
+          #       environments:
+          #         contains:
+          #           const: qa
+          #   then:
+          #     properties:
+          #       qaSyntheticData:
+          #         title: Configure Qa Synthetic Monitors
+          #         type: array
+          #         minItems: 1
+          #         items:
+          #           type: string
+          #         uniqueItems: true
+
+
+  steps:
+    - id: fetch-base
+      name: Fetch Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./generated
+
+    - id: render-config
+      name: Generate Config
+      action: template:nunjucks
+      input:
+        path: ./generated
+        outputPath: ./generated
+        values:
+          name: ${{ parameters.name }}
+          observabilityTypes: ${{ parameters.observabilityTypes }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: github.com?repo=${{ parameters.name }}&owner=your-org
+        defaultBranch: main
+        description: Observability config with Datadog for ${{ parameters.name }}
+
+  output:
+    links:
+      - title: View on GitHub
+        url: ${{ steps.publish.output.remoteUrl }}
