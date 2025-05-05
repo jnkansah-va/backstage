@@ -223,6 +223,7 @@ steps:
       description: "This PR adds the config.yml file for SecRel configuration."
       targetBranch: ${{ parameters.defaultBranch }}
       sourceBranch: "secrel-config-${{ execution.id }}"
-output:
-  remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
-  pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
+
+    output:
+      remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
+      pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
