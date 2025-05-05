@@ -41,7 +41,7 @@ parameters:
           - "17"
           - "21"
         default: "17"
-        ui: { "widget": "text" }
+        ui: { "widget": "select" }
       - name: javaPackageManager
         title: Java Package Manager
         type: string
@@ -145,153 +145,84 @@ parameters:
       - name: rubyPaths
         title: Ruby Paths
         type: string
-        description: Paths to Gemfiles or directories containing Gemfiles (comma-separated.
+        description: Paths to Gemfiles or directories containing Gemfiles (comma-separated).
         ui: { "widget": "text" }
 
-# steps:
-#   - id: generate-config
-#     name: Generate Configuration
-#     action: template
-#     input: 
-#       template: |
-#         languages: 
-#         # Java Configuration
-#         %{ if parameters.javaEnabled %}
-#             java:
-#               version: "${{ parameters.javaVersion }}"
-#               package-manager: "${{ parameters.javaPackageManager }}"
-#         %{ if parameters.javaBuildArgs %}
-#             build-args:
-#               ${{ parameters.buildArgs | splitByComma | joinBy('\n                   -') }}
-#         %{ endif % }
-#         %{ endif % }
+steps:
+  - id: generate-config
+    name: Generate Configuration
+    action: template
+    input: 
+      template: |
+        languages: 
+        # Java Configuration
+        %{ if parameters.javaEnabled %}
+            java:
+              version: "${{ parameters.javaVersion }}"
+              package-manager: "${{ parameters.javaPackageManager }}"
+        %{ if parameters.javaBuildArgs %}
+            build-args:
+              ${{ parameters.javaBuildArgs | splitByComma | joinBy('\n                   -') }}
+        %{ endif % }
+        %{ endif % }
         
-#         # Python Configuration 
-#         %{ if parameters.pythonEnabled %}
-#           python: 
-#             version: "${{ parameters.pythonVersion }}"
-#         %{ if parameters.pythonRequirements %}
-#             requirements:
-#               ${{ parameters.pythonRequirements | splitByComma | joinBy('\n          -') }}
-#         %{ endif % }
-#         %{ endif % }
+        # Python Configuration 
+        %{ if parameters.pythonEnabled %}
+          python: 
+            version: "${{ parameters.pythonVersion }}"
+        %{ if parameters.pythonRequirements %}
+            requirements:
+              ${{ parameters.pythonRequirements | splitByComma | joinBy('\n          -') }}
+        %{ endif % }
+        %{ endif % }
 
-#         # JavaScript Configuration 
-#         %{ if parameters.javascriptEnabled %}
-#           javascript:
-#             package-manager: "${{ parameters.javascriptPackageManager }}"
-#         %{ if parameters.javascriptPackageManagerVersion %}
-#             package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
-#         %{ endif % }
-#             version: "${{ parameters.javascriptVersion }}"
-#         %{ if parameters.javascriptEnv %}
-#             env:
-#               ${{ parameters.javascriptEnv | splitByComman | joinBy('\n                     -') }}
-#         %{ endif % }
-#         %{ if parameters.javascriptBuildArgs %}
-#             build-args:
-#               ${{ parameters.javascriptBuildArgs | splitByComma | joinBy('\n                - ') }}
-#         %{ endif %}
-#         %{ if parameters.javascriptPaths %}
-#             paths:
-#               ${{ parameters.javascriptPaths | splitByComma | joinBy('\n                - ') }}
-#         %{ endif %}
-#         %{ endif %}
+        # JavaScript Configuration 
+        %{ if parameters.javascriptEnabled %}
+          javascript:
+            package-manager: "${{ parameters.javascriptPackageManager }}"
+        %{ if parameters.javascriptPackageManagerVersion %}
+            package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
+        %{ endif % }
+            version: "${{ parameters.javascriptVersion }}"
+        %{ if parameters.javascriptEnv %}
+            env:
+              ${{ parameters.javascriptEnv | splitByComman | joinBy('\n                     -') }}
+        %{ endif % }
+        %{ if parameters.javascriptBuildArgs %}
+            build-args:
+              ${{ parameters.javascriptBuildArgs | splitByComma | joinBy('\n                - ') }}
+        %{ endif %}
+        %{ if parameters.javascriptPaths %}
+            paths:
+              ${{ parameters.javascriptPaths | splitByComma | joinBy('\n                - ') }}
+        %{ endif %}
+        %{ endif %}
         
-#         # Ruby Configuration
-#         %{ if parameters.rubyEnabled %}
-#             ruby:
-#               version: "${{ parameters.rubyVersion }}"
-#         %{ if parameters.rubyPaths %}
-#               paths:
-#                 ${{ parameters.rubyPaths | splitByComma | joinBy('\n                - ') }}
-#         %{ endif %}
-#         %{ endif %}
-#       targetFile: config.yml
-#   - id: commit-and-push
-#     name: Commit and Push
-#     action: git:commit
-#     input:
-#       message: "Add SecRel config.yml"
-#       workspacePath: .
-#   - id: create-pr
-#     name: Create Pull Request
-#     action: github:pull-request
-#     input:
-#       repo: ${{ parameters.repository }}
-#       title: "SecRel Configuration (config.yml)"
-#       description: "This PR adds the config.yml file for SecRel configuration."
-#       targetBranch: ${{ parameters.defaultBranch }}
-#       sourceBranch: "secrel-config-${{ execution.id }}"
-# output:
-#   remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
-#   pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
-# #   - title: Choose the language of your app
-#     required: 
-#       - language
-#     properties:
-#       language:
-#         title: Select language
-#         type: array
-#         minItems: 1
-#         items:
-#           type: string
-#           enum:
-#             - Python
-#             - Java
-#             - Ruby
-#             - Javascript
-#         uniqueItems: true
-#         ui:widget: checkboxes
-#     dependencies:
-#       language:
-#         allOf:
-#           - if:
-#               properties:
-#                 language:
-#                   contains:
-#                     const: Python
-#             then:
-#               properties:
-#                 pythonData:
-#                   title: Configure SecRel for Python Application
-#                   type: array
-#                   minItems: 1
-#                   items:
-#                     type: object
-#                     properties:
-#                       requirements:
-#                         title: Path to one or more requirements.txt
-#                         type: string
-#                       version:
-#                         title: Version
-#                         type: string
-
-
-# steps:
-#   - id: fetch-base
-#     name: Fetch Template
-#     action: fetch:template
-#     input: 
-#       url: ./skeleton
-#       targetPath: ./workspace
-
-#   - id: template-file
-#     name: Template the config.yml file
-#     action: template:file
-#     input: 
-#       templateFile: ./workspace/config.yaml
-#       target: ./workspace/config.yaml
-#       context: ${parameters}   
-#   - id: publish-pr
-#     name: Create PR with generated config
-#     action: publish:github:pull-request
-#     input:
-#       repoUrl: github.com?repo=${{ parameters.name }}
-#       defaultBranch: main
-#       description: Configuration file generated by backstage template
-      
-# output:
-#   links:
-#     - title: View of GitHub
-#       url: ${{ steps.publish.output.remoteUrl }}
+        # Ruby Configuration
+        %{ if parameters.rubyEnabled %}
+            ruby:
+              version: "${{ parameters.rubyVersion }}"
+        %{ if parameters.rubyPaths %}
+              paths:
+                ${{ parameters.rubyPaths | splitByComma | joinBy('\n                - ') }}
+        %{ endif %}
+        %{ endif %}
+      targetFile: config.yml
+  - id: commit-and-push
+    name: Commit and Push
+    action: git:commit
+    input:
+      message: "Add SecRel config.yml"
+      workspacePath: .
+  - id: create-pr
+    name: Create Pull Request
+    action: github:pull-request
+    input:
+      repo: ${{ parameters.repository }}
+      title: "SecRel Configuration (config.yml)"
+      description: "This PR adds the config.yml file for SecRel configuration."
+      targetBranch: ${{ parameters.defaultBranch }}
+      sourceBranch: "secrel-config-${{ execution.id }}"
+output:
+  remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
+  pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
