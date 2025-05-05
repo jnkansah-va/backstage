@@ -32,7 +32,7 @@ spec:
           title: Enable Java
           type: boolean
           default: false
-          ui: { "widget": "checkbox" }
+          ui: { "widget": "boolean" }
         - name: javaVersion
           title: Java Version
           type: string
@@ -64,7 +64,7 @@ spec:
           title: Enable Python
           type: boolean
           default: false
-          ui: { "widget": "checkbox" }
+          ui: { "widget": "boolean" }
         - name: pythonVersion
           title: Python Version
           type: string
@@ -88,7 +88,7 @@ spec:
           title: Enable JavaScript
           type: boolean
           default: false
-          ui: { "widget": "checkbox" }
+          ui: { "widget": "boolean" }
         - name: javascriptPackageManager
           title: JavaScript Package Manager
           type: string
@@ -135,7 +135,7 @@ spec:
           title: Enable Ruby
           type: boolean
           default: false
-          ui: { "widget": "checkbox" }
+          ui: { "widget": "boolean" }
         - name: rubyVersion
           title: Ruby Version
           type: string
