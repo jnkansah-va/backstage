@@ -22,20 +22,20 @@ spec:
             - JavaScript
           ui:
             widget: select
-    # - title: Python Configuration
-    #   fields:
-    #     - name: pythonVersion
-    #       title: Python version
-    #       type: string
-    #       description: Version of Python to use.
-    #       if: ${{ parameters.language === 'Python' }} #show only if Python is selected
-    #       required: ${{ parameters.language === 'Python' }}
-    #     - name: pythonRequirements
-    #       title: Path to requirements.txt
-    #       type: string
-    #       description: Path to requirements.txt file.
-    #       if: ${{ parameters.language === 'Python' }} #show only if Python is selected
-    #       required: ${{ parameters.language === 'Python' }}
+    - title: Python Configuration
+      fields:
+        - name: pythonVersion
+          title: Python version
+          type: string
+          description: Version of Python to use.
+          if: ${{ parameters.language === 'Python' }} #show only if Python is selected
+          required: ${{ parameters.language === 'Python' }}
+        - name: pythonRequirements
+          title: Path to requirements.txt
+          type: string
+          description: Path to requirements.txt file.
+          if: ${{ parameters.language === 'Python' }} #show only if Python is selected
+          required: ${{ parameters.language === 'Python' }}
     # - title: Java Configuration
     #   fields:
     #     - name: javaVersion
