@@ -9,10 +9,10 @@ spec:
   type: service
 
   parameters:
-    - title: Fill in some steps
+    - title: Select Application Language
       properties:
         language:
-          title: Select environments
+          title: Select language
           type: array
           items:
             type: string
@@ -23,21 +23,34 @@ spec:
               - JavaScript
           uniqueItems: true
           ui:widget: checkboxes
-    # - title: Choose Application Language
-    #   fields:
-    #     - name: language
-    #       title: Select the language of your application
+      dependencies:
+        language:
+          allOf:
+            - if:
+              properties:
+                language:
+                  const: Python
+              then:
+                properties:
+                  version:
+                    title: Python version
+                    type: string
+                  requirements:
+                    title: Path to requirements.txt
+                    type: string
 
-    #       type: string
-    #       minItems: 1
-    #       enum:
-    #         - Python
-    #         - Java
-    #         - Ruby
-    #         - JavaScript
-    #       ui:
-    #         widget: select
-    #       required: true
+    - title: Python Configuration
+      if: '{{ parameters.language === "Python" }}'
+      required:
+        - version
+        - requirements
+      properties:
+        requirements:
+          title: Path to one or more requirements.txt
+          type: string
+        version:
+          title: Python version
+          type: string
   steps:
     - id: log-selected-language
       name: Log Selected Language
@@ -45,18 +58,7 @@ spec:
       input:
         message: 'User selected language: ${{ parameters.language }}'
 
-  #   - title: Python Configuration
-  #     if: '{{ parameters.language === "Python" }}'
-  #     required:
-  #       - version
-  #       - requirements
-  #     properties:
-  #       requirements:
-  #         title: Path to one or more requirements.txt
-  #         type: string
-  #       version:
-  #         title: Python version
-  #         type: string
+
 
   #   - title: Java Configuration
   #     if: '{{ parameters.language === "Java" }}'
