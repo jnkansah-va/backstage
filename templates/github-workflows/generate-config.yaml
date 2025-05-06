@@ -9,7 +9,7 @@ spec:
   type: service
 
   parameters:
-    - title: General Repo Info
+    - title: Choose Application Language
       required:
         - language
       properties:
@@ -25,7 +25,100 @@ spec:
               - JavaScript
             uniqueItems: true
             ui:widget: checkboxes
-            
+        dependencies:
+          language:
+            allOf:
+              - if:
+                  properties:
+                    language:
+                      contains:
+                        const: Python
+                then:
+                  properties:
+                    pythonData:
+                      title: Configure SecRel for Python Application
+                      type: array
+                      minItems: 1
+                      items:
+                        type: object
+                        properties:
+                          requirements:
+                            title: Path to one or more requirements.txt
+                            type: string
+                          version:
+                            title: Version
+                            type: string
+
+  # steps:
+#   - id: generate-config
+  #     name: Generate Configuration
+  #     action: template
+  #     input: 
+  #       template: |
+  #         languages:
+  #         %{ if parameters.javaEnabled %}
+  #           java:
+  #             version: "${{ parameters.javaVersion }}"
+  #             package-manager: "${{ parameters.javaPackageManager }}"
+  #         %{ if parameters.javaBuildArgs %}
+  #             build-args:
+  #         %{ for arg in parameters.javaBuildArgs | splitByComma %}
+  #               - {{ arg }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
+
+  #         %{ if parameters.pythonEnabled %}
+  #           python:
+  #             version: "${{ parameters.pythonVersion }}"
+  #         %{ if parameters.pythonRequirements %}
+  #             requirements:
+  #         %{ for req in parameters.pythonRequirements | splitByComma %}
+  #               - {{ req }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
+
+  #         %{ if parameters.javascriptEnabled %}
+  #           javascript:
+  #             package-manager: "${{ parameters.javascriptPackageManager }}"
+  #         %{ if parameters.javascriptPackageManagerVersion %}
+  #             package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
+  #         %{ endif %}
+  #             version: "${{ parameters.javascriptVersion }}"
+  #         %{ if parameters.javascriptEnv %}
+  #             env:
+  #         %{ for envVar in parameters.javascriptEnv | splitByComma %}
+  #               - {{ envVar }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ if parameters.javascriptBuildArgs %}
+  #             build-args:
+  #         %{ for arg in parameters.javascriptBuildArgs | splitByComma %}
+  #               - {{ arg }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ if parameters.javascriptPaths %}
+  #             paths:
+  #         %{ for path in parameters.javascriptPaths | splitByComma %}
+  #               - {{ path }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
+
+  #         %{ if parameters.rubyEnabled %}
+  #           ruby:
+  #             version: "${{ parameters.rubyVersion }}"
+  #         %{ if parameters.rubyPaths %}
+  #             paths:
+  #         %{ for path in parameters.rubyPaths | splitByComma %}
+  #               - {{ path }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
+  #       targetFile: config.yml
+
+
 
   
     #   fields:
@@ -171,90 +264,90 @@ spec:
     #       description: Paths to Gemfiles or directories containing Gemfiles (comma-separated).
     #       ui: { "widget": "text" }
 
-  steps:
-    - id: generate-config
-      name: Generate Configuration
-      action: template
-      input: 
-        template: |
-          languages:
-          %{ if parameters.javaEnabled %}
-            java:
-              version: "${{ parameters.javaVersion }}"
-              package-manager: "${{ parameters.javaPackageManager }}"
-          %{ if parameters.javaBuildArgs %}
-              build-args:
-          %{ for arg in parameters.javaBuildArgs | splitByComma %}
-                - {{ arg }}
-          %{ endfor %}
-          %{ endif %}
-          %{ endif %}
+  # steps:
+  #   - id: generate-config
+  #     name: Generate Configuration
+  #     action: template
+  #     input: 
+  #       template: |
+  #         languages:
+  #         %{ if parameters.javaEnabled %}
+  #           java:
+  #             version: "${{ parameters.javaVersion }}"
+  #             package-manager: "${{ parameters.javaPackageManager }}"
+  #         %{ if parameters.javaBuildArgs %}
+  #             build-args:
+  #         %{ for arg in parameters.javaBuildArgs | splitByComma %}
+  #               - {{ arg }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
 
-          %{ if parameters.pythonEnabled %}
-            python:
-              version: "${{ parameters.pythonVersion }}"
-          %{ if parameters.pythonRequirements %}
-              requirements:
-          %{ for req in parameters.pythonRequirements | splitByComma %}
-                - {{ req }}
-          %{ endfor %}
-          %{ endif %}
-          %{ endif %}
+  #         %{ if parameters.pythonEnabled %}
+  #           python:
+  #             version: "${{ parameters.pythonVersion }}"
+  #         %{ if parameters.pythonRequirements %}
+  #             requirements:
+  #         %{ for req in parameters.pythonRequirements | splitByComma %}
+  #               - {{ req }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
 
-          %{ if parameters.javascriptEnabled %}
-            javascript:
-              package-manager: "${{ parameters.javascriptPackageManager }}"
-          %{ if parameters.javascriptPackageManagerVersion %}
-              package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
-          %{ endif %}
-              version: "${{ parameters.javascriptVersion }}"
-          %{ if parameters.javascriptEnv %}
-              env:
-          %{ for envVar in parameters.javascriptEnv | splitByComma %}
-                - {{ envVar }}
-          %{ endfor %}
-          %{ endif %}
-          %{ if parameters.javascriptBuildArgs %}
-              build-args:
-          %{ for arg in parameters.javascriptBuildArgs | splitByComma %}
-                - {{ arg }}
-          %{ endfor %}
-          %{ endif %}
-          %{ if parameters.javascriptPaths %}
-              paths:
-          %{ for path in parameters.javascriptPaths | splitByComma %}
-                - {{ path }}
-          %{ endfor %}
-          %{ endif %}
-          %{ endif %}
+  #         %{ if parameters.javascriptEnabled %}
+  #           javascript:
+  #             package-manager: "${{ parameters.javascriptPackageManager }}"
+  #         %{ if parameters.javascriptPackageManagerVersion %}
+  #             package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
+  #         %{ endif %}
+  #             version: "${{ parameters.javascriptVersion }}"
+  #         %{ if parameters.javascriptEnv %}
+  #             env:
+  #         %{ for envVar in parameters.javascriptEnv | splitByComma %}
+  #               - {{ envVar }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ if parameters.javascriptBuildArgs %}
+  #             build-args:
+  #         %{ for arg in parameters.javascriptBuildArgs | splitByComma %}
+  #               - {{ arg }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ if parameters.javascriptPaths %}
+  #             paths:
+  #         %{ for path in parameters.javascriptPaths | splitByComma %}
+  #               - {{ path }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
 
-          %{ if parameters.rubyEnabled %}
-            ruby:
-              version: "${{ parameters.rubyVersion }}"
-          %{ if parameters.rubyPaths %}
-              paths:
-          %{ for path in parameters.rubyPaths | splitByComma %}
-                - {{ path }}
-          %{ endfor %}
-          %{ endif %}
-          %{ endif %}
-        targetFile: config.yml
-    - id: commit-and-push
-      name: Commit and Push
-      action: git:commit
-      input:
-        message: "Add SecRel config.yml"
-        workspacePath: .
-    - id: create-pr
-      name: Create Pull Request
-      action: github:pull-request
-      input:
-        repo: ${{ parameters.repository }}
-        title: "SecRel Configuration (config.yml)"
-        description: "This PR adds the config.yml file for SecRel configuration."
-        targetBranch: ${{ parameters.defaultBranch }}
-        sourceBranch: "secrel-config-${{ execution.id }}"
+  #         %{ if parameters.rubyEnabled %}
+  #           ruby:
+  #             version: "${{ parameters.rubyVersion }}"
+  #         %{ if parameters.rubyPaths %}
+  #             paths:
+  #         %{ for path in parameters.rubyPaths | splitByComma %}
+  #               - {{ path }}
+  #         %{ endfor %}
+  #         %{ endif %}
+  #         %{ endif %}
+  #       targetFile: config.yml
+  #   - id: commit-and-push
+  #     name: Commit and Push
+  #     action: git:commit
+  #     input:
+  #       message: "Add SecRel config.yml"
+  #       workspacePath: .
+  #   - id: create-pr
+  #     name: Create Pull Request
+  #     action: github:pull-request
+  #     input:
+  #       repo: ${{ parameters.repository }}
+  #       title: "SecRel Configuration (config.yml)"
+  #       description: "This PR adds the config.yml file for SecRel configuration."
+  #       targetBranch: ${{ parameters.defaultBranch }}
+  #       sourceBranch: "secrel-config-${{ execution.id }}"
 
-  output:
-    remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
-    pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
+  # output:
+  #   remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
+  #   pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
