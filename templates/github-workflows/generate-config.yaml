@@ -35,6 +35,7 @@ spec:
         version:
           title: Python version
           type: string
+
     - title: Java Configuration
       if: '{{ parameters.language === "Java" }}'
       required:
@@ -51,7 +52,7 @@ spec:
         buildArgs:
           title: List of arguments to pass to the package manager
           type: string
-        
+
     - title: Ruby Configuration
       if: '{{ parameters.language === "Ruby" }}'
       required:
@@ -64,7 +65,7 @@ spec:
         gemFilePath:
           title: Paths to all gemfiles for the project
           type: string
-    
+
     - title: JavaScript Configuration
       if: '{{ parameters.language === "JavaScript" }}'
       required:
@@ -93,12 +94,13 @@ spec:
         paths:
           title: List of paths to dependencies
           type: string
+
   steps:
     - id: fetch-template
       name: Fetch template
-      action: fetch:template:file
+      action: fetch:template
       input:
-        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/tree/jnkansah-backstage-testing/templates/config-template.yml
+        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/tree/jnkansah-backstage-testing/templates
         targetPath: ./secrel-templates
         values:
           language: '{{ parameters.language }}'
@@ -109,4 +111,15 @@ spec:
           gemFilePath: '{{ parameters.gemFilePath }}'
           packageManagerVersion: '{{ parameters.packageManagerVersion }}'
           env: '{{ parameters.env }}'
-          paths: '{{ parameters.paths }}
+          paths: '{{ parameters.paths }}'
+
+    - id: log
+      name: Confirm generation
+      action: debug:log
+      input:
+        message: "SecRel config.yml generated for language: {{ parameters.language }}"
+
+  output:
+    links:
+      - title: View config file
+        url: ./secrel-templates/config.yml
