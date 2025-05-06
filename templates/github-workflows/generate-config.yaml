@@ -9,20 +9,33 @@ spec:
   type: service
 
   parameters:
-    - title: Choose Application Language
-      fields:
-        - name: language
-          title: Select the language of your application
-          type: string
-          minItems: 1
-          enum:
-            - Python
-            - Java
-            - Ruby
-            - JavaScript
-          ui:
-            widget: select
-          required: true
+    - title: Fill in some steps
+      properties:
+        name:
+          title: Select environments
+          type: array
+          items:
+            type: string
+            enum:
+              - production
+              - staging
+              - development
+          uniqueItems: true
+          ui:widget: checkboxes
+    # - title: Choose Application Language
+    #   fields:
+    #     - name: language
+    #       title: Select the language of your application
+    #       type: string
+    #       minItems: 1
+    #       enum:
+    #         - Python
+    #         - Java
+    #         - Ruby
+    #         - JavaScript
+    #       ui:
+    #         widget: select
+    #       required: true
   steps:
     - id: log-selected-language
       name: Log Selected Language
