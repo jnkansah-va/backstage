@@ -11,7 +11,7 @@ spec:
   parameters:
     - title: Fill in some steps
       properties:
-        name:
+        language:
           title: Select environments
           type: array
           items:
