@@ -20,12 +20,13 @@ spec:
               - Python
               - Java
               - Ruby
-          uniqueItems: false
+          uniqueItems: true
           ui:widget: checkboxes
     # - title: Choose Application Language
     #   fields:
     #     - name: language
     #       title: Select the language of your application
+
     #       type: string
     #       minItems: 1
     #       enum:
