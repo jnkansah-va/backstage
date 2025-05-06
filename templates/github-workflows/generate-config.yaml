@@ -20,6 +20,7 @@ spec:
               - Python
               - Java
               - Ruby
+              - JavaScript
           uniqueItems: true
           ui:widget: checkboxes
     # - title: Choose Application Language
