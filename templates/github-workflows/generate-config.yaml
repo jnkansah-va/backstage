@@ -1,110 +1,84 @@
-parameters:
-  - title: SecRel Configuration
-    required:
-      - language
-    properties:
-      language:
-        title: Select language
-        type: string
-        enum:
-          - Python
-          - Java
-          - Ruby
-          - JavaScript
-        ui:
-          widget: select
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: secrel-config-generator
+  title: SecRel Configuration Generator
+  description: Generates a config.yml for SecRel with language configurations
+spec:
+  owner: jnkansah-va
+  type: service
+  parameters:
+    - title: Select Application Language
+      required:
+        - language
+      properties:
+        language:
+          title: Select language
+          type: string
+          enum:
+            - Python
+            - Java
+            - Ruby
+            - JavaScript
+          ui:
+            widget: select
+            
+    - title: Python Configuration
+      if: '{{ parameters.language === "Python" }}'
+      required:
+        - pythonVersion
+        - pythonRequirements
+      properties:
+        pythonVersion:
+          title: Python Version
+          type: string
+        pythonRequirements:
+          title: Path to requirements.txt
+          type: string
 
-      # Python-specific
-      pythonVersion:
-        title: Python version
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Python" }}'
+    - title: Java Configuration
+      if: '{{ parameters.language === "Java" }}'
+      required:
+        - javaVersion
+        - javaPackageManager
+      properties:
+        javaVersion:
+          title: Java Version
+          type: string
+        javaPackageManager:
+          title: Package Manager (Maven, Gradle)
+          type: string
 
-      pythonRequirements:
-        title: Path to requirements.txt
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Python" }}'
+    - title: Ruby Configuration
+      if: '{{ parameters.language === "Ruby" }}'
+      required:
+        - rubyVersion
+        - rubyGemFilePath
+      properties:
+        rubyVersion:
+          title: Ruby Version
+          type: string
+        rubyGemFilePath:
+          title: Path to Gemfile
+          type: string
 
-      # Java-specific
-      javaVersion:
-        title: Java version
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Java" }}'
+    - title: JavaScript Configuration
+      if: '{{ parameters.language === "JavaScript" }}'
+      required:
+        - jsVersion
+        - jsPackageManager
+      properties:
+        jsVersion:
+          title: JavaScript Version
+          type: string
+        jsPackageManager:
+          title: Package Manager (npm, yarn)
+          type: string
 
-      javaPackageManager:
-        title: Package manager (Maven, Gradle)
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Java" }}'
 
-      javaBuildArgs:
-        title: Java build arguments
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Java" }}'
-
-      # Ruby-specific
-      rubyVersion:
-        title: Ruby version
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Ruby" }}'
-
-      rubyGemFilePath:
-        title: Path to Gemfile
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "Ruby" }}'
-
-      # JavaScript-specific
-      jsVersion:
-        title: JavaScript version
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "JavaScript" }}'
-
-      jsPackageManager:
-        title: Package manager (npm, yarn)
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "JavaScript" }}'
-
-      jsPackageManagerVersion:
-        title: Package manager version
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "JavaScript" }}'
-
-      jsEnv:
-        title: Environment variables
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "JavaScript" }}'
-
-      jsBuildArgs:
-        title: Build arguments
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "JavaScript" }}'
-
-      jsPaths:
-        title: Paths to dependencies
-        type: string
-        ui:field: Hidden
-        ui:options:
-          show: '{{ parameters.language === "JavaScript" }}'
+  steps:
+    - id: log-selected-language
+      name: Log Selected Language
+      action: debug:log
+      input:
+        message: 'User selected language: ${{ parameters.language }}'
