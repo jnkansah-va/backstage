@@ -10,10 +10,8 @@ spec:
 
   parameters:
     - title: Choose Application Language
-      required:
-        - language
-      properties:
-        language:
+      fields:
+        - name: language
           title: Select the language of your application
           type: array
           minItems: 1
@@ -25,13 +23,15 @@ spec:
               - Ruby
               - JavaScript
             uniqueItems: true
-            ui:widget: checkboxes
+            ui:
+              widget: checkboxes
+            required: true
   steps:
     - id: log-selected-language
       name: Log Selected Language
       action: debug:log
       input:
-        message: 'User selected language: {{ parameters.language }}'
+        message: 'User selected language: ${{ parameters.language }}'
 
   #   - title: Python Configuration
   #     if: '{{ parameters.language === "Python" }}'
