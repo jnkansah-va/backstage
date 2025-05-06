@@ -25,6 +25,8 @@ spec:
             uniqueItems: true
             ui:
               widget: checkboxes
+              options: 
+                inline: true
             required: true
   steps:
     - id: log-selected-language
