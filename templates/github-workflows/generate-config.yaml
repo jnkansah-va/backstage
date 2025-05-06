@@ -25,77 +25,61 @@ spec:
 
     - title: Python Configuration
       if: '{{ parameters.language === "Python" }}'
-      required:
-        - pythonVersion
-        - pythonRequirements
       properties:
-        - name: pythonVersion
+        pythonVersion:
           title: Python version
           type: string
           description: Version of Python to use.
-        - name: pythonRequirements
+        pythonRequirements:
           title: Path to requirements.txt
           type: string
           description: Path to requirements.txt file.
+    
     - title: Java Configuration
-      if: ${{ parameters.language === 'Java' }}
-      required:
-        - javaVersion
-        - javaPackageManager
-        - javaBuildArgs
+      if: '{{ parameters.language === "Java" }}'
       properties:
-        - name: javaVersion
+        javaVersion:
           title: Java version
           type: string
           description: Version of Java to use
-        - name: javaPackageManager
+        javaPackageManager:
           title: Java Package Manager
           type: string
           description: Package manager for Java
-          required: ${{ parameters.language === 'Java' }}
-        - name: javaBuildArgs
+        javaBuildArgs:
           title: Java Build Arguments
           type: string
     - title: Ruby Configuration
-      if: ${{ parameters.language === 'Ruby' }}
-      required:
-        - rubyVersion
-        - rubyPaths
+      if: '{{ parameters.language === "Ruby" }}'
       properties:
-        - name: rubyVersion
+        rubyVersion:
           title: Ruby version
           type: string
           description: Version of Ruby to use
-        - name: rubyPaths
+        rubyPaths:
           title: Ruby Paths
           type: string
           description: Paths to Gemfiles
     - title: JavaScript Configuration
-      if: ${{ parameters.language === 'JavaScript' }}
-      required:
-        - javascriptVersion
-        - javascriptPackageManager
-        - javascriptEnv
-        - javascriptBuildArgs
-        - javascriptPaths
+      if: '{{ parameters.language === "JavaScript" }}'
       properties:
-        - name: javascriptVersion
+        javascriptVersion:
           title: Node.js Version
           type: string
           description: Version of Node.js
-        - name: javascriptPackageManager
+        javascriptPackageManager:
           title: JavaScript Package Manager
           type: string
           description: Package manager for JavaScript
-        - name: javascriptEnv
+        javascriptEnv:
           title: JavaScript Environment Variables
           type: string
           description: Environment variables for JavaScript.
-        - name: javascriptBuildArgs
+        javascriptBuildArgs:
           title: JavaScript Build Arguments
           type: string
           description: Arguments for the JavaScript package manager.
-        - name: javascriptPaths
+        javascriptPaths:
           title: JavaScript Paths
           type: string
           description: Paths to directories with package.json files.
