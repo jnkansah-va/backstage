@@ -22,7 +22,7 @@ spec:
               - Ruby
               - JavaScript
           uniqueItems: true
-          ui:widget: checkboxes
+          ui:widget: radio
     # - title: Choose Application Language
     #   fields:
     #     - name: language
@@ -43,7 +43,7 @@ spec:
       name: Log Selected Language
       action: debug:log
       input:
-        message: 'User selected language: ${{ parameters.language }}'
+        message: 'User selected language: ${{ parameters.name }}'
 
   #   - title: Python Configuration
   #     if: '{{ parameters.language === "Python" }}'
