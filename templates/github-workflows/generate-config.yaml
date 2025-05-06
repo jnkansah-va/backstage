@@ -37,74 +37,69 @@ spec:
           title: Path to requirements.txt
           type: string
           description: Path to requirements.txt file.
-    # - title: Java Configuration
-    #   fields:
-    #     - name: javaVersion
-    #       title: Java version
-    #       type: string
-    #       description: Version of Java to use
-    #       if: ${{ parameters.language === 'Java' }} #show only if Java is selected
-    #       required: ${{ parameters.language === 'Java' }}
-    #     - name: javaPackageManager
-    #       title: Java Package Manager
-    #       type: string
-    #       description: Package manager for Java.
-    #       if: ${{ parameters.language === 'Java' }} #show only if Java is selected
-    #       required: ${{ parameters.language === 'Java' }}
-    #     - name: javaBuildArgs
-    #       title: Java Build Arguments
-    #       type: string
-    #       description: Arguments for the Java package manager.
-    #       if: ${{ parameters.language === 'Java' }} #show only if Java is selected
-    #       required: ${{ parameters.language === 'Java' }}
+    - title: Java Configuration
+      if: ${{ parameters.language === 'Java' }}
+      required:
+        - javaVersion
+        - javaPackageManager
+        - javaBuildArgs
+      properties:
+        - name: javaVersion
+          title: Java version
+          type: string
+          description: Version of Java to use
+        - name: javaPackageManager
+          title: Java Package Manager
+          type: string
+          description: Package manager for Java
+          required: ${{ parameters.language === 'Java' }}
+        - name: javaBuildArgs
+          title: Java Build Arguments
+          type: string
+    - title: Ruby Configuration
+      if: ${{ parameters.language === 'Ruby' }}
+      required:
+        - rubyVersion
+        - rubyPaths
+      properties:
+        - name: rubyVersion
+          title: Ruby version
+          type: string
+          description: Version of Ruby to use
+        - name: rubyPaths
+          title: Ruby Paths
+          type: string
+          description: Paths to Gemfiles
+    - title: JavaScript Configuration
+      if: ${{ parameters.language === 'JavaScript' }}
+      required:
+        - javascriptVersion
+        - javascriptPackageManager
+        - javascriptEnv
+        - javascriptBuildArgs
+        - javascriptPaths
+      properties:
+        - name: javascriptVersion
+          title: Node.js Version
+          type: string
+          description: Version of Node.js
+        - name: javascriptPackageManager
+          title: JavaScript Package Manager
+          type: string
+          description: Package manager for JavaScript
+        - name: javascriptEnv
+          title: JavaScript Environment Variables
+          type: string
+          description: Environment variables for JavaScript.
+        - name: javascriptBuildArgs
+          title: JavaScript Build Arguments
+          type: string
+          description: Arguments for the JavaScript package manager.
+        - name: javascriptPaths
+          title: JavaScript Paths
+          type: string
+          description: Paths to directories with package.json files.
 
-    # - title: Ruby Configuration
-    #   fields:
-    #     - name: rubyVersion
-    #       title: Ruby version
-    #       type: string
-    #       description: Version of Ruby to use
-    #       if: ${{ parameters.language === 'Ruby' }} #show only if Ruby is selected
-    #       required: ${{ parameters.language === 'Ruby' }}
-    #     - name: rubyPaths
-    #       title: Ruby Paths
-    #       type: string
-    #       description: Paths to Gemfiles
-    #       if: ${{ parameters.language === 'Ruby' }} #show only if Ruby is selected
-    #       required: ${{ parameters.language === 'Ruby' }}
-
-    # - title: JavaScript Configuration
-    #   fields:
-    #     - name: javascriptVersion
-    #       title: Node.js Version
-    #       type: string
-    #       description: Version of Node.js
-    #       if: ${{ parameters.language === 'JavaScript' }} #show only if JavaScript is selected
-    #       required: ${{ parameters.language === 'JavaScript' }}
-    #     - name: javascriptPackageManager
-    #       title: JavaScript Package Manager
-    #       type: string
-    #       description: Package manager for JavaScript
-    #       if: ${{ parameters.language === 'JavaScript' }} #show only if JavaScript is selected
-    #       required: ${{ parameters.language === 'JavaScript' }}
-    #     - name: javascriptEnv
-    #       title: JavaScript Environment Variables
-    #       type: string
-    #       description: Environment variables for JavaScript.
-    #       if: ${{ parameters.language === 'JavaScript' }} #show only if JavaScript is selected
-    #       required: ${{ parameters.language === 'JavaScript' }}
-    #     - name: javascriptBuildArgs
-    #       title: JavaScript Build Arguments
-    #       type: string
-    #       description: Arguments for the JavaScript package manager.
-    #       if: ${{ parameters.language === 'JavaScript' }} #show only if JavaScript is selected
-    #       required: ${{ parameters.language === 'JavaScript' }}
-    #     - name: javascriptPaths
-    #       title: JavaScript Paths
-    #       type: string
-    #       description: Paths to directories with package.json files.
-    #       if: ${{ parameters.language === 'JavaScript' }} #show only if JavaScript is selected
-    #       required: ${{ parameters.language === 'JavaScript' }}
   steps:
     - id: log-selected-language
       name: Log Selected Language
