@@ -23,66 +23,101 @@ spec:
           ui:
             widget: select
 
-    - title: Python Configuration
-      if: '{{ parameters.language === "Python" }}'
-      properties:
+      # Python-specific
         pythonVersion:
           title: Python version
           type: string
-          description: Version of Python to use.
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Python" }}'
+
         pythonRequirements:
           title: Path to requirements.txt
           type: string
-          description: Path to requirements.txt file.
-    
-    - title: Java Configuration
-      if: '{{ parameters.language === "Java" }}'
-      properties:
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Python" }}'
+
+        # Java-specific
         javaVersion:
           title: Java version
           type: string
-          description: Version of Java to use
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Java" }}'
+
         javaPackageManager:
-          title: Java Package Manager
+          title: Package manager (Maven, Gradle)
           type: string
-          description: Package manager for Java
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Java" }}'
+
         javaBuildArgs:
-          title: Java Build Arguments
+          title: Java build arguments
           type: string
-    - title: Ruby Configuration
-      if: '{{ parameters.language === "Ruby" }}'
-      properties:
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Java" }}'
+
+        # Ruby-specific
         rubyVersion:
           title: Ruby version
           type: string
-          description: Version of Ruby to use
-        rubyPaths:
-          title: Ruby Paths
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Ruby" }}'
+
+        rubyGemFilePath:
+          title: Path to Gemfile
           type: string
-          description: Paths to Gemfiles
-    - title: JavaScript Configuration
-      if: '{{ parameters.language === "JavaScript" }}'
-      properties:
-        javascriptVersion:
-          title: Node.js Version
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "Ruby" }}'
+
+        # JavaScript-specific
+        jsVersion:
+          title: JavaScript version
           type: string
-          description: Version of Node.js
-        javascriptPackageManager:
-          title: JavaScript Package Manager
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "JavaScript" }}'
+
+        jsPackageManager:
+          title: Package manager (npm, yarn)
           type: string
-          description: Package manager for JavaScript
-        javascriptEnv:
-          title: JavaScript Environment Variables
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "JavaScript" }}'
+
+        jsPackageManagerVersion:
+          title: Package manager version
           type: string
-          description: Environment variables for JavaScript.
-        javascriptBuildArgs:
-          title: JavaScript Build Arguments
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "JavaScript" }}'
+
+        jsEnv:
+          title: Environment variables
           type: string
-          description: Arguments for the JavaScript package manager.
-        javascriptPaths:
-          title: JavaScript Paths
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "JavaScript" }}'
+
+        jsBuildArgs:
+          title: Build arguments
           type: string
-          description: Paths to directories with package.json files.
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "JavaScript" }}'
+
+        jsPaths:
+          title: Paths to dependencies
+          type: string
+          ui:field: Hidden
+          ui:options:
+            show: '{{ parameters.language === "JavaScript" }}'
+
 
   steps:
     - id: log-selected-language
