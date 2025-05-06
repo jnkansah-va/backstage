@@ -9,6 +9,8 @@ spec:
   type: service
   parameters:
     - title: Select Application Language
+      required:
+        - language
       properties:
         language:
           title: Select language
@@ -20,7 +22,6 @@ spec:
             - JavaScript
           ui:
             widget: select
-          required: true
     # - title: Python Configuration
     #   fields:
     #     - name: pythonVersion
