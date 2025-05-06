@@ -26,6 +26,12 @@ spec:
               - JavaScript
             uniqueItems: true
             ui:widget: checkboxes
+  steps:
+    - id: log-selected-language
+      name: Log Selected Language
+      action: debug:log
+      input:
+        message: 'User selected language: {{ parameters.language }}'
 
   #   - title: Python Configuration
   #     if: '{{ parameters.language === "Python" }}'
