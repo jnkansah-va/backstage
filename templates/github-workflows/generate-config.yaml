@@ -13,21 +13,16 @@ spec:
       fields:
         - name: language
           title: Select the language of your application
-          type: array
+          type: string
           minItems: 1
-          items:
-            type: string
-            enum:
-              - Python
-              - Java
-              - Ruby
-              - JavaScript
-            uniqueItems: true
-            ui:
-              widget: checkboxes
-              options: 
-                inline: true
-            required: true
+          enum:
+            - Python
+            - Java
+            - Ruby
+            - JavaScript
+          ui:
+            widget: select
+          required: true
   steps:
     - id: log-selected-language
       name: Log Selected Language
