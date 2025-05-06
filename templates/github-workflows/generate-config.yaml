@@ -15,111 +15,115 @@ spec:
       properties:
         language:
           title: Select the language of your application
-          type: string
-          enum:
-            - Python
-            - Java
-            - Ruby
-            - JavaScript
-          description: Language your application is written in
+          type: array
+          minItems: 1
+          items:
+            type: string
+            enum:
+              - Python
+              - Java
+              - Ruby
+              - JavaScript
+            uniqueItems: true
+            ui:widget: checkboxes
 
-    - title: Python Configuration
-      if: '{{ parameters.language === "Python" }}'
-      required:
-        - version
-        - requirements
-      properties:
-        requirements:
-          title: Path to one or more requirements.txt
-          type: string
-        version:
-          title: Python version
-          type: string
+  #   - title: Python Configuration
+  #     if: '{{ parameters.language === "Python" }}'
+  #     required:
+  #       - version
+  #       - requirements
+  #     properties:
+  #       requirements:
+  #         title: Path to one or more requirements.txt
+  #         type: string
+  #       version:
+  #         title: Python version
+  #         type: string
 
-    - title: Java Configuration
-      if: '{{ parameters.language === "Java" }}'
-      required:
-        - version
-        - packageManager
-        - buildArgs
-      properties:
-        version:
-          title: Java version
-          type: string
-        packageManager:
-          title: Java package manager (e.g., Maven, Gradle)
-          type: string
-        buildArgs:
-          title: List of arguments to pass to the package manager
-          type: string
+  #   - title: Java Configuration
+  #     if: '{{ parameters.language === "Java" }}'
+  #     required:
+  #       - version
+  #       - packageManager
+  #       - buildArgs
+  #     properties:
+  #       version:
+  #         title: Java version
+  #         type: string
+  #       packageManager:
+  #         title: Java package manager (e.g., Maven, Gradle)
+  #         type: string
+  #       buildArgs:
+  #         title: List of arguments to pass to the package manager
+  #         type: string
 
-    - title: Ruby Configuration
-      if: '{{ parameters.language === "Ruby" }}'
-      required:
-        - version
-        - gemFilePath
-      properties:
-        version: 
-          title: Ruby Version
-          type: string
-        gemFilePath:
-          title: Paths to all gemfiles for the project
-          type: string
+  #   - title: Ruby Configuration
+  #     if: '{{ parameters.language === "Ruby" }}'
+  #     required:
+  #       - version
+  #       - gemFilePath
+  #     properties:
+  #       version: 
+  #         title: Ruby Version
+  #         type: string
+  #       gemFilePath:
+  #         title: Paths to all gemfiles for the project
+  #         type: string
 
-    - title: JavaScript Configuration
-      if: '{{ parameters.language === "JavaScript" }}'
-      required:
-        - version
-        - packageManager
-        - packageManagerVersion
-        - env
-        - buildArgs
-        - paths
-      properties:
-        version:
-          title: JavaScript version
-          type: string
-        packageManager:
-          title: Package Manager (npm, yarn)
-          type: string
-        packageManagerVersion:
-          title: JavaScript Package Manager version
-          type: string
-        env:
-          title: List of environmental vars to be used by package manager
-          type: string
-        buildArgs:
-          title: List of args to pass to package manager
-          type: string
-        paths:
-          title: List of paths to dependencies
-          type: string
+  #   - title: JavaScript Configuration
+  #     if: '{{ parameters.language === "JavaScript" }}'
+  #     required:
+  #       - version
+  #       - packageManager
+  #       - packageManagerVersion
+  #       - env
+  #       - buildArgs
+  #       - paths
+  #     properties:
+  #       version:
+  #         title: JavaScript version
+  #         type: string
+  #       packageManager:
+  #         title: Package Manager (npm, yarn)
+  #         type: string
+  #       packageManagerVersion:
+  #         title: JavaScript Package Manager version
+  #         type: string
+  #       env:
+  #         title: List of environmental vars to be used by package manager
+  #         type: string
+  #       buildArgs:
+  #         title: List of args to pass to package manager
+  #         type: string
+  #       paths:
+  #         title: List of paths to dependencies
+  #         type: string
 
-  steps:
-    - id: fetch-template
-      name: Fetch template
-      action: fetch:template
-      input:
-        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/tree/jnkansah-backstage-testing/templates
-        targetPath: ./secrel-templates
-        values:
-          language: '{{ parameters.language }}'
-          version: '{{ parameters.version }}'
-          requirements: '{{ parameters.requirements }}'
-          buildArgs: '{{ parameters.buildArgs }}'
-          packageManager: '{{ parameters.packageManager }}'
-          gemFilePath: '{{ parameters.gemFilePath }}'
-          packageManagerVersion: '{{ parameters.packageManagerVersion }}'
-          env: '{{ parameters.env }}'
-          paths: '{{ parameters.paths }}'
+  # steps:
+  #   - id: fetch-template
+  #     name: Fetch template
+  #     action: fetch:template
+  #     input:
+  #       url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/tree/jnkansah-backstage-testing/templates
+  #       targetPath: ./secrel-templates
+  #       values:
+  #         language: '{{ parameters.language }}'
+  #         version: '{{ parameters.version }}'
+  #         requirements: '{{ parameters.requirements }}'
+  #         buildArgs: '{{ parameters.buildArgs }}'
+  #         packageManager: '{{ parameters.packageManager }}'
+  #         gemFilePath: '{{ parameters.gemFilePath }}'
+  #         packageManagerVersion: '{{ parameters.packageManagerVersion }}'
+  #         env: '{{ parameters.env }}'
+  #         paths: '{{ parameters.paths }}'
 
-    - id: log
-      name: Confirm generation
-      action: debug:log
-      input:
-        message: "SecRel config.yml generated for language: {{ parameters.language }}"
+  #   - id: log
+  #     name: Confirm generation
+  #     action: debug:log
+  #     input:
+  #       message: "SecRel config.yml generated for language: {{ parameters.language }}"
 
-  output:
-    links:
-      - title: View config file
-        url: ./secrel-templates/config.yml
+  # output:
+  #   links:
+  #     - title: View config file
+  #       url: ./secrel-templates/config.yml
