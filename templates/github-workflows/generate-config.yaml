@@ -9,8 +9,8 @@ spec:
   type: service
   parameters:
     - title: Select Application Language
-      fields:
-        - name: language
+      properties:
+        language:
           title: Select language
           type: string
           enum:
