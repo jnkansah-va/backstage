@@ -24,7 +24,8 @@ spec:
               - Ruby
               - JavaScript
             uniqueItems: true
-            ui:widget: checkboxed
+            ui:widget: checkboxes
+            
 
   
     #   fields:
