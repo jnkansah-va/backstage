@@ -17,10 +17,11 @@ spec:
           items:
             type: string
             enum:
-              - production
-              - staging
-              - development
-          uniqueItems: true
+              - Python
+              - Java
+              - Ruby
+              - JavaScript
+          uniqueItems: false
           ui:widget: checkboxes
     # - title: Choose Application Language
     #   fields:
