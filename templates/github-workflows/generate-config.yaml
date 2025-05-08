@@ -4,25 +4,12 @@ metadata:
   name: secrel-config-generator
   title: SecRel Configuration Generator
   description: Generates a config.yml for SecRel with language configurations
+
 spec:
   owner: jnkansah-va
   type: service
+
   parameters:
-    - title: GitHub Repository Information
-      required: 
-        - owner
-        - repository
-        - defaultBranch
-      properties:
-        owner:
-        title: GitHub Owner
-        type: string
-      repository:
-        title: Repository Name
-        type: string
-      defaultBranch:
-        title: Default Branch
-        type: string
     - title: Select Application Language
       required:
         - language
@@ -35,9 +22,7 @@ spec:
             # - Java
             # - Ruby
             # - JavaScript
-          ui:
-            widget: select
-            
+
     - title: Python Configuration
       if: '{{ parameters.language == "Python" }}'
       required:
@@ -52,7 +37,7 @@ spec:
           type: string
 
     # - title: Java Configuration
-    #   if: '{{ parameters.language === "Java" }}'
+    #   if: '{{ parameters.language == "Java" }}'
     #   required:
     #     - javaVersion
     #     - javaPackageManager
@@ -65,7 +50,7 @@ spec:
     #       type: string
 
     # - title: Ruby Configuration
-    #   if: '{{ parameters.language === "Ruby" }}'
+    #   if: '{{ parameters.language == "Ruby" }}'
     #   required:
     #     - rubyVersion
     #     - rubyGemFilePath
@@ -78,7 +63,7 @@ spec:
     #       type: string
 
     # - title: JavaScript Configuration
-    #   if: '{{ parameters.language === "JavaScript" }}'
+    #   if: '{{ parameters.language == "JavaScript" }}'
     #   required:
     #     - jsVersion
     #     - jsPackageManager
@@ -90,6 +75,21 @@ spec:
     #       title: Package Manager (npm, yarn)
     #       type: string
 
+    - title: GitHub Repository Info
+      required:
+        - owner
+        - repository
+        - defaultBranch
+      properties:
+        owner:
+          title: GitHub Owner
+          type: string
+        repository:
+          title: Repository Name
+          type: string
+        defaultBranch:
+          title: Default Branch
+          type: string
 
   steps:
     - id: log-selected-language
@@ -97,6 +97,7 @@ spec:
       action: debug:log
       input:
         message: 'User selected language: ${{ parameters.language }}'
+
     - id: fetch-template
       name: Fetch config template
       action: fetch:template
@@ -107,15 +108,17 @@ spec:
           pythonVersion: ${{ parameters.pythonVersion }}
           pythonRequirements: ${{ parameters.pythonRequirements }}
         targetPath: '.'
+
     - id: commit-and-push
       name: Commit and Push
       action: git:commit
       input:
         message: "Add SecRel pipeline configuration and DORA metrics workflow"
         author:
-          name: "Tornado Service Account" #  Use a service account
-          email: "tornado-sa@example.com" #  Use service account email
+          name: "Tornado Service Account"
+          email: "tornado-sa@example.com"
         workspacePath: .
+
     - id: create-pr
       name: Create Pull Request
       action: github:pull-request
@@ -125,6 +128,7 @@ spec:
         title: "SecRel Pipeline Onboarding"
         targetBranch: ${{ parameters.defaultBranch }}
         sourceBranch: "lhdi-onboarding-${{ execution.id }}"
+
   output:
     remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
     pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
