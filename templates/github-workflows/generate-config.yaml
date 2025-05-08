@@ -124,39 +124,76 @@ spec:
       input:
         message: 'User selected language: ${{ parameters.language }}'
 
-    - id: fetch-template
-      name: Fetch config template
-      action: fetch:template
-      input: 
-        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/blob/jnkansah-backstage-testing/templates/config-template.yml
-        values:
-          language: ${{ parameters.language }}
-          pythonVersion: ${{ parameters.pythonVersion }}
-          pythonRequirements: ${{ parameters.pythonRequirements }}
-          javaVersion: ${{ parameters.javaVersion }}
-          javaPackageManager: ${{ parameters.javaPackageManager }}
-        targetPath: '.'
-
+    - id: generate-config
+      name: Generate Configuration
+      action: template
+      input:
+        template: |
+          languages:
+          %{ if parameters.language === 'Java' %}
+            java:
+              version: "${{ parameters.javaVersion }}"
+              package-manager: "${{ parameters.javaPackageManager }}"
+          %{ if parameters.javaBuildArgs %}
+              build-args:
+                ${{ parameters.javaBuildArgs | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+          %{ if parameters.language === 'Python' %}
+            python:
+              version: "${{ parameters.pythonVersion }}"
+          %{ if parameters.pythonRequirements %}
+              requirements:
+                ${{ parameters.pythonRequirements | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+          %{ if parameters.language === 'JavaScript' %}
+            javascript:
+              package-manager: "${{ parameters.javascriptPackageManager }}"
+          %{ if parameters.javascriptPackageManagerVersion %}
+              package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
+          %{ endif %}
+              version: "${{ parameters.javascriptVersion }}"
+          %{ if parameters.javascriptEnv %}
+              env:
+                ${{ parameters.javascriptEnv | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ if parameters.javascriptBuildArgs %}
+              build-args:
+                ${{ parameters.javascriptBuildArgs | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ if parameters.javascriptPaths %}
+              paths:
+                ${{ parameters.javascriptPaths | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+          %{ if parameters.language === 'Ruby' %}
+            ruby:
+              version: "${{ parameters.rubyVersion }}"
+          %{ if parameters.rubyPaths %}
+              paths:
+                ${{ parameters.rubyPaths | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+        targetFile: config.yaml
     - id: commit-and-push
       name: Commit and Push
       action: publish:github
       input:
-        message: "Add SecRel pipeline configuration and DORA metrics workflow"
+        message: "Add SecRel pipeline configuration"
         author:
           name: "Tornado Service Account"
           email: "tornado-sa@example.com"
         workspacePath: .
-
     - id: create-pr
       name: Create Pull Request
       action: publish:github:pull-request
       input:
-        owner: ${{ parameters.owner }}
-        repo: ${{ parameters.repository }}
-        title: "SecRel Pipeline Onboarding"
-        targetBranch: ${{ parameters.defaultBranch }}
-        sourceBranch: "lhdi-onboarding-${{ execution.id }}"
-
+        repoUrl: 'github.com?owner=department-of-veterans-affairs&repo=lh-techtuesday-demo'
+        branchName: ${{ parameters.defaultBranch }}
+        targetBranchName: '.'
+        title:
+        description:
   output:
     remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
     pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
