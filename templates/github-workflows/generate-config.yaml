@@ -29,6 +29,23 @@ spec:
         pythonRequirements:
           type: string
           title: Path to requirements.txt
+  - title: JavaScript Options
+    if:
+      properties:
+        language:
+          const: "JavaScript"
+    then:
+      properties:
+        javascriptVersion:
+          type: string
+          title: JavaScript Version
+        javascriptPackageManager:
+          type: string
+          title: Package Manager
+        packagerManagerVersion:
+          type: string
+          title: JavaScript Package Manager Version
+        
 
   steps:
     - id: log-selected-language
