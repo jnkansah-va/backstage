@@ -14,7 +14,9 @@ spec:
         type: string
         enum:
           - Python
-          - JavaScript 
+          - JavaScript
+          - Java
+          - Ruby 
 
   - title: Python Options
     if:
@@ -42,10 +44,45 @@ spec:
         javascriptPackageManager:
           type: string
           title: Package Manager
-        packagerManagerVersion:
+        javascriptPackagerManagerVersion:
           type: string
           title: JavaScript Package Manager Version
-        
+        env:
+          type: string
+          title: Environment vars 
+        javascriptBuildArgs:
+          type: string
+        javascriptPaths:
+          type: string
+  - title: Java Options
+    if:
+      properties:
+        language:
+          const: "Java"
+    then:
+      properties:
+        javaVersion:
+          type: string
+          title: Java Version
+        javaPackageManager:
+          type: string
+          title: Path to requirements.txt
+        javaBuildArgs:
+          type: string
+          title: List of args that will be passed to the package manager
+  - title: Ruby Options
+    if:
+      properties:
+        language:
+          const: "Ruby"
+    then:
+      properties:
+        rubyVersion:
+          type: string
+          title: Ruby Version
+        rubyPaths:
+          type: string
+          title: Path to Gemfiles
 
   steps:
     - id: log-selected-language
