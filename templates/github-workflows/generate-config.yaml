@@ -8,7 +8,6 @@ spec:
   owner: jnkansah-va
   type: service
   parameters:
-  parameters:
   - title: Select Language
     properties:
       language:
