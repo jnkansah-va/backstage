@@ -8,39 +8,29 @@ spec:
   owner: jnkansah-va
   type: service
   parameters:
-    - title: Choose language of app
-      required:
-        - language
+  parameters:
+  - title: Select Language
+    properties:
+      language:
+        type: string
+        enum:
+          - Python
+          - JavaScript 
+
+  - title: Python Options
+    if:
       properties:
         language:
-          title: Select language
-          type: array
-          minItems: 1
-          items:
-            type: string
-            enum:
-              - Python
-              - Java
-              - JavaScript
-              - Ruby
-          uniqueItems: true
-          ui:widget: checkboxes
-      dependencies:
-        language:
-          allOf:
-            - if:
-                properties:
-                  languate:
-                    contains:
-                      const: Python
-              then:
-                properties:
-                  pythonVersion:
-                    title: Version of Python
-                    type: string
-                  pythonRequirements:
-                    title: Path to requirements.txt
-                    type: string
+          const: "Python"
+    then:
+      properties:
+        pythonVersion:
+          type: string
+          title: Python Version
+        pythonRequirements:
+          type: string
+          title: Path to requirements.txt
+
   steps:
     - id: log-selected-language
       name: Log Selected Language
