@@ -39,7 +39,7 @@ spec:
             widget: select
             
     - title: Python Configuration
-      if: '{{ parameters.language === "Python" }}'
+      if: '{{ parameters.language == "Python" }}'
       required:
         - pythonVersion
         - pythonRequirements
