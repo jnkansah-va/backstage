@@ -17,9 +17,9 @@ spec:
           type: string
           enum:
             - Python
-            - Java
-            - Ruby
-            - JavaScript
+            # - Java
+            # - Ruby
+            # - JavaScript
           ui:
             widget: select
             
@@ -36,44 +36,44 @@ spec:
           title: Path to requirements.txt
           type: string
 
-    - title: Java Configuration
-      if: '{{ parameters.language === "Java" }}'
-      required:
-        - javaVersion
-        - javaPackageManager
-      properties:
-        javaVersion:
-          title: Java Version
-          type: string
-        javaPackageManager:
-          title: Package Manager (Maven, Gradle)
-          type: string
+    # - title: Java Configuration
+    #   if: '{{ parameters.language === "Java" }}'
+    #   required:
+    #     - javaVersion
+    #     - javaPackageManager
+    #   properties:
+    #     javaVersion:
+    #       title: Java Version
+    #       type: string
+    #     javaPackageManager:
+    #       title: Package Manager (Maven, Gradle)
+    #       type: string
 
-    - title: Ruby Configuration
-      if: '{{ parameters.language === "Ruby" }}'
-      required:
-        - rubyVersion
-        - rubyGemFilePath
-      properties:
-        rubyVersion:
-          title: Ruby Version
-          type: string
-        rubyGemFilePath:
-          title: Path to Gemfile
-          type: string
+    # - title: Ruby Configuration
+    #   if: '{{ parameters.language === "Ruby" }}'
+    #   required:
+    #     - rubyVersion
+    #     - rubyGemFilePath
+    #   properties:
+    #     rubyVersion:
+    #       title: Ruby Version
+    #       type: string
+    #     rubyGemFilePath:
+    #       title: Path to Gemfile
+    #       type: string
 
-    - title: JavaScript Configuration
-      if: '{{ parameters.language === "JavaScript" }}'
-      required:
-        - jsVersion
-        - jsPackageManager
-      properties:
-        jsVersion:
-          title: JavaScript Version
-          type: string
-        jsPackageManager:
-          title: Package Manager (npm, yarn)
-          type: string
+    # - title: JavaScript Configuration
+    #   if: '{{ parameters.language === "JavaScript" }}'
+    #   required:
+    #     - jsVersion
+    #     - jsPackageManager
+    #   properties:
+    #     jsVersion:
+    #       title: JavaScript Version
+    #       type: string
+    #     jsPackageManager:
+    #       title: Package Manager (npm, yarn)
+    #       type: string
 
 
   steps:
@@ -82,3 +82,42 @@ spec:
       action: debug:log
       input:
         message: 'User selected language: ${{ parameters.language }}'
+    - id: fetch-template
+      name: Fetch config template
+      action: fetch:template
+      input: 
+        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/tree/jnkansah-backstage-testing/templates/config-template.yml
+        values:
+          language: ${{ parameters.language }}
+          pythonVersion: ${{ parameters.pythonVersion }}
+          pythonRequirements: ${{ parameters.pythonRequirements }}
+    - id: commit-and-push
+      name: Commit and Push
+      action: git:commit
+      input:
+        message: "Add SecRel pipeline configuration and DORA metrics workflow"
+        author:
+          name: "Tornado Service Account" #  Use a service account
+          email: "tornado-sa@example.com" #  Use service account email
+        workspacePath: .
+    - id: create-pr
+          name: Create Pull Request
+          action: github:pull-request
+          input:
+            owner: ${{ parameters.owner }}
+            repo: ${{ parameters.repository }}
+            title: "SecRel Pipeline Onboarding"
+            description: |
+              This PR adds the necessary files to onboard this repository to the SecRel pipeline.
+
+              **Files Added:**
+              - `.github/workflows/secrel.yml`:  The workflow definition for the SecRel pipeline.
+              - `.github/secrel/config.yml`:  Configuration file for the SecRel pipeline.
+              - `.github/workflows/dora-lead-time-for-changes.yml`: Workflow for calculating DORA metrics.
+
+              Please review and merge this PR to complete the onboarding process.  You may need to configure the `config.yml` file with your specific application details.
+            targetBranch: ${{ parameters.defaultBranch }}
+            sourceBranch: "lhdi-onboarding-${{ execution.id }}"
+  output:
+    remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
+    pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
