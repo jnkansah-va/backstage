@@ -19,22 +19,48 @@ spec:
           type: string
           enum:
             - Python
-            # - Java
+            - Java
             # - Ruby
             # - JavaScript
-
-    - title: Python Configuration
-      if: '{{ parameters.language == "Python" }}'
-      required:
-        - pythonVersion
-        - pythonRequirements
-      properties:
         pythonVersion:
           title: Python Version
           type: string
         pythonRequirements:
           title: Path to requirements.txt
           type: string
+        javaVersion:
+          title: Java Version
+          type: string
+        javaPackageManager:
+          title: Package Manager (Maven, Gradle)
+          type: string
+
+      ui:options:
+        showFieldLabel: true
+        conditional:
+          - if: '{{ parameters.language == "Python" }}'
+            show:
+              - pythonVersion
+              - pythonRequirements
+          - if: '{{ parameters.language == "Java" }}'
+            show: 
+              - javaVersion
+              - javaPackageManager
+
+
+
+    # - title: Python Configuration
+    #   if: '{{ parameters.language == "Python" }}'
+    #   required:
+    #     - pythonVersion
+    #     - pythonRequirements
+    #   properties:
+    #     pythonVersion:
+    #       title: Python Version
+    #       type: string
+    #     pythonRequirements:
+    #       title: Path to requirements.txt
+    #       type: string
 
     # - title: Java Configuration
     #   if: '{{ parameters.language == "Java" }}'
@@ -107,6 +133,8 @@ spec:
           language: ${{ parameters.language }}
           pythonVersion: ${{ parameters.pythonVersion }}
           pythonRequirements: ${{ parameters.pythonRequirements }}
+          javaVersion: ${{ parameters.javaVersion }}
+          javaPackageManager: ${{ parameters.javaPackageManager }}
         targetPath: '.'
 
     - id: commit-and-push
