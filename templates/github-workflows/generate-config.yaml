@@ -117,14 +117,14 @@ spec:
           email: "tornado-sa@example.com" #  Use service account email
         workspacePath: .
     - id: create-pr
-          name: Create Pull Request
-          action: github:pull-request
-          input:
-            owner: ${{ parameters.owner }}
-            repo: ${{ parameters.repository }}
-            title: "SecRel Pipeline Onboarding"
-            targetBranch: ${{ parameters.defaultBranch }}
-            sourceBranch: "lhdi-onboarding-${{ execution.id }}"
+      name: Create Pull Request
+      action: github:pull-request
+      input:
+        owner: ${{ parameters.owner }}
+        repo: ${{ parameters.repository }}
+        title: "SecRel Pipeline Onboarding"
+        targetBranch: ${{ parameters.defaultBranch }}
+        sourceBranch: "lhdi-onboarding-${{ execution.id }}"
   output:
     remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
     pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
