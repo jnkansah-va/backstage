@@ -139,7 +139,7 @@ spec:
 
     - id: commit-and-push
       name: Commit and Push
-      action: git:commit
+      action: publish:github
       input:
         message: "Add SecRel pipeline configuration and DORA metrics workflow"
         author:
@@ -149,7 +149,7 @@ spec:
 
     - id: create-pr
       name: Create Pull Request
-      action: github:pull-request
+      action: publish:github:pull-request
       input:
         owner: ${{ parameters.owner }}
         repo: ${{ parameters.repository }}
