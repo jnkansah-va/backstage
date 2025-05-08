@@ -8,6 +8,21 @@ spec:
   owner: jnkansah-va
   type: service
   parameters:
+    - title: GitHub Repository Information
+      required: 
+        - owner
+        - repository
+        - defaultBranch
+      properties:
+        owner:
+        title: GitHub Owner
+        type: string
+      repository:
+        title: Repository Name
+        type: string
+      defaultBranch:
+        title: Default Branch
+        type: string
     - title: Select Application Language
       required:
         - language
@@ -86,11 +101,12 @@ spec:
       name: Fetch config template
       action: fetch:template
       input: 
-        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/tree/jnkansah-backstage-testing/templates/config-template.yml
+        url: https://github.com/department-of-veterans-affairs/lighthouse-tornado-secrel-pipeline-onboarding-clone/blob/jnkansah-backstage-testing/templates/config-template.yml
         values:
           language: ${{ parameters.language }}
           pythonVersion: ${{ parameters.pythonVersion }}
           pythonRequirements: ${{ parameters.pythonRequirements }}
+        targetPath: '.'
     - id: commit-and-push
       name: Commit and Push
       action: git:commit
@@ -107,15 +123,6 @@ spec:
             owner: ${{ parameters.owner }}
             repo: ${{ parameters.repository }}
             title: "SecRel Pipeline Onboarding"
-            description: |
-              This PR adds the necessary files to onboard this repository to the SecRel pipeline.
-
-              **Files Added:**
-              - `.github/workflows/secrel.yml`:  The workflow definition for the SecRel pipeline.
-              - `.github/secrel/config.yml`:  Configuration file for the SecRel pipeline.
-              - `.github/workflows/dora-lead-time-for-changes.yml`: Workflow for calculating DORA metrics.
-
-              Please review and merge this PR to complete the onboarding process.  You may need to configure the `config.yml` file with your specific application details.
             targetBranch: ${{ parameters.defaultBranch }}
             sourceBranch: "lhdi-onboarding-${{ execution.id }}"
   output:
