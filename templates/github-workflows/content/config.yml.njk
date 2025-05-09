@@ -1,0 +1,32 @@
+languages:
+{% if languages.java %}
+  java:
+    version: {{ languages.java.version }}
+    package-manager: {{ languages.java.packageManager }}
+    build-args:
+{% for arg in languages.java.buildArgs %}
+      - {{ arg }}
+{% endfor %}
+{% endif %}
+
+{% if languages.python %}
+  python:
+    version: {{ languages.python.version }}
+    requirements: {{ languages.python.requirements }}
+{% endif %}
+
+{% if languages.javascript %}
+  javascript:
+    node-version: {{ languages.javascript.nodeVersion }}
+    package-manager: {{ languages.javascript.packageManager }}
+    build-script: {{ languages.javascript.buildScript }}
+{% endif %}
+
+{% if languages.ruby %}
+  ruby:
+    version: {{ languages.ruby.version }}
+    gems:
+{% for gem in languages.ruby.gems %}
+      - {{ gem }}
+{% endfor %}
+{% endif %}
