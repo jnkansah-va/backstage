@@ -54,9 +54,9 @@ spec:
       name: Fetch Config Template
       action: fetch:template
       inputs:
-        url: ./content
+        url: https://github.com/jnkansah-va/backstage/archive/refs/heads/main.zip
         targetPath: ./output
-        values: "{{ parameters }}"
+        values: "{{ parameters.languages }}"
     - id: log-config
       name: Output rendered config
       action: debug:log
