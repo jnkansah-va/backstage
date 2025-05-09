@@ -1,0 +1,149 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: secrel-configuration-generator
+  title: SecRel Configuration File Generator
+  description: Creates a config file for selected language.
+spec:
+  owner: jnkansah-va
+  type: service
+  parameters:
+  - title: Language Settings
+    properties:
+      languages:
+        type: object
+        properties:
+          java:
+            type: object
+            properties:
+              version:
+                type: string
+              packageManager:
+                type: string
+              buildArgs:
+                type: array
+                items:
+                  type: string
+          python:
+            type: object
+            properties:
+              version:
+                type: string
+              requirements:
+                type: string
+          javaScript:
+            type: object
+            properies:
+              nodeVersion:
+                type: string
+              packageManager:
+                type: string
+              buildScript:
+                type: string
+          ruby:
+            type: object
+            properties:
+              version:
+                type: string
+              paths:
+                type: array
+                items:
+                  type: string
+  steps:
+    - id: fetch-template
+      name: Fetch Config Template
+      action: fetch:template
+      inputs:
+        url: ./content
+        targetPath: ./output
+        values: "{{ parameters }}"
+    - id: log-config
+      name: Output rendered config
+      action: debug:log
+      input:
+        message: |
+          Rendered config:
+          {{ readFile('output/config.yml') }}
+
+  output:
+    links:
+      - title: View Generated config
+        path: ./output/config.yml
+  #       enum:
+  #         - Python
+  #         - JavaScript
+  #         - Java
+  #         - Ruby 
+
+  # - title: Python Options
+  #   if:
+  #     properties:
+  #       language:
+  #         const: "Python"
+  #   then:
+  #     properties:
+  #       pythonVersion:
+  #         type: string
+  #         title: Python Version
+  #       pythonRequirements:
+  #         type: string
+  #         title: Path to requirements.txt
+  # - title: JavaScript Options
+  #   if:
+  #     properties:
+  #       language:
+  #         const: "JavaScript"
+  #   then:
+  #     properties:
+  #       javascriptVersion:
+  #         type: string
+  #         title: JavaScript Version
+  #       javascriptPackageManager:
+  #         type: string
+  #         title: Package Manager
+  #       javascriptPackagerManagerVersion:
+  #         type: string
+  #         title: JavaScript Package Manager Version
+  #       env:
+  #         type: string
+  #         title: Environment vars 
+  #       javascriptBuildArgs:
+  #         type: string
+  #       javascriptPaths:
+  #         type: string
+  # - title: Java Options
+  #   if:
+  #     properties:
+  #       language:
+  #         const: "Java"
+  #   then:
+  #     properties:
+  #       javaVersion:
+  #         type: string
+  #         title: Java Version
+  #       javaPackageManager:
+  #         type: string
+  #         title: Path to requirements.txt
+  #       javaBuildArgs:
+  #         type: string
+  #         title: List of args that will be passed to the package manager
+  # - title: Ruby Options
+  #   if:
+  #     properties:
+  #       language:
+  #         const: "Ruby"
+  #   then:
+  #     properties:
+  #       rubyVersion:
+  #         type: string
+  #         title: Ruby Version
+  #       rubyPaths:
+  #         type: string
+  #         title: Path to Gemfiles
+
+  # steps:
+  #   - id: log-selected-language
+  #     name: Log Selected Language
+  #     action: debug:log
+  #     input:
+  #       message: 'User selected language: ${{ parameters.language }}' 

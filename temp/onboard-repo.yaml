@@ -1,0 +1,184 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: onboard-repository
+  title: Onboard Repository to SecRel Pipeline
+  description: Sets up a repository for the SecRel pipeline.
+spec:
+  owner: group:default/platform-engineering
+  type: service
+  parameters:
+    - title: Repository Information
+      fields:
+        - name: repository
+          title: Repository Name
+          type: string
+          description: The name of the repository to onboard.
+          ui: { "widget": "text" }
+        - name: defaultBranch
+          title: Default Branch
+          type: string
+          description: The default branch of the repository.
+          default: "main"
+          ui: { "widget": "text" }
+        - name: crmEntry
+          title: Create CRM Entry
+          type: boolean
+          description: Whether to create an entry in the CRM.
+          default: true
+    - title: SecRel Configuration
+      fields:
+        - name: appName
+          title: Application Name
+          type: string
+          description: The name of the application.
+          ui: { "widget": "text" }
+        - name: pipelineConfig
+          title: Pipeline Configuration
+          type: string
+          description: |
+            Configuration for the SecRel pipeline (YAML format).
+            Example:
+            ```yaml
+            key1: value1
+            key2: value2
+            ```
+          ui: { "widget": "textarea" }
+  steps:
+    - id: set-environment
+      name: Set Environment
+      action: debug:log
+      input:
+        message: "Setting environment to production (default)" #  Add parameter if you need other environments
+
+    - id: gather-facts
+      name: Gather Facts
+      action: debug:log
+      input:
+        message: |
+          {
+            "repos-json": "[{\"name\": \"${{ parameters.repository }}\", \"default_branch\": \"${{ parameters.defaultBranch }}\"}]"
+          }
+
+    - id: add-crm-entry
+      name: Add CRM Entry
+      action: debug:log #  Replace with your actual CRM integration action
+      input:
+        message: "Adding CRM entry for repository ${{ parameters.repository }}"
+      if: ${{ parameters.crmEntry }}
+
+    - id: generate-secrel-files
+      name: Generate SecRel Files
+      action: template
+      input:
+        template: |
+          # secrel.yml - Workflow configuration
+          name: SecRel Pipeline
+          on:
+            push:
+              branches:
+                - ${{ parameters.defaultBranch }}  # Trigger on pushes to the default branch
+            workflow_dispatch: # Allows manual triggering
+              inputs:
+                logLevel:
+                  description: 'Log level'
+                  type: choice
+                  options:
+                    - 'info'
+                    - 'warn'
+                    - 'debug'
+                  default: 'info'
+          jobs:
+            build:
+              runs-on: ubuntu-latest
+              steps:
+                - name: Checkout code
+                  uses: actions/checkout@v4
+                - name: Set up Python
+                  uses: actions/setup-python@v4
+                  with:
+                    python-version: '3.9'
+                - name: Install dependencies
+                  run: pip install -r requirements.txt
+                - name: Run security scans
+                  #  Add your security scan steps here
+                  run: echo "Running security scans..."
+                - name: Build and Package
+                  # Add your build steps
+                  run: echo "Building and packaging..."
+        targetFile: .github/workflows/secrel.yml
+    - id: generate-config-file
+      name: Generate Config File
+      action: template
+      input:
+        template: |
+          # config.yml - Application configuration
+          appName: ${{ parameters.appName }}
+          pipeline:
+            ${{ parameters.pipelineConfig }}
+        targetFile: .github/secrel/config.yml
+    - id: generate-dora-workflow
+      name: Generate DORA Workflow
+      action: template
+      input:
+        template: |
+          # dora-lead-time-for-changes.yml - DORA metrics
+          name: DORA Metrics - Lead Time for Changes
+          on:
+            push:
+              tags:  # Trigger on tag creation (for releases)
+                - '*'
+          jobs:
+            calculate-lead-time:
+              runs-on: ubuntu-latest
+              steps:
+                - name: Checkout code
+                  uses: actions/checkout@v4
+                  with:
+                    fetch-depth: 0  # Required to get commit history
+                - name: Calculate Lead Time
+                  run: |
+                    #  Add logic to calculate lead time
+                    echo "Calculating lead time for changes..."
+                    # Example (replace with actual calculation):
+                    # previous_tag=$(git describe --abbrev=0 --tags "$(git describe --tags --abbrev=1)")
+                    # if [ -n "$previous_tag" ]; then
+                    #   echo "Previous tag: $previous_tag"
+                    #   # ... calculate time difference ...
+                    # fi
+                - name: Report Metrics
+                  #  Add logic to report metrics
+                  run: echo "Reporting DORA metrics..."
+
+        targetFile: .github/workflows/dora-lead-time-for-changes.yml
+
+    - id: commit-and-push
+      name: Commit and Push
+      action: git:commit
+      input:
+        message: "Add SecRel pipeline configuration and DORA metrics workflow"
+        author:
+          name: "Tornado Service Account" #  Use a service account
+          email: "tornado-sa@example.com" #  Use service account email
+        workspacePath: .
+    - id: create-pr
+      name: Create Pull Request
+      action: github:pull-request
+      input:
+        owner: ${{ parameters.owner }}
+        repo: ${{ parameters.repository }}
+        title: "SecRel Pipeline Onboarding"
+        description: |
+          This PR adds the necessary files to onboard this repository to the SecRel pipeline.
+
+          **Files Added:**
+          - `.github/workflows/secrel.yml`:  The workflow definition for the SecRel pipeline.
+          - `.github/secrel/config.yml`:  Configuration file for the SecRel pipeline.
+          - `.github/workflows/dora-lead-time-for-changes.yml`: Workflow for calculating DORA metrics.
+
+          Please review and merge this PR to complete the onboarding process.  You may need to configure the `config.yml` file with your specific application details.
+        targetBranch: ${{ parameters.defaultBranch }}
+        sourceBranch: "lhdi-onboarding-${{ execution.id }}"
+  output:
+    remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
+    pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}

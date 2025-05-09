@@ -1,0 +1,199 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: secrel-config-generator
+  title: SecRel Configuration Generator
+  description: Generates a config.yml for SecRel with language configurations
+
+spec:
+  owner: jnkansah-va
+  type: service
+
+  parameters:
+    - title: Select Application Language
+      required:
+        - language
+      properties:
+        language:
+          title: Select language
+          type: string
+          enum:
+            # - Python
+            # - Java
+            # - Ruby
+            - JavaScript
+        pythonVersion:
+          title: Python Version
+          type: string
+        pythonRequirements:
+          title: Path to requirements.txt
+          type: string
+        javaVersion:
+          title: Java Version
+          type: string
+        javaPackageManager:
+          title: Package Manager (Maven, Gradle)
+          type: string
+
+      ui:options:
+        showFieldLabel: true
+        conditional:
+          - if: '{{ parameters.language == "Python" }}'
+            show:
+              - pythonVersion
+              - pythonRequirements
+          - if: '{{ parameters.language == "Java" }}'
+            show: 
+              - javaVersion
+              - javaPackageManager
+
+
+
+    # - title: Python Configuration
+    #   if: '{{ parameters.language == "Python" }}'
+    #   required:
+    #     - pythonVersion
+    #     - pythonRequirements
+    #   properties:
+    #     pythonVersion:
+    #       title: Python Version
+    #       type: string
+    #     pythonRequirements:
+    #       title: Path to requirements.txt
+    #       type: string
+
+    # - title: Java Configuration
+    #   if: '{{ parameters.language == "Java" }}'
+    #   required:
+    #     - javaVersion
+    #     - javaPackageManager
+    #   properties:
+    #     javaVersion:
+    #       title: Java Version
+    #       type: string
+    #     javaPackageManager:
+    #       title: Package Manager (Maven, Gradle)
+    #       type: string
+
+    # - title: Ruby Configuration
+    #   if: '{{ parameters.language == "Ruby" }}'
+    #   required:
+    #     - rubyVersion
+    #     - rubyGemFilePath
+    #   properties:
+    #     rubyVersion:
+    #       title: Ruby Version
+    #       type: string
+    #     rubyGemFilePath:
+    #       title: Path to Gemfile
+    #       type: string
+
+    # - title: JavaScript Configuration
+    #   if: '{{ parameters.language == "JavaScript" }}'
+    #   required:
+    #     - jsVersion
+    #     - jsPackageManager
+    #   properties:
+    #     jsVersion:
+    #       title: JavaScript Version
+    #       type: string
+    #     jsPackageManager:
+    #       title: Package Manager (npm, yarn)
+    #       type: string
+
+    - title: GitHub Repository Info
+      required:
+        - owner
+        - repository
+        - defaultBranch
+      properties:
+        owner:
+          title: GitHub Owner
+          type: string
+        repository:
+          title: Repository Name
+          type: string
+        defaultBranch:
+          title: Default Branch
+          type: string
+
+  steps:
+    - id: log-selected-language
+      name: Log Selected Language
+      action: debug:log
+      input:
+        message: 'User selected language: ${{ parameters.language }}'
+
+    - id: generate-config
+      name: Generate Configuration
+      action: template
+      input:
+        template: |
+          languages:
+          %{ if parameters.language === 'Java' %}
+            java:
+              version: "${{ parameters.javaVersion }}"
+              package-manager: "${{ parameters.javaPackageManager }}"
+          %{ if parameters.javaBuildArgs %}
+              build-args:
+                ${{ parameters.javaBuildArgs | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+          %{ if parameters.language === 'Python' %}
+            python:
+              version: "${{ parameters.pythonVersion }}"
+          %{ if parameters.pythonRequirements %}
+              requirements:
+                ${{ parameters.pythonRequirements | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+          %{ if parameters.language === 'JavaScript' %}
+            javascript:
+              package-manager: "${{ parameters.javascriptPackageManager }}"
+          %{ if parameters.javascriptPackageManagerVersion %}
+              package-manager-version: "${{ parameters.javascriptPackageManagerVersion }}"
+          %{ endif %}
+              version: "${{ parameters.javascriptVersion }}"
+          %{ if parameters.javascriptEnv %}
+              env:
+                ${{ parameters.javascriptEnv | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ if parameters.javascriptBuildArgs %}
+              build-args:
+                ${{ parameters.javascriptBuildArgs | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ if parameters.javascriptPaths %}
+              paths:
+                ${{ parameters.javascriptPaths | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+          %{ if parameters.language === 'Ruby' %}
+            ruby:
+              version: "${{ parameters.rubyVersion }}"
+          %{ if parameters.rubyPaths %}
+              paths:
+                ${{ parameters.rubyPaths | splitByComma | joinBy('\n                - ') }}
+          %{ endif %}
+          %{ endif %}
+        targetFile: config.yaml
+    - id: commit-and-push
+      name: Commit and Push
+      action: publish:github
+      input:
+        message: "Add SecRel pipeline configuration"
+        author:
+          name: "Tornado Service Account"
+          email: "tornado-sa@example.com"
+        workspacePath: .
+    - id: create-pr
+      name: Create Pull Request
+      action: publish:github:pull-request
+      input:
+        repoUrl: 'github.com?owner=department-of-veterans-affairs&repo=lh-techtuesday-demo'
+        branchName: ${{ parameters.defaultBranch }}
+        targetBranchName: '.'
+        title:
+        description:
+  output:
+    remoteUrl: ${{ steps.create-pr.output.remoteUrl }}
+    pullRequestUrl: ${{ steps.create-pr.output.pullRequestUrl }}
