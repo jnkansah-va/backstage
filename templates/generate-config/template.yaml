@@ -53,7 +53,7 @@ spec:
     - id: fetch-template
       name: Fetch Config Template
       action: fetch:template
-      inputs:
+      input:
         url: "https://github.com/jnkansah-va/backstage/blob/main/templates/generate-config/template.yaml"
         targetPath: ./output
         values: "{{ parameters.languages }}"
