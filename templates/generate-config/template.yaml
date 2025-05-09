@@ -33,7 +33,7 @@ spec:
                 type: string
           javaScript:
             type: object
-            properies:
+            properties:
               nodeVersion:
                 type: string
               packageManager:
