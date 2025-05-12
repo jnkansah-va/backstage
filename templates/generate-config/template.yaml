@@ -58,13 +58,24 @@ spec:
         targetPath: ./target
         values:
           $eval: parameters
+    - id: publish
+      name: Publish Config to GitHub
+      action: publish:github:pull-request
+      inputs:
+        repoUrl: github.com?repo=backstage&owner=jnkansah-va
+        branchName: test
+        title: SecRel Config
+        description: This PR is really cool
+        targetBranchName: main
+
+
     - id: log-config
       name: Output rendered config
       action: debug:log
       input:
         message: |
           Rendered config:
-          {{ readFile('output/config.yml') }}
+          {{ readFile('target/config.yml') }}
 
   output:
     links:
