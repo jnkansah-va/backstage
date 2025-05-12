@@ -54,7 +54,7 @@ spec:
       name: Log Parameters
       action: debug:log
       input:
-        message: |
+        message: >-
           Parameters:
           ${{ JSON.stringify(parameters, null, 2) }} '
     - id: fetch-template
