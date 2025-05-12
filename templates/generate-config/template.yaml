@@ -11,44 +11,42 @@ spec:
   - title: Language Settings
     properties:
       languages:
-        type: object
-        properties:
-          java:
-            type: object
-            properties:
-              version:
+        java:
+          type: object
+          properties:
+            version:
+              type: string
+            packageManager:
+              type: string
+            buildArgs:
+              type: array
+              items:
                 type: string
-              packageManager:
+        python:
+          type: object
+          properties:
+            version:
+              type: string
+            requirements:
+              type: string
+        javaScript:
+          type: object
+          properties:
+            nodeVersion:
+              type: string
+            packageManager:
+              type: string
+            buildScript:
+              type: string
+        ruby:
+          type: object
+          properties:
+            version:
+              type: string
+            paths:
+              type: array
+              items:
                 type: string
-              buildArgs:
-                type: array
-                items:
-                  type: string
-          python:
-            type: object
-            properties:
-              version:
-                type: string
-              requirements:
-                type: string
-          javaScript:
-            type: object
-            properties:
-              nodeVersion:
-                type: string
-              packageManager:
-                type: string
-              buildScript:
-                type: string
-          ruby:
-            type: object
-            properties:
-              version:
-                type: string
-              paths:
-                type: array
-                items:
-                  type: string
   steps:
     - id: log-parameters
       name: Log Parameters
