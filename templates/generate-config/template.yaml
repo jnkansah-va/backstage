@@ -11,10 +11,10 @@ spec:
   - title: Language Settings
     properties:
       languages:
-        type: array
-        items:
-          type: object
+        type: object
+        properties:
           java:
+            type: object
             properties:
               version:
                 type: string
