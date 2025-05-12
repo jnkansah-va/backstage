@@ -61,12 +61,12 @@ spec:
     - id: publish
       name: Publish Config to GitHub
       action: publish:github:pull-request
-      inputs:
+      input:
         repoUrl: github.com?repo=backstage&owner=jnkansah-va
         branchName: test
         title: SecRel Config
         description: This PR is really cool
-        targetBranchName: main
+    
 
 
     - id: log-config
