@@ -50,13 +50,6 @@ spec:
                 items:
                   type: string
   steps:
-    - id: log-parameters
-      name: Log Parameters
-      action: debug:log
-      input:
-        message: >-
-          Parameters:
-          ${{ JSON.stringify(parameters, null, 2) }} '
     - id: fetch-template
       name: Fetch Template
       action: fetch:template
@@ -64,13 +57,13 @@ spec:
         url: ./skeleton
         targetPath: ./target
         values:
-          $eval: parameters
+          languages: ${{ parameters.languages }}
     - id: publish
       name: Publish Config to GitHub
       action: publish:github:pull-request
       input:
         repoUrl: github.com?repo=backstage&owner=jnkansah-va
-        branchName: test-3
+        branchName: test-0
         title: SecRel Config
         description: This PR is really cool
     
