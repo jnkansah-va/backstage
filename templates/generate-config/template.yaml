@@ -11,42 +11,44 @@ spec:
   - title: Language Settings
     properties:
       languages:
-        java:
+        type: array
+        items:
           type: object
-          properties:
-            version:
-              type: string
-            packageManager:
-              type: string
-            buildArgs:
-              type: array
-              items:
+          java:
+            properties:
+              version:
                 type: string
-        python:
-          type: object
-          properties:
-            version:
-              type: string
-            requirements:
-              type: string
-        javaScript:
-          type: object
-          properties:
-            nodeVersion:
-              type: string
-            packageManager:
-              type: string
-            buildScript:
-              type: string
-        ruby:
-          type: object
-          properties:
-            version:
-              type: string
-            paths:
-              type: array
-              items:
+              packageManager:
                 type: string
+              buildArgs:
+                type: array
+                items:
+                  type: string
+          python:
+            type: object
+            properties:
+              version:
+                type: string
+              requirements:
+                type: string
+          javaScript:
+            type: object
+            properties:
+              nodeVersion:
+                type: string
+              packageManager:
+                type: string
+              buildScript:
+                type: string
+          ruby:
+            type: object
+            properties:
+              version:
+                type: string
+              paths:
+                type: array
+                items:
+                  type: string
   steps:
     - id: log-parameters
       name: Log Parameters
@@ -68,7 +70,7 @@ spec:
       action: publish:github:pull-request
       input:
         repoUrl: github.com?repo=backstage&owner=jnkansah-va
-        branchName: test-2
+        branchName: test-3
         title: SecRel Config
         description: This PR is really cool
     
