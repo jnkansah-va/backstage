@@ -51,11 +51,11 @@ spec:
                   type: string
   steps:
     - id: fetch-template
-      name: Fetch Config Template
+      name: Fetch Template
       action: fetch:template
       input:
-        url: "https://github.com/jnkansah-va/backstage/blob/main/templates/generate-config/template.yaml"
-        targetPath: ./output
+        url: ./skeleton
+        targetPath: ./target
         values: "{{ parameters.languages }}"
     - id: log-config
       name: Output rendered config
