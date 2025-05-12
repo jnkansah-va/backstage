@@ -56,7 +56,8 @@ spec:
       input:
         url: ./skeleton
         targetPath: ./target
-        values: "{{ parameters.languages }}"
+        values:
+          $eval: parameters
     - id: log-config
       name: Output rendered config
       action: debug:log
