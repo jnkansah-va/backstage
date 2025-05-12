@@ -50,6 +50,11 @@ spec:
                 items:
                   type: string
   steps:
+    - id: log-parameters
+      name: Log Parameters
+      action: debug:log
+      input:
+        message: 'Parameters: ${{ parameters }} '
     - id: fetch-template
       name: Fetch Template
       action: fetch:template
@@ -81,6 +86,8 @@ spec:
     links:
       - title: View Generated config
         path: ./output/config.yml
+
+
   #       enum:
   #         - Python
   #         - JavaScript
