@@ -68,7 +68,7 @@ spec:
       action: publish:github:pull-request
       input:
         repoUrl: github.com?repo=backstage&owner=jnkansah-va
-        branchName: test-1
+        branchName: test-2
         title: SecRel Config
         description: This PR is really cool
     
