@@ -34,6 +34,13 @@ spec:
             python:
               version: ${{ parameters.pythonVersion }}
               requirements: ${{ parameters.pythonRequirements }}
+    - id: log-values
+      name: Log Values
+      action: debug:log
+      input:
+        message: |
+          Python version: ${{ parameters.pythonVersion }}
+          Requirements: ${{ parameters.pythonRequirements }}
 
     - id: log-config
       name: Log Rendered Config
