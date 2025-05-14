@@ -19,7 +19,7 @@ spec:
       if:
         properties:
           language:
-            const: "Python"
+            const: Python
       then:
         properties:
           pythonVersion:
@@ -81,17 +81,7 @@ spec:
             python:
               version: ${{ parameters.pythonVersion }}
               requirements: ${{ parameters.pythonRequirements }}
-    - id: publish
-      name: Publish Config to GitHub
-      action: publish:github:pull-request
-      input:
-        repoUrl: github.com?repo=backstage&owner=jnkansah-va
-        branchName: test-0
-        title: SecRel Config
-        description: This PR is really cool
     
-
-
     - id: log-config
       name: Output rendered config
       action: debug:log
@@ -100,10 +90,20 @@ spec:
           Rendered config:
           {{ readFile('target/config.yml') }}
 
+    - id: publish
+      name: Publish Config to GitHub
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=backstage&owner=jnkansah-va
+        branchName: test-0
+        title: SecRel Config
+        description: This PR is really cool
+  
+
   output:
     links:
       - title: View Generated config
-        path: ./output/config.yml
+        path: ./target/config.yml
 
 
   #       enum:
