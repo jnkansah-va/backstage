@@ -11,8 +11,8 @@ languages:
 
 {% if languages.python %}
   python:
-    version: ${{ languages.python.version }}
-    requirements: ${{ languages.python.requirements }}
+    version: ${{ languages.pythonVersion }}
+    requirements: ${{ languages.pythonRequirements }}
 {% endif %}
 
 {% if languages.javascript %}
