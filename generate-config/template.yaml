@@ -9,10 +9,18 @@ spec:
   type: service
 
   parameters:
-    - title: Python Settings
+    - title: Select Application Language
       required:
-        - pythonVersion
-        - pythonRequirements
+        - language
+      properties:
+        language:
+          title: Select language
+          type: string
+          enum:
+            - Python
+            - Java
+
+    - title: Python Settings
       properties:
         pythonVersion:
           type: string
@@ -21,6 +29,17 @@ spec:
           type: string
           title: Path to requirements.txt
 
+    - title: Java Settings
+      properties:
+        javaVersion:
+          type: string
+          title: Python Version
+        javaPackageManager:
+          type: string
+          title: Path to requirements.txt
+        javaBuildArgs:
+          type: string
+          title: Build Args
   steps:
     - id: fetch-template
       name: Render Template
@@ -33,15 +52,10 @@ spec:
             python:
               version: ${{ parameters.pythonVersion }}
               requirements: ${{ parameters.pythonRequirements }}
-
-    - id: log-config
-      name: Log Rendered Config
-      action: debug:log
-      input:
-        message: |
-          --- BEGIN GENERATED CONFIG ---
-          {{ readFile('target/config.yml') }}
-          --- END GENERATED CONFIG ---
+            java: 
+              version: ${{ parameters.javaVersion }}
+              packageManager: ${{ parameters.packageManager }}
+              buildArgs: ${{ parameters.buildArgs }}
 
     - id: publish
       name: Create PR

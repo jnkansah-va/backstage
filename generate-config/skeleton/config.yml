@@ -1,13 +1,13 @@
 languages:
-# {% if languages.java %}
-#   java:
-#     version: ${{ values.languages.java.version }}
-#     package-manager: ${{ values.languages.java.packageManager }}
-#     build-args:
-# {% for arg in languages.java.buildArgs %}
-#       - {{ arg }}
-# {% endfor %}
-# {% endif %}
+{% if values.languages.java %}
+  java:
+    version: ${{ values.languages.java.version }}
+    package-manager: ${{ values.languages.java.packageManager }}
+    build-args:
+{% for arg in values.languages.java.buildArgs %}
+      - {{ arg }}
+{% endfor %}
+{% endif %}
 
 {% if values.languages.python %}
   python:
@@ -15,11 +15,11 @@ languages:
     requirements: ${{ values.languages.python.requirements }}
 {% endif %}
 
-# {% if languages.javascript %}
+# {% if values.languages.javascript %}
 #   javascript:
-#     node-version: ${{ languages.javascript.nodeVersion }}
-#     package-manager: ${{ languages.javascript.packageManager }}
-#     build-script: ${{ languages.javascript.buildScript }}
+#     node-version: ${{ values.languages.javascript.nodeVersion }}
+#     package-manager: ${{ values.languages.javascript.packageManager }}
+#     build-script: ${{ values.languages.javascript.buildScript }}
 # {% endif %}
 
 # {% if languages.ruby %}
