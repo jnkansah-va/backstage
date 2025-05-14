@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: secrel-basic-python
   title: SecRel Python Config Generator (Test)
-  description: Sanity check: generates Python config only
+  description: Sanity check generates Python config only
 spec:
   owner: jnkansah-va
   type: service
