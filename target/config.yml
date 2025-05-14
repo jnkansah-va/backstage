@@ -1,0 +1,18 @@
+languages:
+
+  java:
+    version: 17
+    package-manager: 
+    build-args:
+
+
+
+
+  python:
+    version: 
+    requirements: 
+
+
+# 
+
+# 
