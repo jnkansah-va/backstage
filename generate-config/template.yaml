@@ -1,0 +1,59 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: secrel-basic-python
+  title: SecRel Python Config Generator (Test)
+  description: Sanity check: generates Python config only
+spec:
+  owner: jnkansah-va
+  type: service
+
+  parameters:
+    - title: Python Settings
+      required:
+        - pythonVersion
+        - pythonRequirements
+      properties:
+        pythonVersion:
+          type: string
+          title: Python Version
+        pythonRequirements:
+          type: string
+          title: Path to requirements.txt
+
+  steps:
+    - id: fetch-template
+      name: Render Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./target
+        values:
+          languages:
+            python:
+              version: ${{ parameters.pythonVersion }}
+              requirements: ${{ parameters.pythonRequirements }}
+
+    - id: log-config
+      name: Log Rendered Config
+      action: debug:log
+      input:
+        message: |
+          --- BEGIN GENERATED CONFIG ---
+          {{ readFile('target/config.yml') }}
+          --- END GENERATED CONFIG ---
+
+    - id: publish
+      name: Create PR
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?owner=jnkansah-va&repo=backstage
+        branchName: secrel-test-${{ uuid }}
+        title: SecRel Python Config
+        description: Adds Python config
+        update: true
+
+  output:
+    links:
+      - title: View config in PR
+        path: ./target/config.yml
