@@ -9,7 +9,7 @@ languages:
 # {% endfor %}
 # {% endif %}
 
-{% if languages.python %}
+{% if values.languages.python %}
   python:
     version: ${{ values.languages.python.version }}
     requirements: ${{ values.languages.python.requirements }}
