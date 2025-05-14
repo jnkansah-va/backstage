@@ -15,6 +15,19 @@ spec:
           title: Select Language
           enum:
             - Python
+    - title: Python Options
+      if:
+        properties:
+          language:
+            const: "Python"
+      then:
+        properties:
+          pythonVersion:
+            type: string
+            title: Python Version
+          pythonRequirements:
+            type: string
+            title: Path to requirements.txt
 
       # languages:
       #   type: object
