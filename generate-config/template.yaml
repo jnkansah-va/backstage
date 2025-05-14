@@ -28,6 +28,7 @@ spec:
       input:
         url: ./skeleton
         targetPath: ./target
+        templateFileExtension: .njk
         values:
           languages:
             python:
