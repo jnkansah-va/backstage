@@ -76,7 +76,11 @@ spec:
         url: ./skeleton
         targetPath: ./target
         values:
-          languages: ${{ parameters.languages }}
+          language: ${{ parameters.language }}
+          languages:
+            python:
+              version: ${{ parameters.pythonVersion }}
+              requirements: ${{ parameters.pythonRequirements }}
     - id: publish
       name: Publish Config to GitHub
       action: publish:github:pull-request
