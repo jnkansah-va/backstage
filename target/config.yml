@@ -1,0 +1,3 @@
+python:
+  version: {{ languages.pythonVersion }}
+  requirements: {{ languages.pythonRequirements }}
