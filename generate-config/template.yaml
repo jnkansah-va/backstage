@@ -9,47 +9,51 @@ spec:
   type: service
 
   parameters:
-    - title: Language Settings
+    - title: Python Settings
+      required:
+        - pythonVersion
+        - pythonRequirements
       properties:
-        language:
+        pythonVersion:
           type: string
-          title: Select Language
-          enum:
-            - Python
-    - title: Python Options
-      if:
-        properties:
-          language:
-            const: Python
-      then:
-        properties:
-          pythonVersion:
-            type: string
-            title: Python Version
-          pythonRequirements:
-            type: string
-            title: Path to requirements.txt
-
+          title: Python Version
+        pythonRequirements:
+          type: string
+          title: Path to requirements.txt
 
   steps:
-      - id: fetch-template
-        name: Render Template
-        action: fetch:template
-        input:
-          url: ./skeleton
-          targetPath: ./target
-          values:
-            languages:
-              python:
-                version: ${{ parameters.pythonVersion }}
-                requirements: ${{ parameters.pythonRequirements }}
+    - id: fetch-template
+      name: Render Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./target
+        values:
+          languages:
+            python:
+              version: ${{ parameters.pythonVersion }}
+              requirements: ${{ parameters.pythonRequirements }}
 
-      - id: publish
-        name: Create PR
-        action: publish:github:pull-request
-        input:
-          repoUrl: github.com?owner=jnkansah-va&repo=backstage
-          branchName: secrel-test-${{ uuid }}
-          title: SecRel Python Config
-          description: Adds Python config
-          update: true
+    - id: log-config
+      name: Log Rendered Config
+      action: debug:log
+      input:
+        message: |
+          --- BEGIN GENERATED CONFIG ---
+          {{ readFile('target/config.yml') }}
+          --- END GENERATED CONFIG ---
+
+    - id: publish
+      name: Create PR
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?owner=jnkansah-va&repo=backstage
+        branchName: secrel-test-${{ uuid }}
+        title: SecRel Python Config
+        description: Adds Python config
+        update: true
+
+  output:
+    links:
+      - title: View config in PR
+        path: ./target/config.yml
