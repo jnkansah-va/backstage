@@ -1,0 +1,29 @@
+languages:
+  python:
+    version: ${{ values.languages.python.version }}
+    requirements: ${{ values.languages.python.requirements }}
+# {% if languages.java %}
+#   java:
+#     version: ${{ values.languages.java.version }}
+#     package-manager: ${{ values.languages.java.packageManager }}
+#     build-args:
+# {% for arg in languages.java.buildArgs %}
+#       - {{ arg }}
+# {% endfor %}
+# {% endif %}
+
+# {% if languages.javascript %}
+#   javascript:
+#     node-version: ${{ languages.javascript.nodeVersion }}
+#     package-manager: ${{ languages.javascript.packageManager }}
+#     build-script: ${{ languages.javascript.buildScript }}
+# {% endif %}
+
+# {% if languages.ruby %}
+#   ruby:
+#     version: ${{ languages.ruby.version }}
+#     paths:
+# {% for gem in languages.ruby.paths %}
+#       - {{ gem }}
+# {% endfor %}
+# {% endif %}
