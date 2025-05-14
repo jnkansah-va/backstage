@@ -9,67 +9,47 @@ spec:
   type: service
 
   parameters:
-    - title: Python Settings
-      required:
-        - pythonVersion
-        - pythonRequirements
+    - title: Language Settings
       properties:
-        pythonVersion:
+        language:
           type: string
-          title: Python Version
-        pythonRequirements:
-          type: string
-          title: Path to requirements.txt
+          title: Select Language
+          enum:
+            - Python
+    - title: Python Options
+      if:
+        properties:
+          language:
+            const: Python
+      then:
+        properties:
+          pythonVersion:
+            type: string
+            title: Python Version
+          pythonRequirements:
+            type: string
+            title: Path to requirements.txt
+
 
   steps:
-    - id: fetch-template
-      name: Render Template
-      action: fetch:template
-      input:
-        url: ./skeleton
-        targetPath: ./target
-        templateFileExtension: .njk
-        values:
-          languages:
-            python:
-              version: ${{ parameters.pythonVersion }}
-              requirements: ${{ parameters.pythonRequirements }}
-    - id: log-values
-      name: Log Values
-      action: debug:log
-      input:
-        message: |
-          Python version: ${{ parameters.pythonVersion }}
-          Requirements: ${{ parameters.pythonRequirements }}
+      - id: fetch-template
+        name: Render Template
+        action: fetch:template
+        input:
+          url: ./skeleton
+          targetPath: ./target
+          values:
+            languages:
+              python:
+                version: ${{ parameters.pythonVersion }}
+                requirements: ${{ parameters.pythonRequirements }}
 
-    - id: list-files
-      name: List Target Dir
-      action: debug:log
-      input:
-        message: |
-          {{ listFiles('target') | dump }}
-
-
-    - id: log-config
-      name: Log Rendered Config
-      action: debug:log
-      input:
-        message: |
-          --- BEGIN GENERATED CONFIG ---
-          {{ readFile('target/config.yml') }}
-          --- END GENERATED CONFIG ---
-
-    - id: publish
-      name: Create PR
-      action: publish:github:pull-request
-      input:
-        repoUrl: github.com?owner=jnkansah-va&repo=backstage
-        branchName: secrel-test-${{ uuid }}
-        title: SecRel Python Config
-        description: Adds Python config
-        update: true
-
-  output:
-    links:
-      - title: View config in PR
-        path: ./target/config.yml
+      - id: publish
+        name: Create PR
+        action: publish:github:pull-request
+        input:
+          repoUrl: github.com?owner=jnkansah-va&repo=backstage
+          branchName: secrel-test-${{ uuid }}
+          title: SecRel Python Config
+          description: Adds Python config
+          update: true
