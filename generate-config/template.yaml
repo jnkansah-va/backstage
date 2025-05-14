@@ -42,6 +42,14 @@ spec:
           Python version: ${{ parameters.pythonVersion }}
           Requirements: ${{ parameters.pythonRequirements }}
 
+    - id: list-files
+      name: List Target Dir
+      action: debug:log
+      input:
+        message: |
+          {{ listFiles('target') | dump }}
+
+
     - id: log-config
       name: Log Rendered Config
       action: debug:log
