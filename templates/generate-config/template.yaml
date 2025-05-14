@@ -8,13 +8,14 @@ spec:
   owner: jnkansah-va
   type: service
   parameters:
-  - title: Language Settings
-    properties:
-      language:
-        title: Select Language
-        enum:
-          - Python
-        ui:widget: checkboxes
+    - title: Language Settings
+      properties:
+        language:
+          type: string
+          title: Select Language
+          enum:
+            - Python
+
       # languages:
       #   type: object
       #   properties:
