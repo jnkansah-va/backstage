@@ -15,7 +15,7 @@ languages:
     requirements:
 {% for req in values.languages.python.requirements %}
       - {{ req}}
-{% end for %}
+{% endfor %}
 {% endif %}
 
 {% endfor %}
