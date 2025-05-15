@@ -13,31 +13,31 @@ languages:
   python:
     version: ${{ values.languages.python.version }}
     requirements:
-{% for req in values.languages.python.requirements }
-      -{{ req }}
+{% for req in values.languages.python.requirements.split(',') %}
+      - {{ req.strip() }}
+{% endfor %}
 {% endif %}
 
 {% if values.languages.javascript %}
   javascript:
     package-manager: ${{ values.languages.javascript.packageManager }}
     package-manager-version: ${{ values.languages.javascript.nodeVersion }}
-    version: ${{ values.languages.javascript.}}
+    version: ${{ values.languages.javascript.version }}
     env:
 {% for env in values.languages.javascript.env %}
       - {{ env }}
-{% endfor %}    
+{% endfor %}
     build-args:
 {% for arg in values.languages.javascript.buildArgs %}
       - {{ arg }}
 {% endfor %}
     paths:
-{% for path in values.languages.java.buildArgs %}
-      - {{ arg }}
+{% for path in values.languages.javascript.paths %}
+      - {{ path }}
 {% endfor %}
-
 {% endif %}
 
-{% if languages.ruby %}
+{% if values.languages.ruby %}
   ruby:
     version: ${{ values.languages.ruby.version }}
     paths:
