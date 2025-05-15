@@ -15,18 +15,31 @@ languages:
     requirements: ${{ values.languages.python.requirements }}
 {% endif %}
 
-# {% if values.languages.javascript %}
-#   javascript:
-#     node-version: ${{ values.languages.javascript.nodeVersion }}
-#     package-manager: ${{ values.languages.javascript.packageManager }}
-#     build-script: ${{ values.languages.javascript.buildScript }}
-# {% endif %}
+{% if values.languages.javascript %}
+  javascript:
+    package-manager: ${{ values.languages.javascript.packageManager }}
+    package-manager-version: ${{ values.languages.javascript.nodeVersion }}
+    version: ${{ values.languages.javascript.}}
+    env:
+{% for env in values.languages.javascript.env %}
+      - {{ env }}
+{% endfor %}    
+    build-args:
+{% for arg in values.languages.javascript.buildArgs %}
+      - {{ arg }}
+{% endfor %}
+    paths:
+{% for path in values.languages.java.buildArgs %}
+      - {{ arg }}
+{% endfor %}
 
-# {% if languages.ruby %}
-#   ruby:
-#     version: ${{ languages.ruby.version }}
-#     paths:
-# {% for gem in languages.ruby.paths %}
-#       - {{ gem }}
-# {% endfor %}
-# {% endif %}
+{% endif %}
+
+{% if languages.ruby %}
+  ruby:
+    version: ${{ values.languages.ruby.version }}
+    paths:
+{% for gem in values.languages.ruby.paths %}
+      - {{ gem }}
+{% endfor %}
+{% endif %}

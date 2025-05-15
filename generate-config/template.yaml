@@ -19,6 +19,8 @@ spec:
           enum:
             - Python
             - Java
+            - Javascript
+            - Ruby
 
     - title: Python Settings
       properties:
@@ -36,10 +38,41 @@ spec:
           title: Python Version
         javaPackageManager:
           type: string
-          title: Path to requirements.txt
+          title: Java Package Manager
         javaBuildArgs:
           type: string
-          title: Build Args
+          title: Args to pass to package manager
+
+    - title: JavaScript Settings
+      properties:
+        javascriptVersion:
+          type: string
+          title: Javascript Version
+        javascriptPackageManager:
+          type: string
+          title: Javascript Package Manager
+        javascriptPackageManagerVersion:
+          type: string
+          title: Version of Javascript package manager
+        javascriptEnv:
+          type: string
+          title: Environmental variables used by package manager
+        javascriptBuildArgs:
+          type: string
+          title: Args to pass to package manager
+        javascriptPaths:
+          type: string
+          title: Paths to dependencies
+
+    - title: Ruby Settings
+      properties:
+        rubyVersion:
+          type: string
+          title: Ruby Version
+        rubyPaths:
+          type: string
+          title: Paths to gemfiles
+
   steps:
     - id: fetch-template
       name: Render Template
@@ -56,6 +89,16 @@ spec:
               version: ${{ parameters.javaVersion }}
               packageManager: ${{ parameters.packageManager }}
               buildArgs: ${{ parameters.buildArgs }}
+            javascript:
+              version: ${{ parameters.javascriptVersion }}
+              packageManager: ${{ parameters.javascriptPackageManager}}
+              packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
+              env: $${{ parameters.javascriptEnv }}
+              buildArgs: ${{ parameters.javascriptBuildArgs }}
+              paths: ${{ parameters.javascriptPaths }}
+            ruby:
+              version: ${{ parameters.rubyVersion }}
+              paths: ${{ parameters.rubyPaths }}
 
     - id: publish
       name: Create PR
