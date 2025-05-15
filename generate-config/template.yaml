@@ -35,7 +35,7 @@ spec:
       properties:
         javaVersion:
           type: string
-          title: Python Version
+          title: Java Version
         javaPackageManager:
           type: string
           title: Java Package Manager
@@ -71,7 +71,7 @@ spec:
           title: Ruby Version
         rubyPaths:
           type: string
-          title: Paths to gemfiles
+          title: Path to gemfiles
 
   steps:
     - id: fetch-template
