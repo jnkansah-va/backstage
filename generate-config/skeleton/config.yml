@@ -14,7 +14,7 @@ languages:
     requirements:
     {% for req in values.languages.python.requirements.split(',') %}
       - {{ req.strip() }}
-    {% endfor %}
+    {% end for %}
   {% endif %}
 
 {% endfor %}
