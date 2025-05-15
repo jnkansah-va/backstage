@@ -11,11 +11,12 @@ languages:
 
 {% if values.languages.python %}
   python:
+    version: ${{ values.languages.python.version }}
     requirements:
-    {% for req in values.languages.python.requirements.split(',') %}
-      - {{ req.strip() }}
-    {% end for %}
-  {% endif %}
+{% for req in values.languages.python.requirements %}
+      - {{ req}}
+{% end for %}
+{% endif %}
 
 {% endfor %}
 {% endif %}
