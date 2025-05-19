@@ -1,0 +1,54 @@
+languages:
+  javascript:
+    package-manager: yarn
+    package-manager-version: 3.6.0
+    version: 
+    env:
+      - $
+      - G
+      - I
+      - T
+      - H
+      - U
+      - B
+      - _
+      - T
+      - O
+      - K
+      - E
+      - N
+      - =
+      - $
+      - {
+      - {
+      -  
+      - s
+      - e
+      - c
+      - r
+      - e
+      - t
+      - s
+      - .
+      - A
+      - C
+      - C
+      - E
+      - S
+      - S
+      - _
+      - T
+      - O
+      - K
+      - E
+      - N
+      -  
+      - }
+      - }
+    build-args:
+      - {{ arg }}
+      - {{ arg }}
+      - {{ arg }}
+    paths:
+      - ./app/backend/
+
