@@ -92,7 +92,7 @@ spec:
             requirements: ${{ parameters.pythonRequirements }}
           java: 
             version: ${{ parameters.javaVersion }}
-            packageManager: ${{ parameters.javapackageManager }}
+            packageManager: ${{ parameters.javaPackageManager }}
             buildArgs: ${{ parameters.javaBuildArgs }}
           javascript:
               version: ${{ parameters.javascriptVersion }}
