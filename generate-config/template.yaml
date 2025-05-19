@@ -22,8 +22,7 @@ spec:
             - Javascript
             - Ruby
 
-    - name: Python Settings
-      if: ${{ parameters.properties.language === "Python" }}
+    - title: Python Settings
       properties:
         pythonVersion:
           type: string
