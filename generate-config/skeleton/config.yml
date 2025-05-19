@@ -1,5 +1,5 @@
 languages:
-{% if values.language == "Python" %}
+{%- if values.language == "Python" %}
   python:
     version: ${{ values.python.version }}
     requirements: ${{ values.python.requirements }}
