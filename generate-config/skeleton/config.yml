@@ -3,7 +3,7 @@ languages:
   python:
     version: ${{ values.python.version }}
     requirements:
-{% for req in parameters.pythonRequirements %}
+{% for req in values.python.requirements %}
    - {{ req }}
 {% endfor %}
 {% endif %}
