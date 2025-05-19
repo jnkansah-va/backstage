@@ -18,9 +18,6 @@ languages:
 {% endfor %}
 {% endif %}
 
-{% endfor %}
-{% endif %}
-
 {% if values.languages.javascript %}
   javascript:
     package-manager: ${{ values.languages.javascript.packageManager }}
