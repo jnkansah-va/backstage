@@ -5,7 +5,7 @@ languages:
     requirements:
 {% for req in values.pythonRequirements %}
    - {{ req }}
-{% endfor }
+{% endfor %}
 {% endif %}
 
 # {% if values.languages == "Java" %}
