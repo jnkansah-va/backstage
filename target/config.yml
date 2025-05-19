@@ -1,0 +1,69 @@
+languages:
+
+  java:
+    version: 
+    package-manager: 
+    build-args:
+
+
+
+
+  python:
+    version: 3.11
+    requirements:
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+      - {{ req}}
+
+
+
+
+  javascript:
+    package-manager: 
+    package-manager-version: 
+    version: 
+    env:
+
+      - {{ env }}
+
+    build-args:
+
+    paths:
+
+
+
+
+  ruby:
+    version: 
+    paths:
+
+
