@@ -83,10 +83,10 @@ spec:
         url: ./skeleton
         targetPath: ./target
         values:
-          language: ${{ parameters.language}}
+          language: ${{ parameters.language }}
           python:
-              version: ${{ parameters.pythonVersion }}
-              requirements: ${{ parameters.pythonRequirements }}
+            version: ${{ parameters.pythonVersion }}
+            requirements: ${{ parameters.pythonRequirements }}
           java: 
               version: ${{ parameters.javaVersion }}
               packageManager: ${{ parameters.packageManager }}
