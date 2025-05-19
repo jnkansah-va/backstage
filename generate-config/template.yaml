@@ -83,22 +83,22 @@ spec:
         url: ./skeleton
         targetPath: ./target
         values:
-          languages:
-            python:
+          language: ${{ parameters.language}}
+          python:
               version: ${{ parameters.pythonVersion }}
               requirements: ${{ parameters.pythonRequirements }}
-            java: 
+          java: 
               version: ${{ parameters.javaVersion }}
               packageManager: ${{ parameters.packageManager }}
               buildArgs: ${{ parameters.buildArgs }}
-            javascript:
+          javascript:
               version: ${{ parameters.javascriptVersion }}
               packageManager: ${{ parameters.javascriptPackageManager}}
               packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
               env: $${{ parameters.javascriptEnv }}
               buildArgs: ${{ parameters.javascriptBuildArgs }}
               paths: ${{ parameters.javascriptPaths }}
-            ruby:
+          ruby:
               version: ${{ parameters.rubyVersion }}
               paths: ${{ parameters.rubyPaths }}
 

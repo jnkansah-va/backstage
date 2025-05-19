@@ -1,5 +1,5 @@
 languages:
-{% if values.languages.java %}
+{% if values.languages == "Java" %}
   java:
     version: ${{ values.languages.java.version }}
     package-manager: ${{ values.languages.java.packageManager }}
@@ -9,7 +9,7 @@ languages:
 {% endfor %}
 {% endif %}
 
-{% if values.languages.python %}
+{% if values.languages == "Python" %}
   python:
     version: ${{ values.languages.python.version }}
     requirements:
@@ -18,7 +18,7 @@ languages:
 {% endfor %}
 {% endif %}
 
-{% if values.languages.javascript %}
+{% if values.languages == "Javascript" %}
   javascript:
     package-manager: ${{ values.languages.javascript.packageManager }}
     package-manager-version: ${{ values.languages.javascript.nodeVersion }}
@@ -37,7 +37,7 @@ languages:
 {% endfor %}
 {% endif %}
 
-{% if values.languages.ruby %}
+{% if values.languages == "Ruby" %}
   ruby:
     version: ${{ values.languages.ruby.version }}
     paths:
