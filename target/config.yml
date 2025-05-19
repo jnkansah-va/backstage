@@ -1,0 +1,16 @@
+languages:
+  java:
+    version: 17
+    package-manager: 
+    build-args:
+      - -B
+      - -Dusername=${{ secrets.USERNAME }}
+      - -Dpassword=${{ secrets.PASSWORD }}
+      - -Da_property=some-value
+
+
+
+
+# 
+
+# 
