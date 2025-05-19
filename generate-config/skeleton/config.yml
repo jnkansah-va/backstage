@@ -22,7 +22,7 @@ languages:
   javascript:
     package-manager: ${{ values.javascript.packageManager }}
     package-manager-version: ${{ values.javascript.packageManagerVersion }}
-    version: ${{ values.languages.javascript.version }}
+    version: ${{ values.javascript.version }}
     env:
 {%- for env in values.javascript.env %}
       - ${{ env }}
