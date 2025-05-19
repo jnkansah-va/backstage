@@ -1,47 +1,48 @@
 languages:
-{% if values.languages == "Java" %}
-  java:
-    version: ${{ values.languages.java.version }}
-    package-manager: ${{ values.languages.java.packageManager }}
-    build-args:
-{% for arg in values.languages.java.buildArgs %}
-      - {{ arg }}
-{% endfor %}
-{% endif %}
-
-{% if values.languages == "Python" %}
+{% if values.language == "Python" %}
   python:
-    version: ${{ values.languages.python.version }}
+    version: ${{ values.python.version }}
     requirements:
-{% for req in values.languages.python.requirements %}
+{% for req in values.python.requirements %}
       - {{ req}}
 {% endfor %}
 {% endif %}
+# {% if values.languages == "Java" %}
+#   java:
+#     version: ${{ values.languages.java.version }}
+#     package-manager: ${{ values.languages.java.packageManager }}
+#     build-args:
+# {% for arg in values.languages.java.buildArgs %}
+#       - {{ arg }}
+# {% endfor %}
+# {% endif %}
 
-{% if values.languages == "Javascript" %}
-  javascript:
-    package-manager: ${{ values.languages.javascript.packageManager }}
-    package-manager-version: ${{ values.languages.javascript.nodeVersion }}
-    version: ${{ values.languages.javascript.version }}
-    env:
-{% for env in values.languages.javascript.env %}
-      - {{ env }}
-{% endfor %}
-    build-args:
-{% for arg in values.languages.javascript.buildArgs %}
-      - {{ arg }}
-{% endfor %}
-    paths:
-{% for path in values.languages.javascript.paths %}
-      - {{ path }}
-{% endfor %}
-{% endif %}
 
-{% if values.languages == "Ruby" %}
-  ruby:
-    version: ${{ values.languages.ruby.version }}
-    paths:
-{% for gem in values.languages.ruby.paths %}
-      - {{ gem }}
-{% endfor %}
-{% endif %}
+
+# {% if values.languages == "Javascript" %}
+#   javascript:
+#     package-manager: ${{ values.languages.javascript.packageManager }}
+#     package-manager-version: ${{ values.languages.javascript.nodeVersion }}
+#     version: ${{ values.languages.javascript.version }}
+#     env:
+# {% for env in values.languages.javascript.env %}
+#       - {{ env }}
+# {% endfor %}
+#     build-args:
+# {% for arg in values.languages.javascript.buildArgs %}
+#       - {{ arg }}
+# {% endfor %}
+#     paths:
+# {% for path in values.languages.javascript.paths %}
+#       - {{ path }}
+# {% endfor %}
+# {% endif %}
+
+# {% if values.languages == "Ruby" %}
+#   ruby:
+#     version: ${{ values.languages.ruby.version }}
+#     paths:
+# {% for gem in values.languages.ruby.paths %}
+#       - {{ gem }}
+# {% endfor %}
+# {% endif %}

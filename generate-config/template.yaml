@@ -33,47 +33,47 @@ spec:
           items:
             type: string
 
-    - title: Java Settings
-      properties:
-        javaVersion:
-          type: string
-          title: Java Version
-        javaPackageManager:
-          type: string
-          title: Java Package Manager
-        javaBuildArgs:
-          type: string
-          title: Args to pass to package manager
+    # - title: Java Settings
+    #   properties:
+    #     javaVersion:
+    #       type: string
+    #       title: Java Version
+    #     javaPackageManager:
+    #       type: string
+    #       title: Java Package Manager
+    #     javaBuildArgs:
+    #       type: string
+    #       title: Args to pass to package manager
 
-    - title: JavaScript Settings
-      properties:
-        javascriptVersion:
-          type: string
-          title: Javascript Version
-        javascriptPackageManager:
-          type: string
-          title: Javascript Package Manager
-        javascriptPackageManagerVersion:
-          type: string
-          title: Version of Javascript package manager
-        javascriptEnv:
-          type: string
-          title: Environmental variables used by package manager
-        javascriptBuildArgs:
-          type: string
-          title: Args to pass to package manager
-        javascriptPaths:
-          type: string
-          title: Paths to dependencies
+    # - title: JavaScript Settings
+    #   properties:
+    #     javascriptVersion:
+    #       type: string
+    #       title: Javascript Version
+    #     javascriptPackageManager:
+    #       type: string
+    #       title: Javascript Package Manager
+    #     javascriptPackageManagerVersion:
+    #       type: string
+    #       title: Version of Javascript package manager
+    #     javascriptEnv:
+    #       type: string
+    #       title: Environmental variables used by package manager
+    #     javascriptBuildArgs:
+    #       type: string
+    #       title: Args to pass to package manager
+    #     javascriptPaths:
+    #       type: string
+    #       title: Paths to dependencies
 
-    - title: Ruby Settings
-      properties:
-        rubyVersion:
-          type: string
-          title: Ruby Version
-        rubyPaths:
-          type: string
-          title: Path to gemfiles
+    # - title: Ruby Settings
+    #   properties:
+    #     rubyVersion:
+    #       type: string
+    #       title: Ruby Version
+    #     rubyPaths:
+    #       type: string
+    #       title: Path to gemfiles
 
   steps:
     - id: fetch-template
