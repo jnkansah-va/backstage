@@ -18,26 +18,24 @@ languages:
 {%- endfor %}
 {% endif %}
 
-
-
-# {% if values.languages == "Javascript" %}
-#   javascript:
-#     package-manager: ${{ values.languages.javascript.packageManager }}
-#     package-manager-version: ${{ values.languages.javascript.nodeVersion }}
-#     version: ${{ values.languages.javascript.version }}
-#     env:
-# {% for env in values.languages.javascript.env %}
-#       - {{ env }}
-# {% endfor %}
-#     build-args:
-# {% for arg in values.languages.javascript.buildArgs %}
-#       - {{ arg }}
-# {% endfor %}
-#     paths:
-# {% for path in values.languages.javascript.paths %}
-#       - {{ path }}
-# {% endfor %}
-# {% endif %}
+{%- if values.languages == "Javascript" %}
+  javascript:
+    package-manager: ${{ values.javascript.packageManager }}
+    package-manager-version: ${{ values.javascript.packageManagerVersion }}
+    version: ${{ values.languages.javascript.version }}
+    env:
+{%- for env in values.javascript.env %}
+      - ${{ env }}
+{%- endfor %}
+    build-args:
+{%- for arg in values.javascript.buildArgs %}
+      - {{ arg }}
+{%- endfor %}
+    paths:
+{%- for path in values.javascript.paths %}
+      - ${{ path }}
+{%- endfor %}
+{% endif %}
 
 # {% if values.languages == "Ruby" %}
 #   ruby:
