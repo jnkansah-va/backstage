@@ -25,7 +25,7 @@ languages:
     version: ${{ values.javascript.version }}
     env:
 {%- for env in values.javascript.env %}
-      - {{ env }}
+      - "{{ env }}""
 {%- endfor %}
 #     build-args:
 # {%- for arg in values.javascript.buildArgs %}
