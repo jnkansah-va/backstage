@@ -8,15 +8,15 @@ languages:
 {%- endfor %}
 {% endif %}
 
-# {% if values.languages == "Java" %}
-#   java:
-#     version: ${{ values.languages.java.version }}
-#     package-manager: ${{ values.languages.java.packageManager }}
-#     build-args:
-# {% for arg in values.languages.java.buildArgs %}
-#       - {{ arg }}
-# {% endfor %}
-# {% endif %}
+{%- if values.language == "Java" %}
+  java:
+    version: ${{ values.java.version }}
+    package-manager: ${{ values.java.packageManager }}
+    build-args:
+{%- for arg in values.java.buildArgs %}
+      - ${{ arg }}
+{%- endfor %}
+{% endif %}
 
 
 

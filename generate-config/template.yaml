@@ -33,17 +33,20 @@ spec:
           title: Path to requirements.txt
           items:
             type: string
-    # - title: Java Settings
-    #   properties:
-    #     javaVersion:
-    #       type: string
-    #       title: Java Version
-    #     javaPackageManager:
-    #       type: string
-    #       title: Java Package Manager
-    #     javaBuildArgs:
-    #       type: string
-    #       title: Args to pass to package manager
+    - title: Java Settings
+      type: object
+      properties:
+        javaVersion:
+          type: string
+          title: Java Version
+        javaPackageManager:
+          type: string
+          title: Java Package Manager
+        javaBuildArgs:
+          type: array
+          title: Args to pass to package manager
+          items:
+            type: string
 
     # - title: JavaScript Settings
     #   properties:
@@ -88,9 +91,9 @@ spec:
             version: ${{ parameters.pythonVersion }}
             requirements: ${{ parameters.pythonRequirements }}
           java: 
-              version: ${{ parameters.javaVersion }}
-              packageManager: ${{ parameters.packageManager }}
-              buildArgs: ${{ parameters.buildArgs }}
+            version: ${{ parameters.javaVersion }}
+            packageManager: ${{ parameters.packageManager }}
+            buildArgs: ${{ parameters.buildArgs }}
           javascript:
               version: ${{ parameters.javascriptVersion }}
               packageManager: ${{ parameters.javascriptPackageManager}}
