@@ -1,0 +1,10 @@
+languages:
+
+#
+  ruby:
+    version: 3.2.3
+    paths:
+      - Gemfile
+      - modules/api/Gemfile
+      - modules/forms/Gemfile
+
