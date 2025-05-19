@@ -1,0 +1,13 @@
+languages:
+  java:
+    version: 17
+    package-manager: 
+    build-args:
+      - -B
+
+
+
+
+# 
+
+# 
