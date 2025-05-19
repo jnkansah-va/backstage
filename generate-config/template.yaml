@@ -28,8 +28,10 @@ spec:
           type: string
           title: Python Version
         pythonRequirements:
-          type: string
+          type: array
           title: Path to requirements.txt
+        items:
+          type: string
     # - title: Java Settings
     #   properties:
     #     javaVersion:

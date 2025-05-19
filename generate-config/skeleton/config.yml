@@ -2,8 +2,12 @@ languages:
 {%- if values.language == "Python" %}
   python:
     version: ${{ values.python.version }}
-    requirements: ${{ values.python.requirements }}
+    requirements:
+{% for req in values.pythonRequirements %}
+   - {{ req }}
+{% endfor }
 {% endif %}
+
 # {% if values.languages == "Java" %}
 #   java:
 #     version: ${{ values.languages.java.version }}
