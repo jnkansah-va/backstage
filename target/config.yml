@@ -1,0 +1,52 @@
+languages:
+  javascript:
+    package-manager: yarn
+    package-manager-version: 3.6.0
+    version: 16.15.0
+    env:
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+      - "{{ env }}""
+#     build-args:
+#
+#     paths:
+#
+
