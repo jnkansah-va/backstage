@@ -4,7 +4,7 @@ languages:
     version: ${{ values.python.version }}
     requirements:
 {% for requirement in values.python.requirements %}
-      - {{ requirement }}
+      - ${{ requirement }}
 {% endfor %}
 {% endif %}
 
