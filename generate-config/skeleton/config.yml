@@ -23,13 +23,15 @@ languages:
     package-manager: ${{ values.javascript.packageManager }}
     package-manager-version: ${{ values.javascript.packageManagerVersion }}
     version: ${{ values.javascript.version }}
-    env:
-{%- for env in values.javascript.env %}
-      - "{{ env }}"
+    build-args:
+{%- for arg in values.javascript.buildArgs %}
+      - ${{ arg }}
 {%- endfor %}
-#     build-args:
-# {%- for arg in values.javascript.buildArgs %}
-#       - {{ arg }}
+#     env:
+# {%- for env in values.javascript.env %}
+#       - "{{ env }}"
+# {%- endfor %}
+
 # {%- endfor %}
 #     paths:
 # {%- for path in values.javascript.paths %}
