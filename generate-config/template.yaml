@@ -76,14 +76,17 @@ spec:
           items:
             type: string
 
-    # - title: Ruby Settings
-    #   properties:
-    #     rubyVersion:
-    #       type: string
-    #       title: Ruby Version
-    #     rubyPaths:
-    #       type: string
-    #       title: Path to gemfiles
+    - title: Ruby Settings
+      type: object
+      properties:
+        rubyVersion:
+          type: string
+          title: Ruby Version
+        rubyPaths:
+          type: array
+          title: Path to gemfiles
+          items:
+            type: string
 
   steps:
     - id: fetch-template
@@ -102,15 +105,15 @@ spec:
             packageManager: ${{ parameters.javaPackageManager }}
             buildArgs: ${{ parameters.javaBuildArgs }}
           javascript:
-              version: ${{ parameters.javascriptVersion }}
-              packageManager: ${{ parameters.javascriptPackageManager}}
-              packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
-              env: $${{ parameters.javascriptEnv }}
-              buildArgs: ${{ parameters.javascriptBuildArgs }}
-              paths: ${{ parameters.javascriptPaths }}
+            version: ${{ parameters.javascriptVersion }}
+            packageManager: ${{ parameters.javascriptPackageManager}}
+            packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
+            env: $${{ parameters.javascriptEnv }}
+            buildArgs: ${{ parameters.javascriptBuildArgs }}
+            paths: ${{ parameters.javascriptPaths }}
           ruby:
-              version: ${{ parameters.rubyVersion }}
-              paths: ${{ parameters.rubyPaths }}
+            version: ${{ parameters.rubyVersion }}
+            paths: ${{ parameters.rubyPaths }}
 
     - id: publish
       name: Create PR
