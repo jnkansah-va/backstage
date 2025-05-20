@@ -23,10 +23,6 @@ spec:
             - Ruby
 
     - title: Python Settings
-      if:
-        properties:
-          language:
-            const: Python
       type: object
       properties:
         pythonVersion:
@@ -37,60 +33,60 @@ spec:
           title: Path to requirements.txt
           items:
             type: string
-    # - title: Java Settings
-    #   type: object
-    #   properties:
-    #     javaVersion:
-    #       type: string
-    #       title: Java Version
-    #     javaPackageManager:
-    #       type: string
-    #       title: Java Package Manager
-    #     javaBuildArgs:
-    #       type: array
-    #       title: Args to pass to package manager
-    #       items:
-    #         type: string
+    - title: Java Settings
+      type: object
+      properties:
+        javaVersion:
+          type: string
+          title: Java Version
+        javaPackageManager:
+          type: string
+          title: Java Package Manager
+        javaBuildArgs:
+          type: array
+          title: Args to pass to package manager
+          items:
+            type: string
 
-    # - title: JavaScript Settings
-    #   type: object
-    #   properties:
-    #     javascriptVersion:
-    #       type: string
-    #       title: Javascript Version
-    #     javascriptPackageManager:
-    #       type: string
-    #       title: Javascript Package Manager
-    #     javascriptPackageManagerVersion:
-    #       type: string
-    #       title: Version of Javascript package manager
-    #     javascriptEnv:
-    #       type: array
-    #       title: Environmental variables used by package manager
-    #       items:
-    #         type: string
-    #     javascriptBuildArgs:
-    #       type: array
-    #       title: Args to pass to package manager
-    #       items:
-    #         type: string
-    #     javascriptPaths:
-    #       type: array
-    #       title: Paths to dependencies
-    #       items:
-    #         type: string
+    - title: JavaScript Settings
+      type: object
+      properties:
+        javascriptVersion:
+          type: string
+          title: Javascript Version
+        javascriptPackageManager:
+          type: string
+          title: Javascript Package Manager
+        javascriptPackageManagerVersion:
+          type: string
+          title: Version of Javascript package manager
+        javascriptEnv:
+          type: array
+          title: Environmental variables used by package manager
+          items:
+            type: string
+        javascriptBuildArgs:
+          type: array
+          title: Args to pass to package manager
+          items:
+            type: string
+        javascriptPaths:
+          type: array
+          title: Paths to dependencies
+          items:
+            type: string
 
-    # - title: Ruby Settings
-    #   type: object
-    #   properties:
-    #     rubyVersion:
-    #       type: string
-    #       title: Ruby Version
-    #     rubyPaths:
-    #       type: array
-    #       title: Path to gemfiles
-    #       items:
-    #         type: string
+    - title: Ruby Settings
+      type: object
+      properties:
+        rubyVersion:
+          type: string
+          title: Ruby Version
+        rubyPaths:
+          type: array
+          title: Path to gemfiles
+          items:
+            type: string
 
   steps:
     - id: fetch-template
@@ -104,20 +100,20 @@ spec:
           python:
             version: ${{ parameters.pythonVersion }}
             requirements: ${{ parameters.pythonRequirements }}
-          # java: 
-          #   version: ${{ parameters.javaVersion }}
-          #   packageManager: ${{ parameters.javaPackageManager }}
-          #   buildArgs: ${{ parameters.javaBuildArgs }}
-          # javascript:
-          #   version: ${{ parameters.javascriptVersion }}
-          #   packageManager: ${{ parameters.javascriptPackageManager}}
-          #   packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
-          #   env: ${{ parameters.javascriptEnv }}
-          #   buildArgs: ${{ parameters.javascriptBuildArgs }}
-          #   paths: ${{ parameters.javascriptPaths }}
-          # ruby:
-          #   version: ${{ parameters.rubyVersion }}
-          #   paths: ${{ parameters.rubyPaths }}
+          java: 
+            version: ${{ parameters.javaVersion }}
+            packageManager: ${{ parameters.javaPackageManager }}
+            buildArgs: ${{ parameters.javaBuildArgs }}
+          javascript:
+            version: ${{ parameters.javascriptVersion }}
+            packageManager: ${{ parameters.javascriptPackageManager}}
+            packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
+            env: ${{ parameters.javascriptEnv }}
+            buildArgs: ${{ parameters.javascriptBuildArgs }}
+            paths: ${{ parameters.javascriptPaths }}
+          ruby:
+            version: ${{ parameters.rubyVersion }}
+            paths: ${{ parameters.rubyPaths }}
 
     - id: publish
       name: Create PR
