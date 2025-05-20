@@ -1,0 +1,11 @@
+languages:
+  javascript:
+    package-manager: yarn
+    package-manager-version: 3.6.0
+    version: 16.15.0
+    build-args:
+      - --prefer-offline
+      - --ignore-scripts
+    paths:
+      - ./app/backend/
+
