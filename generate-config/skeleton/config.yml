@@ -27,6 +27,9 @@ languages:
 {%- for arg in values.javascript.buildArgs %}
       - ${{ arg }}
 {%- endfor %}
+    paths:
+{%- for path in values.javascript.paths %}
+      - ${{ path }}
 {% endif %}
 
 {%- if values.language == "Ruby" %}
