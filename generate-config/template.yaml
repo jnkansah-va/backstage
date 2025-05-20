@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: secrel-basic-python
-  title: SecRel Python Config Generator (Test)
-  description: Sanity check generates Python config only
+  name: secrel-pipeline-configuration
+  title: Secrel Pipeline Configuration
+  description: Generates the config file necessary to run SecRel and build your application. Pushed PR to GitHub repository. 
 spec:
   owner: jnkansah-va
   type: service
@@ -94,7 +94,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: ./target
+        targetPath: ./github/secrel
         values:
           language: ${{ parameters.language }}
           python:
