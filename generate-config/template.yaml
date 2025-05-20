@@ -22,17 +22,17 @@ spec:
             - Javascript
             - Ruby
 
-    # - title: Python Settings
-    #   type: object
-    #   properties:
-    #     pythonVersion:
-    #       type: string
-    #       title: Python Version
-    #     pythonRequirements:
-    #       type: array
-    #       title: Path to requirements.txt
-    #       items:
-    #         type: string
+    - title: Python Settings
+      type: object
+      properties:
+        pythonVersion:
+          type: string
+          title: Python Version
+        pythonRequirements:
+          type: array
+          title: Path to requirements.txt
+          items:
+            type: string
     # - title: Java Settings
     #   type: object
     #   properties:
