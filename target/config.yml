@@ -1,0 +1,14 @@
+languages:
+  javascript:
+    package-manager: yarn
+    package-manager-version: 3.6.0
+    version: 16.15.0
+    env:
+      - GITHUB_TOKEN=${{ secrets.ACCESS_TOKEN }}
+    build-args:
+      - --prefer-offline
+      - --ignore-scripts
+      - --production
+    paths:
+      - ./app/backend/
+
