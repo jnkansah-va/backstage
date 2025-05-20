@@ -94,7 +94,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: ./github/secrel
+        targetPath: ././github/secrel
         values:
           language: ${{ parameters.language }}
           python:
@@ -121,8 +121,8 @@ spec:
       input:
         repoUrl: github.com?owner=jnkansah-va&repo=backstage
         branchName: secrel-test-${{ uuid }}
-        title: SecRel Python Config
-        description: Adds Python config
+        title: SecRel Pipeline Configuration
+        description: Adds SecRel config
         update: true
 
   output:
