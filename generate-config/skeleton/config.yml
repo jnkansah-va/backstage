@@ -30,6 +30,7 @@ languages:
     paths:
 {%- for path in values.javascript.paths %}
       - ${{ path }}
+{%- endfor %}
 {% endif %}
 
 {%- if values.language == "Ruby" %}
