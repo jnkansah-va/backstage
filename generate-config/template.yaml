@@ -108,7 +108,7 @@ spec:
             version: ${{ parameters.javascriptVersion }}
             packageManager: ${{ parameters.javascriptPackageManager}}
             packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
-            env: $${{ parameters.javascriptEnv }}
+            env: ${{ parameters.javascriptEnv }}
             buildArgs: ${{ parameters.javascriptBuildArgs }}
             paths: ${{ parameters.javascriptPaths }}
           ruby:

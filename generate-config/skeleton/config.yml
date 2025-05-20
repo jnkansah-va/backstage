@@ -23,6 +23,10 @@ languages:
     package-manager: ${{ values.javascript.packageManager }}
     package-manager-version: ${{ values.javascript.packageManagerVersion }}
     version: ${{ values.javascript.version }}
+    env:
+{%- for env in values.javascript.env %}
+      - ${{ env }}
+{%- endfor %}
     build-args:
 {%- for arg in values.javascript.buildArgs %}
       - ${{ arg }}
