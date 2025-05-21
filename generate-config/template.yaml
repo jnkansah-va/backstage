@@ -90,7 +90,7 @@ spec:
 
   steps:
     - id: fetch-template
-      name: Render Template
+      name: Generate Config File
       action: fetch:template
       input:
         url: ./skeleton
@@ -114,6 +114,47 @@ spec:
           ruby:
             version: ${{ parameters.rubyVersion }}
             paths: ${{ parameters.rubyPaths }}
+
+    - id: generate-secrel-files
+      name: Generate SecRel Files
+      action: template
+      input:
+        template: |
+          # secrel.yml - Workflow configuration
+          name: SecRel Pipeline
+          on:
+            push:
+              branches:
+                - ${{ parameters.defaultBranch }}  # Trigger on pushes to the default branch
+            workflow_dispatch: # Allows manual triggering
+              inputs:
+                logLevel:
+                  description: 'Log level'
+                  type: choice
+                  options:
+                    - 'info'
+                    - 'warn'
+                    - 'debug'
+                  default: 'info'
+          jobs:
+            build:
+              runs-on: ubuntu-latest
+              steps:
+                - name: Checkout code
+                  uses: actions/checkout@v4
+                - name: Set up Python
+                  uses: actions/setup-python@v4
+                  with:
+                    python-version: '3.9'
+                - name: Install dependencies
+                  run: pip install -r requirements.txt
+                - name: Run security scans
+                  #  Add your security scan steps here
+                  run: echo "Running security scans..."
+                - name: Build and Package
+                  # Add your build steps
+                  run: echo "Building and packaging..."
+        targetFile: .github/workflows/secrel.yml
 
     - id: publish
       name: Create PR
