@@ -94,7 +94,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: ./github/secrel
+        targetPath: ./.github/secrel
         values:
           language: ${{ parameters.language }}
           python:
