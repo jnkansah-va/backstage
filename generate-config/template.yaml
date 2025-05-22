@@ -131,19 +131,22 @@ spec:
           ruby:
             version: ${{ parameters.rubyVersion }}
             paths: ${{ parameters.rubyPaths }}
+          defaultBranch: ${{ parameters.defaultBranch }}
+          image: ${{ parameters.images }}
+
 
     - id: fetch-secrel-workflow-template
       name: Generate SecRel Workflow File
       action: fetch:template
       input: 
-        url: ./skeleton/secrel.yml
+        url: ./skeleton
         targetPath: ./.github/workflows/
         values:
           defaultBranch: ${{ parameters.defaultBranch }}
           image: ${{ parameters.images }}
 
 
-    - id: publish
+    - id: publish-to-github
       name: Create PR
       action: publish:github:pull-request
       input:

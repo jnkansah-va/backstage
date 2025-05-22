@@ -9,7 +9,7 @@ on:
   # Trigger on all pull requests to main branch
   pull_request:
     branches:
-      - ${{ parameters.defaultBranch }}
+      - ${{ values.defaultBranch }}
 
   # Trigger on all published GitHub Releases
   release:
@@ -27,5 +27,5 @@ jobs:
     with:
       requires-prod-signing-keys: true
       config-file: .github/secrel/config.yml
-      images: '${{ parameters.images | dump }}'
+      images: '${{ values.images | dump }}'
     secrets: inherit
