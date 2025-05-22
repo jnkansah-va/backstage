@@ -27,5 +27,8 @@ jobs:
     with:
       requires-prod-signing-keys: true
       config-file: .github/secrel/config.yml
-      images: '${{ values.images | dump }}'
+      images:
+{%- for image in values.images %}
+    ${{ image }}
+{%- endfor %}
     secrets: inherit

@@ -21,7 +21,7 @@ spec:
           default: main
         images:
           type: array
-          title: Docker Image
+          title: Docker Images
           items:
             type: string
 
@@ -111,7 +111,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton/config.yml
-        targetPath: ./.github/secrel
+        targetPath: ./.github/secrel/config.yml
         values:
           language: ${{ parameters.language }}
           python:
@@ -131,8 +131,8 @@ spec:
           ruby:
             version: ${{ parameters.rubyVersion }}
             paths: ${{ parameters.rubyPaths }}
-          defaultBranch: ${{ parameters.defaultBranch }}
-          image: ${{ parameters.images }}
+          # defaultBranch: ${{ parameters.defaultBranch }}
+          # images: ${{ parameters.images }}
 
 
     - id: fetch-secrel-workflow-template
@@ -144,7 +144,23 @@ spec:
         values:
           defaultBranch: ${{ parameters.defaultBranch }}
           image: ${{ parameters.images }}
+    
+    - id: fetch-secrel-workflow-template
+      name: Generate SecRel Workflow File
+      action: fetch:template
+      input: 
+        url: ./skeleton/secrel-workflow.yml # <-- CRITICAL: Use .hbs if it contains Nunjucks templating
+        targetPath: ./.github/workflows/secrel.yml # <-- This ensures it goes into .github/workflows as secrel.yml
+        values:
+          defaultBranch: ${{ parameters.defaultBranch }}
+          images: ${{ parameters.images }} 
 
+    - id: fetch-dora-workflow-template # Add this step for the DORA file
+      name: Generate DORA Lead Time Workflow File
+      action: fetch:template
+      input:
+        url: ./skeleton/dora-lead-time-for-changes.yml 
+        targetPath: ./.github/workflows/dora-lead-time-for-changes.yml
 
     - id: publish-to-github
       name: Create PR
