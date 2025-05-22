@@ -108,10 +108,10 @@ spec:
   steps:
     - id: fetch-config-template
       name: Generate Config File
-      action: fetch:template
+      action: fetch:template:file
       input:
         url: ./skeleton/config.yml
-        targetPath: ./.github/secrel/
+        targetPath: ./.github/secrel/config.yml
         values:
           language: ${{ parameters.language }}
           python:
@@ -131,23 +131,26 @@ spec:
           ruby:
             version: ${{ parameters.rubyVersion }}
             paths: ${{ parameters.rubyPaths }}
-
-    - id: fetch-secrel-workflow-template
-      name: Generate SecRel Workflow File
-      action: fetch:template
-      input: 
-        url: ./skeleton
-        targetPath: ./.github/workflows/
+  
+    - id: fetch-secrel-template
+      name: Generate SecRel Reusable Workflow File
+      action: fetch:template:file
+      input:
+        url: ./skeleton/secrel.yml
+        targetPath: ./.github/workflows/secrel.yml
         values:
           defaultBranch: ${{ parameters.defaultBranch }}
-          image: ${{ parameters.images }}
+          images: ${{ parameters.images }}
 
-    - id: fetch-dora-workflow-template
-      name: Generate DORA Lead Time Workflow File
-      action: fetch:template
+    - id: fetch-dora-template
+      name: Generate DORA Reusable Workflow File
+      action: fetch:template:file
       input:
-        url: ./skeleton/dora-lead-time-for-changes.yml 
-        targetPath: ./.github/workflows/
+        url: ./skeleton/dora-lead-time-for-changes.yml
+        targetPath: ./.github/workflows/secrel.yml
+        values:
+          defaultBranch: ${{ parameters.defaultBranch }}
+          images: ${{ parameters.images }}
 
     - id: publish-to-github
       name: Create PR
