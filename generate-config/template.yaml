@@ -147,10 +147,7 @@ spec:
       action: fetch:template:file
       input:
         url: ./skeleton/dora-lead-time-for-changes.yml
-        targetPath: ./.github/workflows/secrel.yml
-        values:
-          defaultBranch: ${{ parameters.defaultBranch }}
-          images: ${{ parameters.images }}
+        targetPath: ./.github/workflows/dora-lead-time-for-changles.yml
 
     - id: publish-to-github
       name: Create PR
