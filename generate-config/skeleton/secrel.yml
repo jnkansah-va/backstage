@@ -3,8 +3,7 @@ name: SecRel Reusable Workflow
 on:
   # Trigger on every code push. The branches-ignore section can be deleted or modified
   push:
-    branches-ignore: 
-      - lhdi-onboarding-1048
+    branches-ignore:
 
   # Trigger on all pull requests to main branch
   pull_request:
