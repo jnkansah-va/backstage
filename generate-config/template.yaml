@@ -140,7 +140,7 @@ spec:
         targetPath: ./.github/workflows/
         values:
           defaultBranch: ${{ parameters.defaultBranch }}
-          image: ${{ parameters.image }}
+          image: ${{ parameters.images }}
 
 
     - id: publish
@@ -156,4 +156,6 @@ spec:
   output:
     links:
       - title: View config in PR
-        path: ./github/secrel/config.yml
+        path: ./.github/secrel/config.yml
+      - title: View SecRel Workflow in PR
+        path: ./.github/workflows/secrel.yml
