@@ -29,6 +29,6 @@ jobs:
       config-file: .github/secrel/config.yml
       images:
 {%- for image in values.images %}
-    ${{ image }}
+        - ${{ image }}
 {%- endfor %}
     secrets: inherit

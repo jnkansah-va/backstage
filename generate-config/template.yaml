@@ -111,7 +111,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton/config.yml
-        targetPath: ./.github/secrel/config.yml
+        targetPath: ./.github/secrel/
         values:
           language: ${{ parameters.language }}
           python:
@@ -131,9 +131,6 @@ spec:
           ruby:
             version: ${{ parameters.rubyVersion }}
             paths: ${{ parameters.rubyPaths }}
-          # defaultBranch: ${{ parameters.defaultBranch }}
-          # images: ${{ parameters.images }}
-
 
     - id: fetch-secrel-workflow-template
       name: Generate SecRel Workflow File
@@ -144,23 +141,13 @@ spec:
         values:
           defaultBranch: ${{ parameters.defaultBranch }}
           image: ${{ parameters.images }}
-    
-    - id: fetch-secrel-workflow-template
-      name: Generate SecRel Workflow File
-      action: fetch:template
-      input: 
-        url: ./skeleton/secrel-workflow.yml # <-- CRITICAL: Use .hbs if it contains Nunjucks templating
-        targetPath: ./.github/workflows/secrel.yml # <-- This ensures it goes into .github/workflows as secrel.yml
-        values:
-          defaultBranch: ${{ parameters.defaultBranch }}
-          images: ${{ parameters.images }} 
 
-    - id: fetch-dora-workflow-template # Add this step for the DORA file
+    - id: fetch-dora-workflow-template
       name: Generate DORA Lead Time Workflow File
       action: fetch:template
       input:
         url: ./skeleton/dora-lead-time-for-changes.yml 
-        targetPath: ./.github/workflows/dora-lead-time-for-changes.yml
+        targetPath: ./.github/workflows/
 
     - id: publish-to-github
       name: Create PR
