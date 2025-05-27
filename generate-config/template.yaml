@@ -157,10 +157,11 @@ spec:
       name: Create PR
       action: publish:github:pull-request
       input:
-        repo: ${{ parameters.repo }}
+        repoUrl: "github.com?repo=${{ parameters.repo }}&owner=department-of-veterans-affairs"
         title: SecRel Pipeline Configuration
+        description: "Adds SecRel configuration file, SecRel reusable workflow, and DORA workflow files"
+        branchName: "lhdi-onboarding-${{ execution.id }}"
         targetBranch: ${{ parameters.defaultBranch }}
-        sourceBranch: "lhdi-onboarding-${{ execution.id }}"
 
   output:
     links:
