@@ -12,9 +12,13 @@ spec:
     - title: GitHub Repository Settings
       type: object
       required: 
+        - repo
         - defaultBranch
         - images
       properties:
+        repo:
+          title: Repository Name
+          type: string
         defaultBranch:
           title: Default Branch Name (e.g., main, master)
           type: string
@@ -153,11 +157,10 @@ spec:
       name: Create PR
       action: publish:github:pull-request
       input:
-        repoUrl: github.com?owner=jnkansah-va&repo=backstage
-        branchName: secrel-test-${{ uuid }}
+        repo: ${{ parameters.repo }}
         title: SecRel Pipeline Configuration
-        description: Adds SecRel config
-        update: true
+        targetBranch: ${{ parameters.defaultBranch }}
+        sourceBranch: "lhdi-onboarding-${{ execution.id }}"
 
   output:
     links:
