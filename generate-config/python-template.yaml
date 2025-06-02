@@ -159,7 +159,7 @@ spec:
         repoUrl: "github.com?repo=${{ parameters.repo }}&owner=department-of-veterans-affairs"
         title: SecRel Pipeline Configuration - Python Application 
         description: "Adds SecRel configuration file, SecRel reusable workflow, and DORA workflow files"
-        branchName: 'lhdi-onboarding-${{ execution.id }}'
+        branchName: 'lhdi-onboarding-{{ execution.id }}'
         targetBranch: ${{ parameters.defaultBranch }}
 
   output:
