@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: secrel-pipeline-configuration
-  title: Secrel Pipeline Configuration
-  description: Generates the config file necessary to run SecRel and build your application. Pushed PR to GitHub repository. 
+  title: Secrel Pipeline Configuration for Javascript application.
+  description: Generates the config file necessary to run SecRel and build your javascript application. Pushed PR to GitHub repository. 
 spec:
   owner: jnkansah-va
   type: service
@@ -26,45 +26,6 @@ spec:
         images:
           type: array
           title: Docker Images
-          items:
-            type: string
-
-    # - title: Select Application Language
-    #   required:
-    #     - language
-    #   properties:
-    #     language:
-    #       title: Select language
-    #       type: string
-    #       enum:
-    #         - Python
-    #         - Java
-    #         - Javascript
-    #         - Ruby
-
-    - title: Python Settings
-      type: object
-      properties:
-        pythonVersion:
-          type: string
-          title: Python Version
-        pythonRequirements:
-          type: array
-          title: Path to requirements.txt
-          items:
-            type: string
-    - title: Java Settings
-      type: object
-      properties:
-        javaVersion:
-          type: string
-          title: Java Version
-        javaPackageManager:
-          type: string
-          title: Java Package Manager
-        javaBuildArgs:
-          type: array
-          title: Args to pass to package manager
           items:
             type: string
 
@@ -96,35 +57,14 @@ spec:
           items:
             type: string
 
-    - title: Ruby Settings
-      type: object
-      properties:
-        rubyVersion:
-          type: string
-          title: Ruby Version
-        rubyPaths:
-          type: array
-          title: Path to gemfiles
-          items:
-            type: string
-    
-
   steps:
     - id: fetch-config-template
       name: Generate Config File
       action: fetch:template:file
       input:
-        url: ./skeleton/config.yml
+        url: ./skeleton/javascript-config.yml
         targetPath: ./.github/secrel/config.yml
-        values:
-          language: ${{ parameters.language }}
-          python:
-            version: ${{ parameters.pythonVersion }}
-            requirements: ${{ parameters.pythonRequirements }}
-          java: 
-            version: ${{ parameters.javaVersion }}
-            packageManager: ${{ parameters.javaPackageManager }}
-            buildArgs: ${{ parameters.javaBuildArgs }}
+        values:        
           javascript:
             version: ${{ parameters.javascriptVersion }}
             packageManager: ${{ parameters.javascriptPackageManager}}
@@ -132,10 +72,7 @@ spec:
             env: ${{ parameters.javascriptEnv }}
             buildArgs: ${{ parameters.javascriptBuildArgs }}
             paths: ${{ parameters.javascriptPaths }}
-          ruby:
-            version: ${{ parameters.rubyVersion }}
-            paths: ${{ parameters.rubyPaths }}
-  
+
     - id: fetch-secrel-template
       name: Generate SecRel Reusable Workflow File
       action: fetch:template:file
@@ -160,7 +97,7 @@ spec:
         repoUrl: "github.com?repo=${{ parameters.repo }}&owner=department-of-veterans-affairs"
         title: SecRel Pipeline Configuration
         description: "Adds SecRel configuration file, SecRel reusable workflow, and DORA workflow files"
-        branchName: "lhdi-onboarding-${{ execution.id }}"
+        branchName: "lhdi-onboarding"
         targetBranch: ${{ parameters.defaultBranch }}
 
   output:
