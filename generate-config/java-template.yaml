@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: secrel-pipeline-configuration
-  title: Secrel Pipeline Configuration
-  description: Generates the config file necessary to run SecRel and build your application. Pushed PR to GitHub repository. 
+  title: Secrel Pipeline Configuration for Java app
+  description: Generates the config file necessary to run SecRel and build your Java application. Pushed PR to GitHub repository. 
 spec:
   owner: jnkansah-va
   type: service
@@ -29,30 +29,6 @@ spec:
           items:
             type: string
 
-    # - title: Select Application Language
-    #   required:
-    #     - language
-    #   properties:
-    #     language:
-    #       title: Select language
-    #       type: string
-    #       enum:
-    #         - Python
-    #         - Java
-    #         - Javascript
-    #         - Ruby
-
-    - title: Python Settings
-      type: object
-      properties:
-        pythonVersion:
-          type: string
-          title: Python Version
-        pythonRequirements:
-          type: array
-          title: Path to requirements.txt
-          items:
-            type: string
     - title: Java Settings
       type: object
       properties:
@@ -68,74 +44,20 @@ spec:
           items:
             type: string
 
-    - title: JavaScript Settings
-      type: object
-      properties:
-        javascriptVersion:
-          type: string
-          title: Javascript Version
-        javascriptPackageManager:
-          type: string
-          title: Javascript Package Manager
-        javascriptPackageManagerVersion:
-          type: string
-          title: Version of Javascript package manager
-        javascriptEnv:
-          type: array
-          title: Environmental variables used by package manager
-          items:
-            type: string
-        javascriptBuildArgs:
-          type: array
-          title: Args to pass to package manager
-          items:
-            type: string
-        javascriptPaths:
-          type: array
-          title: Paths to dependencies
-          items:
-            type: string
-
-    - title: Ruby Settings
-      type: object
-      properties:
-        rubyVersion:
-          type: string
-          title: Ruby Version
-        rubyPaths:
-          type: array
-          title: Path to gemfiles
-          items:
-            type: string
-    
-
   steps:
     - id: fetch-config-template
       name: Generate Config File
       action: fetch:template:file
       input:
-        url: ./skeleton/config.yml
+        url: ./skeleton/java-config.yml
         targetPath: ./.github/secrel/config.yml
         values:
           language: ${{ parameters.language }}
-          python:
-            version: ${{ parameters.pythonVersion }}
-            requirements: ${{ parameters.pythonRequirements }}
           java: 
             version: ${{ parameters.javaVersion }}
             packageManager: ${{ parameters.javaPackageManager }}
             buildArgs: ${{ parameters.javaBuildArgs }}
-          javascript:
-            version: ${{ parameters.javascriptVersion }}
-            packageManager: ${{ parameters.javascriptPackageManager}}
-            packageManagerVersion: ${{ parameters.javascriptPackageManagerVersion }}
-            env: ${{ parameters.javascriptEnv }}
-            buildArgs: ${{ parameters.javascriptBuildArgs }}
-            paths: ${{ parameters.javascriptPaths }}
-          ruby:
-            version: ${{ parameters.rubyVersion }}
-            paths: ${{ parameters.rubyPaths }}
-  
+
     - id: fetch-secrel-template
       name: Generate SecRel Reusable Workflow File
       action: fetch:template:file
@@ -157,7 +79,7 @@ spec:
       name: Create PR
       action: publish:github:pull-request
       input:
-        repoUrl: "github.com?repo=${{ parameters.repo }}&owner=department-of-veterans-affairs"
+        repoUrl: "github.com?repo=${{ parameters.repo }}&owner=jnkansah-va"
         title: SecRel Pipeline Configuration
         description: "Adds SecRel configuration file, SecRel reusable workflow, and DORA workflow files"
         branchName: "lhdi-onboarding-${{ execution.id }}"
