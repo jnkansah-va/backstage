@@ -29,18 +29,18 @@ spec:
           items:
             type: string
 
-    - title: Select Application Language
-      required:
-        - language
-      properties:
-        language:
-          title: Select language
-          type: string
-          enum:
-            - Python
-            - Java
-            - Javascript
-            - Ruby
+    # - title: Select Application Language
+    #   required:
+    #     - language
+    #   properties:
+    #     language:
+    #       title: Select language
+    #       type: string
+    #       enum:
+    #         - Python
+    #         - Java
+    #         - Javascript
+    #         - Ruby
 
     - title: Python Settings
       type: object

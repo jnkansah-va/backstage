@@ -1,0 +1,8 @@
+languages:
+  ruby:
+    version: ${{ values.ruby.version }}
+    paths:
+{%- for gem in values.ruby.paths %}
+      - ${{ gem }}
+{%- endfor %}
+{% endif %}
