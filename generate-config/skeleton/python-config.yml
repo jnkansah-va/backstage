@@ -5,4 +5,3 @@ languages:
 {%- for requirement in values.python.requirements %}
       - ${{ requirement }}
 {%- endfor %}
-{% endif %}

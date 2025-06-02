@@ -15,4 +15,3 @@ languages:
 {%- for path in values.javascript.paths %}
       - ${{ path }}
 {%- endfor %}
-{% endif %}

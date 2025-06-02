@@ -5,4 +5,3 @@ languages:
 {%- for gem in values.ruby.paths %}
       - ${{ gem }}
 {%- endfor %}
-{% endif %}
