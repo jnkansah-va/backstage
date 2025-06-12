@@ -1,0 +1,89 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: onboarding-pipeline
+  title: Secure Release Onboarding Request
+  description: Triggers the SecRel onboarding workflow
+spec:
+  owner: jnkansah-va
+  type: automation
+
+  parameters:
+    - title: Workflow Inputs
+      required:
+        - systemName
+        - systemDescription
+        - slackChannel
+        - email
+        - teamName
+        - repo
+      properties:
+        systemName: 
+          title: System Name
+          type: string
+          maxLength: 100
+          pattern: "^[a-zA-Z0-9\\-() ]+$"
+          ui:help: 'Limited to alphanumeric, -, (), and space characters.'
+        systemDescription:
+          title: System Description
+          type: string
+          description: Describe what your System does or will do.
+          ui:widget: textarea
+          ui:options:
+            rows: 10
+        slackChannel:
+          title: Your Team Slack Channel
+          type: string
+          description: Provide a public Slack channel name 
+          ui:help: 'Omit # characters'
+        email:
+          title: Your VA Email Address
+          type: string
+          description: firstname.lastname@va.gov
+        teamName:
+          title: GitHub Team Name
+          type: string
+          description: VA GitHub team name will be used for naming convention for Kubernetes namespaces on LHDI, and provides continuity across alll tools, SSO authentication, and segmentation for your team's data.
+        repo:
+          title: GitHub Repository
+          type: array
+          description: The GitHub repository or repositories to onboard. Provide the repo name, default branch, and repo URL for each repo.
+          ui:placeHolder: 'lighthouse-medication-visualizer'
+          items:
+            type: object
+            required:
+              - name
+              - defaultBranch
+              - URL
+            properties:
+              name:
+                type: string
+                title: Repository Name
+                description: e.g., lighthouse-my-service
+              defaultBranch:
+                type: string
+                title: Default Branch
+                description: e.g., main
+              URL:
+                type: string
+                title: Repository URL
+                description: Full GitHub URL to the repo
+  steps: 
+    - id: trigger-onboarding-workflow
+      name: Trigger Onboarding Workflow
+      action: github:actions:dispatch
+      input: 
+        repoUrl: github.com?repo=lighthouse-tornado-secrel-pipeline-onboarding-clone&owner=department-of-veterans-affairs
+        workflowId: onboarding.yml
+        branchOrTagName: jnkansah-backstage-testing
+        workflowInputs:
+          systemName: ${{ parameters.systemName }}
+          systemDescription: ${{ parameters.systemDescription }}
+          slackChannel: ${{ parameters.slackChannel }}
+          email: ${{ parameters.email }}
+          teamName: ${{ parameters.teamName }}
+          repo: ${{ parameters.repo | dump }} 
+  output:
+    text:
+      - title: Workflow Triggered
+        content: "The SecRel Onboarding workflow has been triggered via Code VA!"
