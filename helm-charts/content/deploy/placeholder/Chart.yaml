@@ -1,0 +1,10 @@
+apiVersion: v2
+name: ${{ values.service }}
+description: ${{ values.service }} application
+version: 0.1.0
+appVersion: "1.0"
+
+dependencies:
+- name: dx-universal
+  version: 0.2.1
+  repository: oci://461893774470.dkr.ecr.us-gov-west-1.amazonaws.com

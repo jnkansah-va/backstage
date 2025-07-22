@@ -1,0 +1,226 @@
+{%- set pullSecretName = [values.service, "-pull-secret"] | join %}
+{%- set isSLA = values.environment == "sandbox" or values.environment == "prod" %}
+{%- set env = values.environment %}
+{%- set service = values.service %}
+{%- set repository = values.repository %}
+{%- set image = values.image %}
+{%- set tag = values.tag %}
+{%- set rdsEngine = values.rdsEngine %}
+{%- set team = values.team | replace("group:default/", "") %}
+{%- set deploymentStrategy = values.deploymentStrategy %}
+{%- set ingress = values.ingress %}
+{%- set ingressPath = [team, ingress] | join %}
+{%- macro datadog() %}
+  datadog:
+    {%- if env %}
+    env: ${{ env }}
+    version: '0.1'
+    {%- else %}
+    service: ${{ service }}
+    {%- endif %}
+{%- endmacro %}
+{%- macro deployment() %}
+  deployment:
+    {%- if env %}
+    image:
+      tag: ${{ tag }}
+    {%- if isSLA %}
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: tags.datadoghq.com/service
+                operator: In
+                values:
+                - ${{ service }}
+              - key: tags.datadoghq.com/env
+                operator: In
+                values:
+                - ${{ env }}
+            topologyKey: "topology.kubernetes.io/zone"
+    enabled: false
+    startupProbe:
+      enabled: true
+      httpGet:
+        port: 8080
+        path: /healthz
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      failureThreshold: 10
+      timeoutSeconds: 5
+    readinessProbe:
+      enabled: true
+      httpGet:
+        port: 8080
+        path: /readyz
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      failureThreshold: 3
+      timeoutSeconds: 10
+    {%- endif %}
+    {%- else %}
+    image:
+      repository: ghcr.io/department-of-veterans-affairs/${{ repository }}/${{ image }}
+    imagePullSecrets:
+    - ${{ pullSecretName }}
+    podSecurityContext:
+      runAsNonRoot: true
+    containerSecurityContext:
+      privileged: false
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+    livenessProbe:
+      enabled: false
+    startupProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
+    {%- endif %}
+{%- endmacro %}
+{%- macro vault() %}
+  {%- if not env %}
+  vault:
+    secrets:
+      ${{ pullSecretName }}:
+        type: kubernetes.io/dockerconfigjson
+        path: ${{ team }}/data/${{ pullSecretName }}
+        data:
+          .dockerconfigjson: <pat>
+  {%- elif rdsEngine or elasticache %}
+  vault:
+    secrets:
+      {%- if rdsEngine  %}
+      ${{ service }}-db-secret:
+        path: ${{ team }}/data/${{ env }}/rds
+        data:
+          password: <password>
+      {%- endif %}
+      {%- if elasticache %}
+      ${{ service }}-elasticache-secret:
+        path: ${{ team }}/data/${{ env }}/elasticache
+        data:
+          password: <password>
+      {%- endif %}
+  {%- endif %}
+{%- endmacro %}
+{%- macro rds() %}
+  {%- if rdsEngine %}
+  rds:
+    {%- if env %}
+    dbInstanceIdentifier: ${{ service }}-${{ env }}
+    secretPasswordKey: password
+    secretPasswordName: ${{ service }}-db-secret
+    {%- if isSLA %}
+    multiAZ: true
+    {%- endif %}
+    {%- else  %}
+    engine: ${{ rdsEngine | lower }}
+    allocatedStorage: 25
+    port: 5432
+    masterUsername: dbAdmin
+    autoScaleSize: 250
+    {%- endif %}
+  {%- endif %}
+{%- endmacro %}
+{%- macro argoRollouts() %}
+  {%- if deploymentStrategy %}
+  {%- set atName = [values.service, "at"] | join("-") %}
+  {%- set domain = ["https://", env, ".lighthouse.va.gov"] | join %}
+  argoRollouts:
+    {%- if env %}
+    blueGreen:
+      analysis:
+        prePromotion:
+          enabled: true
+          templates:
+          - templateName: ${{ atName }}
+          {%- if ingress %}
+          args:
+          - name: domain
+            value: ${{ domain }}
+          - name: path
+            value: ${{ ingressPath }}
+          {%- else %}
+          args: []
+          {%- endif %}
+        postPromotion:
+          enabled: true
+          templates:
+          - templateName: ${{ atName }}
+          {%- if ingress %}
+          args:
+          - name: domain
+            value: ${{ domain }}
+          - name: path
+            value: ${{ ingressPath }}
+          {%- else %}
+          args: []
+          {%- endif %}
+    {%- else %}
+    blueGreen:
+      analysisTemplates:
+        ${{ atName }}:
+          {%- if ingress %}
+          args:
+          - name: domain
+          - name: path
+          metrics:
+          - name: webmetric
+            successCondition: result == 'true'
+            provider:
+              web:
+                url: "{{ args.domain }}/{{ args.path }}"
+                jsonPath: "{$.results.ok}"
+                insecure: true
+          {%- else %}
+          args: []
+          metrics: []
+          {%- endif %}
+    {%- endif %}
+  {%- endif %}
+{%- endmacro %}
+{%- macro istio() %}
+  {%- if ingress and env %}
+  istio:
+    virtualService:
+      gateways:
+      {%- if env == "prod" %}
+      - istio-system/ldx-prod-1-${{ env }}-gateway
+      {%- else %}
+      - istio-system/ldx-nonprod-1-${{ env }}-gateway
+      {%- endif %}
+      hosts:
+      - ${{ env }}.lighthouse.va.gov
+      uri: ${{ ingressPath }}
+      rewrite: /
+  {%- endif %}
+{%- endmacro %}
+{%- macro pdb() %}
+  pdb:
+    {%- if isSLA %}
+    enabled: true
+    minAvailable: 1
+    {%- else %}
+    enabled: false
+    {%- endif %}
+{%- endmacro %}
+{%- macro servicePort() %}
+  {%- if not env %}
+  service:
+    port: 8080
+  {%- endif %}
+{%- endmacro %}
+dx-universal:
+  ${{- datadog() }}
+  ${{- deployment() }}
+  ${{- pdb() }}
+  ${{- vault() }}
+  ${{- rds() }}
+  ${{- argoRollouts() }}
+  ${{- istio() }}
+  ${{- servicePort() }}

@@ -1,0 +1,8 @@
+site_name: LHDI Universal Helm Charts
+site_description: An opinionated instantiation of LHDI UHC
+
+nav:
+  - Overview: index.md
+
+plugins:
+  - techdocs-core

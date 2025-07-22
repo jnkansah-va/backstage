@@ -1,0 +1,389 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: helm-template
+  title: LHDI Helm Chart
+  description: A all-in-one deployment package to deploy on LHDI
+  tags:
+  - lighthouse-di-enablement
+  - helm
+  links:
+    - url: https://github.com/department-of-veterans-affairs/lighthouse-di-enablement-sigs/issues
+      title: Support
+      icon: help
+    - url: http://code.va.gov/create/templates/default/helm-template
+      title: Run
+      icon: web
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/time-saved: PT4H
+spec:
+  owner: lighthouse-di-enablement
+  type: service
+  parameters:
+    - title: Choose an ArgoCD repository
+      required:
+        - repoUrl
+        - team
+      properties:
+        md:
+          type: 'null'
+          description: |
+            # Getting Started
+
+            Welcome to the LHDI Enablement Team Helm Chart scaffolder. This templated action will allow your team to create a Helm-chart with LHDI best-practices baked in.
+            Simply navigate through each step and select what your application needs! You'll receive a pull-request with the desired configuration in your ArgoCD repository of choice.
+
+            ##
+
+            For **Repository**, please input an ArgoCD repository in which you'd like to receive the pull-request containing the Helm chart configuration.
+
+            For **Team**, please select your DofVA GitHub Team. This team should be the owner of the ArgoCD repository provided above.
+        repoUrl:
+          title: Basic Information
+          type: string
+          ui:field: RepoUrlPicker
+          ui:placeholder: team-argocd-applications
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+            - department-of-veterans-affairs
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+        team:
+          title: Team
+          type: string
+          ui:field: MyGroupsPicker
+          ui:options: {}
+    - title: Choose an application name
+      required:
+        - name
+        - repository
+        - image
+        - tag
+      properties:
+        name:
+          title: Application Name
+          type: string
+          description: This will be the name of the application as it will appear in ArgoCD.
+          maxLength: 100
+          pattern: '^^[a-z-]+$'
+          ui:placeholder: enablement-toy
+          ui:autofocus: true
+          ui:help: 'Hint: Only alphanumeric characters and hyphens. Names cannot start with a hyphen and the alpha characters can only be lowercase.'
+        repository:
+          title: Application Repository
+          type: string
+          description: This will be the name of the GitHub repository in which the image is published to.
+          ui:placeholder: lighthouse-di-enablement-toy
+          pattern: '^(?!\.)(?!.*\.$)[A-Za-z0-9._-]{1,100}$'
+          maxLength: 100
+        image:
+          title: Application Image
+          type: string
+          description: This will be the name of the application image as it exits in ghcr.io.
+          maxLength: 100
+          ui:placeholder: backend
+          ui:help: 'Hint: not the tag, just the image name! ie., backend'
+        tag:
+          title: Application Tag
+          type: string
+          description: This is the tag of the application image as it exits in ghcr.io.
+          maxLength: 100
+          ui:placeholder: v1.0
+          ui:help: 'Hint: latest, v1.0, etc'
+    - title: Choose your resources
+      required:
+        - environments
+      dependencies:
+        ingress:
+          allOf:
+          - if:
+              properties:
+                ingress:
+                  const: true
+            then:
+              properties:
+                ingressPath:
+                  title: Application URL
+                  type: string
+                  description: This will be the path where your application is reachable on the VA network.
+                  maxLength: 100
+                  pattern: '^\/[^\/]+$'
+                  ui:autofocus: true
+                  ui:placeholder: "/my-application"
+                  ui:help: 'Hint: Value should be a route. An example would be /my-application'
+              required:
+              - ingressPath
+      properties:
+        environments:
+          title: Select environments
+          type: array
+          minItems: 1
+          items:
+            type: string
+            enum:
+              - dev
+              - qa
+              - sandbox
+              - prod
+          uniqueItems: true
+          ui:widget: checkboxes
+        deploymentStrategy:
+          title: Select Kubernetes Deployment Strategy
+          type: string
+          enum:
+            - 'BlueGreen'
+          ui:widget: select
+        datadog:
+          title: Enable Datadog Observability & Monitoring (coming soon)
+          type: boolean
+          ui:disabled: true
+        ingress:
+          title: Enable ingress
+          type: boolean
+    - title: Choose your AWS Resources
+      dependencies:
+        rds:
+          allOf:
+          - if:
+              properties:
+                rds:
+                  const: true
+            then:
+              properties:
+                rdsEngine:
+                  title: RDS Engine
+                  type: string
+                  ui:widget: select
+                  enum:
+                  - Postgres
+                  - MySql
+              required:
+              - rdsEngine
+        elasticache:
+          allOf:
+          - if:
+              properties:
+                elasticache:
+                  const: true
+            then:
+              properties:
+                elasticacheEngine:
+                  title: Elasticache Engine
+                  type: string
+                  ui:widget: select
+                  enum:
+                  - Redis
+                  - Memcache
+              required:
+              - elasticacheEngine
+      properties:
+        rds:
+          title: RDS
+          type: boolean
+        s3:
+          title: S3 (coming soon)
+          type: boolean
+          ui:disabled: true
+        elasticache:
+          title: Elasticache (coming soon)
+          type: boolean
+          ui:disabled: true
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          team: ${{ parameters.team }}
+          service: ${{ parameters.name }}
+          repository: ${{ parameters.repository }}
+          image: ${{ parameters.image }}
+          ingress: ${{ parameters.ingressPath }}
+          tag: ${{ parameters.tag }}
+          rdsEngine: ${{ parameters.rdsEngine }}
+          elasticacheEngine: ${{ parameters.elasticacheEngine }}
+          environments: ${{ parameters.environments }}
+          deploymentStrategy: ${{ parameters.deploymentStrategy }}
+
+    - id: fetch-optional
+      name: Fetch Optional
+      action: fetch:template:file
+      if: ${{ parameters.environments }}
+      each: ${{ parameters.environments }}
+      input:
+        url: ./content/deploy/placeholder/values.yaml
+        targetPath: ./deploy/placeholder/${{ each.value }}.yaml
+        values:
+          team: ${{ parameters.team }}
+          tag: ${{ parameters.tag }}
+          service: ${{ parameters.name }}
+          rdsEngine: ${{ parameters.rdsEngine }}
+          ingress: ${{ parameters.ingressPath }}
+          elasticacheEngine: ${{ parameters.elasticacheEngine }}
+          environment: ${{ each.value }}
+          deploymentStrategy: ${{ parameters.deploymentStrategy }}
+
+    - id: rename-apps
+      name: Formulate names
+      action: fs:rename
+      input:
+        files:
+        - from: ./apps/placeholder
+          to: ./apps/${{ parameters.name }}
+        - from: ./deploy/placeholder
+          to: ./deploy/${{ parameters.name }}
+
+    - id: publish
+      name: Publish
+      action: publish:github:pull-request
+      input:
+        allowedHosts: ['github.com']
+        repoUrl: ${{ parameters.repoUrl }}
+        branchName: automated-add-lhdi-helm-chart
+        title: "[automated] LHDI Helm Chart"
+        description: "Adds Helm Charts"
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
+        update: true
+
+  output:
+    text:
+    - title: Important
+      content: |
+        Your Helm chart has successfully been configured! Go [here](${{ steps['publish'].output.remoteUrl }}) to check it out.
+
+        # What's next?
+
+        Your scaffolded helm-chart isn't quite ready as there are some additional steps needed on your end, so don't expect your ArgoCD application to be green (yet)!
+
+        {%- if 'sandbox' in parameters.environments or 'prod' in parameters.environments %}
+
+        ## SLA Environment Detected
+
+        LHDI includes SLA'd environments, and it looks like you've selected your application to deploy to them.
+
+        Although we've configured `values` files for those environments, please note that we've disabled the `deployment` Kubernetes resource from being created.
+
+        This is intentionally done, as these environments require application images to pass the [Secure Release pipeline](https://redesigned-adventure-wgv3p3l.pages.github.io/secure-release-pipeline/signed-image-enforcement/).
+
+        If your application image has passed the Secure Release pipeline, please feel free to change:
+
+        ```yaml
+        dx-universal:
+          deployment:
+            enabled: false
+        ```
+
+        to
+
+        ```yaml
+        dx-universal:
+          deployment:
+            enabled: true
+        ```
+
+        in your `sandbox.yaml` or `prod.yaml`.
+
+        {%- endif %}
+
+        ## Confirm your application image is published
+
+        You've provided the following metadata about your application:
+
+        **Application Repository**: ${{ parameters.repository }}
+
+        **Application Image**: ${{ parameters.image }}
+
+        This image will be deployed in the helm chart, so make sure it exists [here](https://github.com/department-of-veterans-affairs/${{ parameters.repository }}/pkgs/container/${{ parameters.repository }}%2F${{ parameters.image }}).
+
+        ## Vault Secrets
+
+        We have scaffolded the Kubernetes secrets for you, but you will need to add the values that will be injected into these Kubernetes secrets to Vault.
+
+        For the secrets outlined below, you will have to upload your secret value to your team's secret engine in [Vault](https://ldx-mapi.lighthouse.va.gov/ui/vault/secrets/${{ parameters.team | replace("group:default/", "") }}/kv/create).
+
+        ### Deployment Image Pull Secrets
+
+        Since your application image lives in a private registry [ghcr.io](https://github.com/orgs/department-of-veterans-affairs/packages?repo_name=${{ parameters.repository }}), you need to configure a Kubernetes image pull secret.
+
+        See [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) for how to create a GitHub Pat, and use that value as your `docker-password`.
+        You'll have to do:
+
+        ```
+        kubectl create secret docker-registry regcred \
+          --docker-server=ghcr.io \
+          --docker-username=<your-name> \
+          --docker-password=<your-pword> \
+          --docker-email=<your-email> \
+          --dry-run=client -o yaml
+        ```
+        and paste that value into your team's vault engine under the following:
+
+        {%- set pullSecretName = [parameters.name, "-pull-secret"] | join %}
+        - path: ${{ parameters.team | replace("group:default/", "") }}/${{ parameters.name }}-pull-secret
+
+          key: pat
+
+        {%- if parameters.rds %}
+        ### RDS Secrets
+
+        Looks like you enabled an AWS RDS instance!
+
+        While the `masterUsername` is set for you, you **will** still need to setup credentials for this user!
+
+        Similarly to how you configured image pull secrets in Vault, you'll need to do the same for this database user.
+
+        Based off the environments you selected, the Kubernetes secrets are expecting values to exist in Vault at the following paths:
+
+        {%- for env in parameters.environments %}
+        - path: ${{ parameters.team | replace("group:default/", "") }}/${{ env }}/rds
+
+          key: password
+        {%- endfor %}
+        {%- endif %}
+
+        {%- if parameters.ingress %}
+        ## Accessing your application
+
+        It looks like you enabled `ingress` for your application.
+
+        LHDI uses Istio as a servicemesh within it's various environments, which means a `VirtualService` has been setup for your application.
+
+        The `VirtualService` allows Istio gateways to forward traffic to your application if a specific hostname is reached over the VA Network (not publically accessible over the internet).
+
+        With the configuration you specified, we setup the `VirtualService` to forward traffic to your application if the following hostname and paths are reached:
+
+        {%- for env in parameters.environments %}
+        - https://${{ env }}.lighthouse.va.gov/${{ parameters.team | replace("group:default/", "")}}${{ parameters.ingressPath }}
+        {%- endfor %}
+        {%- endif %}
+
+        {%- if parameters.deploymentStrategy %}
+        ## Configuring ${{ parameters.deploymentStrategy }} Deployments
+
+        You enabled ${{ parameters.deploymentStrategy }}, so we've scaffolded the base values needed into your Helm chart.
+
+        {%- if parameters.ingress %}
+
+        Since you've also enabled ingress to your application, we've setup a simple `analysisTemplate` as well as pre & post promotion tests for you!
+
+        They simply check that your application is reachable via LHDI's environment gateways.
+
+        {%- else %}
+        You'll need to navigate to your `values.yaml` and define your analysisTemplates, as well as your environment-specific values files:
+
+        {%- for env in parameters.environments %}
+        - ${{ env }}.yaml
+        {%- endfor %}
+
+        to configure arguments for said template during pre and post promotion.
+        {%- endif %}
+
+        For more information on leveraging Argo Rollouts for bluegreen & canary-style deployments, go [here](https://redesigned-adventure-wgv3p3l.pages.github.io/phase-3-development-and-production-readiness/deploy-your-project-to-dev/deploy-with-argo-rollouts/implement-argo-rollouts/).
+        {%- endif %}

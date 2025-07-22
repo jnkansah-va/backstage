@@ -1,0 +1,14 @@
+{
+    "app": {
+        "name": "${{ values.service }}",
+        "path": "deploy/${{ values.service }}",
+        "environments": {
+            {%- for env in values.environments %}
+            "${{ env }}": {
+                "target_revision": "HEAD"
+            }
+            {%- if not loop.last %},{%- endif %}
+            {%- endfor %}
+        }
+    }
+}
